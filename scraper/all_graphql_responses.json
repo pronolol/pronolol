@@ -1,0 +1,3631 @@
+{
+  "homeEvents": [
+    {
+      "data": {
+        "__typename": "Query",
+        "esports": {
+          "__typename": "EsportsData",
+          "events": [],
+          "pages": {
+            "__typename": "Pages",
+            "newer": null,
+            "older": null
+          }
+        }
+      }
+    },
+    {
+      "data": {
+        "__typename": "Query",
+        "esports": {
+          "__typename": "EsportsData",
+          "events": [
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 1",
+              "id": "115548424308414192",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414193",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414192",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "LR",
+                  "id": "115548424308414192:113770064260414203",
+                  "image": "http://static.lolesports.com/teams/1736206905390_LR1.png",
+                  "lightImage": null,
+                  "name": "Los Ratones",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "FNC",
+                  "id": "115548424308414192:98767991866488695",
+                  "image": "http://static.lolesports.com/teams/1631819669150_fnc-2021-worlds.png",
+                  "lightImage": "http://static.lolesports.com/teams/1592591295312_FnaticFNC-02-SingleonDark.png",
+                  "name": "Fnatic",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-17T16:00:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 1",
+              "id": "115548424308414160",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414161",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414160",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "SHFT",
+                  "id": "115548424308414160:107563714667537640",
+                  "image": "http://static.lolesports.com/teams/1765897071435_600px-Shifters_allmode.png",
+                  "lightImage": null,
+                  "name": "Shifters",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "GX",
+                  "id": "115548424308414160:101383793572656373",
+                  "image": "http://static.lolesports.com/teams/1765897105091_GIANTX-logotype-white.png",
+                  "lightImage": null,
+                  "name": "GIANTX",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-17T16:45:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 1",
+              "id": "115548424308479798",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308479799",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308479798",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "TH",
+                  "id": "115548424308479798:109637393694097670",
+                  "image": "http://static.lolesports.com/teams/1672933861879_Heretics-Full-Color.png",
+                  "lightImage": null,
+                  "name": "Team Heretics",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "NAVI",
+                  "id": "115548424308479798:114868016111590239",
+                  "image": "http://static.lolesports.com/teams/1752746833620_NAVI_FullColor.png",
+                  "lightImage": null,
+                  "name": "Natus Vincere",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-17T17:30:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 1",
+              "id": "115548424308479810",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308479811",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308479810",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "VIT",
+                  "id": "115548424308479810:99322214695067838",
+                  "image": "http://static.lolesports.com/teams/1675865863968_Vitality_FullColor.png",
+                  "lightImage": null,
+                  "name": "Team Vitality",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "SK",
+                  "id": "115548424308479810:101383793567806688",
+                  "image": "http://static.lolesports.com/teams/1643979272144_SK_Monochrome.png",
+                  "lightImage": "http://static.lolesports.com/teams/1643979272153_SK_Monochrome.png",
+                  "name": "SK Gaming",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-17T18:15:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 1",
+              "id": "115548424308414206",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414207",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414206",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "KCB",
+                  "id": "115548424308414206:105515219038427019",
+                  "image": "http://static.lolesports.com/teams/1765897112519_WHITE.png",
+                  "lightImage": null,
+                  "name": "Karmine Corp Blue",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "KC",
+                  "id": "115548424308414206:111692118851466302",
+                  "image": "http://static.lolesports.com/teams/1704714951336_KC.png",
+                  "lightImage": null,
+                  "name": "Karmine Corp",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-17T19:00:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 1",
+              "id": "115548424308414176",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414177",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414176",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "MKOI",
+                  "id": "115548424308414176:103461966965149786",
+                  "image": "http://static.lolesports.com/teams/1734012609283_MKOI_FullColor_Blue.png",
+                  "lightImage": null,
+                  "name": "Movistar KOI",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "G2",
+                  "id": "115548424308414176:98767991926151025",
+                  "image": "http://static.lolesports.com/teams/G2-FullonDark.png",
+                  "lightImage": "http://static.lolesports.com/teams/G2-SingleonDark.png",
+                  "name": "G2 Esports",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-17T19:45:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 1",
+              "id": "115548424308479804",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308479805",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308479804",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "TH",
+                  "id": "115548424308479804:109637393694097670",
+                  "image": "http://static.lolesports.com/teams/1672933861879_Heretics-Full-Color.png",
+                  "lightImage": null,
+                  "name": "Team Heretics",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "SHFT",
+                  "id": "115548424308479804:107563714667537640",
+                  "image": "http://static.lolesports.com/teams/1765897071435_600px-Shifters_allmode.png",
+                  "lightImage": null,
+                  "name": "Shifters",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-18T16:00:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 1",
+              "id": "115548424308414222",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414223",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414222",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "LR",
+                  "id": "115548424308414222:113770064260414203",
+                  "image": "http://static.lolesports.com/teams/1736206905390_LR1.png",
+                  "lightImage": null,
+                  "name": "Los Ratones",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "KCB",
+                  "id": "115548424308414222:105515219038427019",
+                  "image": "http://static.lolesports.com/teams/1765897112519_WHITE.png",
+                  "lightImage": null,
+                  "name": "Karmine Corp Blue",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-18T16:45:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 1",
+              "id": "115548424308479800",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308479801",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308479800",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "VIT",
+                  "id": "115548424308479800:99322214695067838",
+                  "image": "http://static.lolesports.com/teams/1675865863968_Vitality_FullColor.png",
+                  "lightImage": null,
+                  "name": "Team Vitality",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "NAVI",
+                  "id": "115548424308479800:114868016111590239",
+                  "image": "http://static.lolesports.com/teams/1752746833620_NAVI_FullColor.png",
+                  "lightImage": null,
+                  "name": "Natus Vincere",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-18T17:30:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 1",
+              "id": "115548424308414200",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414201",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414200",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "SK",
+                  "id": "115548424308414200:101383793567806688",
+                  "image": "http://static.lolesports.com/teams/1643979272144_SK_Monochrome.png",
+                  "lightImage": "http://static.lolesports.com/teams/1643979272153_SK_Monochrome.png",
+                  "name": "SK Gaming",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "FNC",
+                  "id": "115548424308414200:98767991866488695",
+                  "image": "http://static.lolesports.com/teams/1631819669150_fnc-2021-worlds.png",
+                  "lightImage": "http://static.lolesports.com/teams/1592591295312_FnaticFNC-02-SingleonDark.png",
+                  "name": "Fnatic",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-18T18:15:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 1",
+              "id": "115548424307955394",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308020931",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424307955394",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "G2",
+                  "id": "115548424307955394:98767991926151025",
+                  "image": "http://static.lolesports.com/teams/G2-FullonDark.png",
+                  "lightImage": "http://static.lolesports.com/teams/G2-SingleonDark.png",
+                  "name": "G2 Esports",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "GX",
+                  "id": "115548424307955394:101383793572656373",
+                  "image": "http://static.lolesports.com/teams/1765897105091_GIANTX-logotype-white.png",
+                  "lightImage": null,
+                  "name": "GIANTX",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-18T19:00:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 1",
+              "id": "115548424308414210",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414211",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414210",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "MKOI",
+                  "id": "115548424308414210:103461966965149786",
+                  "image": "http://static.lolesports.com/teams/1734012609283_MKOI_FullColor_Blue.png",
+                  "lightImage": null,
+                  "name": "Movistar KOI",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "KC",
+                  "id": "115548424308414210:111692118851466302",
+                  "image": "http://static.lolesports.com/teams/1704714951336_KC.png",
+                  "lightImage": null,
+                  "name": "Karmine Corp",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-18T19:45:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 1",
+              "id": "115548424308414196",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414197",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414196",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "NAVI",
+                  "id": "115548424308414196:114868016111590239",
+                  "image": "http://static.lolesports.com/teams/1752746833620_NAVI_FullColor.png",
+                  "lightImage": null,
+                  "name": "Natus Vincere",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "FNC",
+                  "id": "115548424308414196:98767991866488695",
+                  "image": "http://static.lolesports.com/teams/1631819669150_fnc-2021-worlds.png",
+                  "lightImage": "http://static.lolesports.com/teams/1592591295312_FnaticFNC-02-SingleonDark.png",
+                  "name": "Fnatic",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-19T16:00:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 1",
+              "id": "115548424308414234",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414235",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414234",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "VIT",
+                  "id": "115548424308414234:99322214695067838",
+                  "image": "http://static.lolesports.com/teams/1675865863968_Vitality_FullColor.png",
+                  "lightImage": null,
+                  "name": "Team Vitality",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "KCB",
+                  "id": "115548424308414234:105515219038427019",
+                  "image": "http://static.lolesports.com/teams/1765897112519_WHITE.png",
+                  "lightImage": null,
+                  "name": "Karmine Corp Blue",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-19T16:45:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 1",
+              "id": "115548424308414164",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414165",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414164",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "TH",
+                  "id": "115548424308414164:109637393694097670",
+                  "image": "http://static.lolesports.com/teams/1672933861879_Heretics-Full-Color.png",
+                  "lightImage": null,
+                  "name": "Team Heretics",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "GX",
+                  "id": "115548424308414164:101383793572656373",
+                  "image": "http://static.lolesports.com/teams/1765897105091_GIANTX-logotype-white.png",
+                  "lightImage": null,
+                  "name": "GIANTX",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-19T17:30:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 1",
+              "id": "115548424308414250",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414251",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414250",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "SHFT",
+                  "id": "115548424308414250:107563714667537640",
+                  "image": "http://static.lolesports.com/teams/1765897071435_600px-Shifters_allmode.png",
+                  "lightImage": null,
+                  "name": "Shifters",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "MKOI",
+                  "id": "115548424308414250:103461966965149786",
+                  "image": "http://static.lolesports.com/teams/1734012609283_MKOI_FullColor_Blue.png",
+                  "lightImage": null,
+                  "name": "Movistar KOI",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-19T18:15:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 1",
+              "id": "115548424308414208",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414209",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414208",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "LR",
+                  "id": "115548424308414208:113770064260414203",
+                  "image": "http://static.lolesports.com/teams/1736206905390_LR1.png",
+                  "lightImage": null,
+                  "name": "Los Ratones",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "KC",
+                  "id": "115548424308414208:111692118851466302",
+                  "image": "http://static.lolesports.com/teams/1704714951336_KC.png",
+                  "lightImage": null,
+                  "name": "Karmine Corp",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-19T19:00:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 1",
+              "id": "115548424308414182",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414183",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414182",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "SK",
+                  "id": "115548424308414182:101383793567806688",
+                  "image": "http://static.lolesports.com/teams/1643979272144_SK_Monochrome.png",
+                  "lightImage": "http://static.lolesports.com/teams/1643979272153_SK_Monochrome.png",
+                  "name": "SK Gaming",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "G2",
+                  "id": "115548424308414182:98767991926151025",
+                  "image": "http://static.lolesports.com/teams/G2-FullonDark.png",
+                  "lightImage": "http://static.lolesports.com/teams/G2-SingleonDark.png",
+                  "name": "G2 Esports",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-19T19:45:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 2",
+              "id": "115548424308414154",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414155",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414154",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "LR",
+                  "id": "115548424308414154:113770064260414203",
+                  "image": "http://static.lolesports.com/teams/1736206905390_LR1.png",
+                  "lightImage": null,
+                  "name": "Los Ratones",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "GX",
+                  "id": "115548424308414154:101383793572656373",
+                  "image": "http://static.lolesports.com/teams/1765897105091_GIANTX-logotype-white.png",
+                  "lightImage": null,
+                  "name": "GIANTX",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-24T16:00:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 2",
+              "id": "115548424308414226",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414227",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414226",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "NAVI",
+                  "id": "115548424308414226:114868016111590239",
+                  "image": "http://static.lolesports.com/teams/1752746833620_NAVI_FullColor.png",
+                  "lightImage": null,
+                  "name": "Natus Vincere",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "KCB",
+                  "id": "115548424308414226:105515219038427019",
+                  "image": "http://static.lolesports.com/teams/1765897112519_WHITE.png",
+                  "lightImage": null,
+                  "name": "Karmine Corp Blue",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-24T16:45:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 2",
+              "id": "115548424308479812",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308479813",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308479812",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "VIT",
+                  "id": "115548424308479812:99322214695067838",
+                  "image": "http://static.lolesports.com/teams/1675865863968_Vitality_FullColor.png",
+                  "lightImage": null,
+                  "name": "Team Vitality",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "TH",
+                  "id": "115548424308479812:109637393694097670",
+                  "image": "http://static.lolesports.com/teams/1672933861879_Heretics-Full-Color.png",
+                  "lightImage": null,
+                  "name": "Team Heretics",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-24T17:30:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 2",
+              "id": "115548424308414180",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414181",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414180",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "SHFT",
+                  "id": "115548424308414180:107563714667537640",
+                  "image": "http://static.lolesports.com/teams/1765897071435_600px-Shifters_allmode.png",
+                  "lightImage": null,
+                  "name": "Shifters",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "G2",
+                  "id": "115548424308414180:98767991926151025",
+                  "image": "http://static.lolesports.com/teams/G2-FullonDark.png",
+                  "lightImage": "http://static.lolesports.com/teams/G2-SingleonDark.png",
+                  "name": "G2 Esports",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-24T18:15:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 2",
+              "id": "115548424308414216",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414217",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414216",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "SK",
+                  "id": "115548424308414216:101383793567806688",
+                  "image": "http://static.lolesports.com/teams/1643979272144_SK_Monochrome.png",
+                  "lightImage": "http://static.lolesports.com/teams/1643979272153_SK_Monochrome.png",
+                  "name": "SK Gaming",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "KC",
+                  "id": "115548424308414216:111692118851466302",
+                  "image": "http://static.lolesports.com/teams/1704714951336_KC.png",
+                  "lightImage": null,
+                  "name": "Karmine Corp",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-24T19:00:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 2",
+              "id": "115548424308414194",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414195",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414194",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "MKOI",
+                  "id": "115548424308414194:103461966965149786",
+                  "image": "http://static.lolesports.com/teams/1734012609283_MKOI_FullColor_Blue.png",
+                  "lightImage": null,
+                  "name": "Movistar KOI",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "FNC",
+                  "id": "115548424308414194:98767991866488695",
+                  "image": "http://static.lolesports.com/teams/1631819669150_fnc-2021-worlds.png",
+                  "lightImage": "http://static.lolesports.com/teams/1592591295312_FnaticFNC-02-SingleonDark.png",
+                  "name": "Fnatic",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-24T19:45:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 2",
+              "id": "115548424308479806",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308479807",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308479806",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "VIT",
+                  "id": "115548424308479806:99322214695067838",
+                  "image": "http://static.lolesports.com/teams/1675865863968_Vitality_FullColor.png",
+                  "lightImage": null,
+                  "name": "Team Vitality",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "SHFT",
+                  "id": "115548424308479806:107563714667537640",
+                  "image": "http://static.lolesports.com/teams/1765897071435_600px-Shifters_allmode.png",
+                  "lightImage": null,
+                  "name": "Shifters",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-25T16:00:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 2",
+              "id": "115548424308479796",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308479797",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308479796",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "SK",
+                  "id": "115548424308479796:101383793567806688",
+                  "image": "http://static.lolesports.com/teams/1643979272144_SK_Monochrome.png",
+                  "lightImage": "http://static.lolesports.com/teams/1643979272153_SK_Monochrome.png",
+                  "name": "SK Gaming",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "NAVI",
+                  "id": "115548424308479796:114868016111590239",
+                  "image": "http://static.lolesports.com/teams/1752746833620_NAVI_FullColor.png",
+                  "lightImage": null,
+                  "name": "Natus Vincere",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-25T16:45:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 2",
+              "id": "115548424308414244",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414245",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414244",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "TH",
+                  "id": "115548424308414244:109637393694097670",
+                  "image": "http://static.lolesports.com/teams/1672933861879_Heretics-Full-Color.png",
+                  "lightImage": null,
+                  "name": "Team Heretics",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "LR",
+                  "id": "115548424308414244:113770064260414203",
+                  "image": "http://static.lolesports.com/teams/1736206905390_LR1.png",
+                  "lightImage": null,
+                  "name": "Los Ratones",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-25T17:30:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 2",
+              "id": "115548424308414224",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414225",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414224",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "MKOI",
+                  "id": "115548424308414224:103461966965149786",
+                  "image": "http://static.lolesports.com/teams/1734012609283_MKOI_FullColor_Blue.png",
+                  "lightImage": null,
+                  "name": "Movistar KOI",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "KCB",
+                  "id": "115548424308414224:105515219038427019",
+                  "image": "http://static.lolesports.com/teams/1765897112519_WHITE.png",
+                  "lightImage": null,
+                  "name": "Karmine Corp Blue",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-25T18:15:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 2",
+              "id": "115548424308414148",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414149",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414148",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "FNC",
+                  "id": "115548424308414148:98767991866488695",
+                  "image": "http://static.lolesports.com/teams/1631819669150_fnc-2021-worlds.png",
+                  "lightImage": "http://static.lolesports.com/teams/1592591295312_FnaticFNC-02-SingleonDark.png",
+                  "name": "Fnatic",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "GX",
+                  "id": "115548424308414148:101383793572656373",
+                  "image": "http://static.lolesports.com/teams/1765897105091_GIANTX-logotype-white.png",
+                  "lightImage": null,
+                  "name": "GIANTX",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-25T19:00:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 2",
+              "id": "115548424308414170",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414171",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414170",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "KC",
+                  "id": "115548424308414170:111692118851466302",
+                  "image": "http://static.lolesports.com/teams/1704714951336_KC.png",
+                  "lightImage": null,
+                  "name": "Karmine Corp",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "G2",
+                  "id": "115548424308414170:98767991926151025",
+                  "image": "http://static.lolesports.com/teams/G2-FullonDark.png",
+                  "lightImage": "http://static.lolesports.com/teams/G2-SingleonDark.png",
+                  "name": "G2 Esports",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-25T19:45:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 2",
+              "id": "115548424308414230",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414231",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414230",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "SK",
+                  "id": "115548424308414230:101383793567806688",
+                  "image": "http://static.lolesports.com/teams/1643979272144_SK_Monochrome.png",
+                  "lightImage": "http://static.lolesports.com/teams/1643979272153_SK_Monochrome.png",
+                  "name": "SK Gaming",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "KCB",
+                  "id": "115548424308414230:105515219038427019",
+                  "image": "http://static.lolesports.com/teams/1765897112519_WHITE.png",
+                  "lightImage": null,
+                  "name": "Karmine Corp Blue",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-26T16:00:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 2",
+              "id": "115548424308414240",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414241",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414240",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "SHFT",
+                  "id": "115548424308414240:107563714667537640",
+                  "image": "http://static.lolesports.com/teams/1765897071435_600px-Shifters_allmode.png",
+                  "lightImage": null,
+                  "name": "Shifters",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "LR",
+                  "id": "115548424308414240:113770064260414203",
+                  "image": "http://static.lolesports.com/teams/1736206905390_LR1.png",
+                  "lightImage": null,
+                  "name": "Los Ratones",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-26T16:45:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 2",
+              "id": "115548424308414204",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414205",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414204",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "VIT",
+                  "id": "115548424308414204:99322214695067838",
+                  "image": "http://static.lolesports.com/teams/1675865863968_Vitality_FullColor.png",
+                  "lightImage": null,
+                  "name": "Team Vitality",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "FNC",
+                  "id": "115548424308414204:98767991866488695",
+                  "image": "http://static.lolesports.com/teams/1631819669150_fnc-2021-worlds.png",
+                  "lightImage": "http://static.lolesports.com/teams/1592591295312_FnaticFNC-02-SingleonDark.png",
+                  "name": "Fnatic",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-26T17:30:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 2",
+              "id": "115548424308414184",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414185",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414184",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "TH",
+                  "id": "115548424308414184:109637393694097670",
+                  "image": "http://static.lolesports.com/teams/1672933861879_Heretics-Full-Color.png",
+                  "lightImage": null,
+                  "name": "Team Heretics",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "G2",
+                  "id": "115548424308414184:98767991926151025",
+                  "image": "http://static.lolesports.com/teams/G2-FullonDark.png",
+                  "lightImage": "http://static.lolesports.com/teams/G2-SingleonDark.png",
+                  "name": "G2 Esports",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-26T18:15:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 2",
+              "id": "115548424308414212",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414213",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414212",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "NAVI",
+                  "id": "115548424308414212:114868016111590239",
+                  "image": "http://static.lolesports.com/teams/1752746833620_NAVI_FullColor.png",
+                  "lightImage": null,
+                  "name": "Natus Vincere",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "KC",
+                  "id": "115548424308414212:111692118851466302",
+                  "image": "http://static.lolesports.com/teams/1704714951336_KC.png",
+                  "lightImage": null,
+                  "name": "Karmine Corp",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-26T19:00:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 2",
+              "id": "115548424308414156",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414157",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414156",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "MKOI",
+                  "id": "115548424308414156:103461966965149786",
+                  "image": "http://static.lolesports.com/teams/1734012609283_MKOI_FullColor_Blue.png",
+                  "lightImage": null,
+                  "name": "Movistar KOI",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "GX",
+                  "id": "115548424308414156:101383793572656373",
+                  "image": "http://static.lolesports.com/teams/1765897105091_GIANTX-logotype-white.png",
+                  "lightImage": null,
+                  "name": "GIANTX",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-26T19:45:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 3",
+              "id": "115548424308479808",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308479809",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308479808",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "TH",
+                  "id": "115548424308479808:109637393694097670",
+                  "image": "http://static.lolesports.com/teams/1672933861879_Heretics-Full-Color.png",
+                  "lightImage": null,
+                  "name": "Team Heretics",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "SK",
+                  "id": "115548424308479808:101383793567806688",
+                  "image": "http://static.lolesports.com/teams/1643979272144_SK_Monochrome.png",
+                  "lightImage": "http://static.lolesports.com/teams/1643979272153_SK_Monochrome.png",
+                  "name": "SK Gaming",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-31T16:00:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 3",
+              "id": "115548424308414158",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414159",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414158",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "NAVI",
+                  "id": "115548424308414158:114868016111590239",
+                  "image": "http://static.lolesports.com/teams/1752746833620_NAVI_FullColor.png",
+                  "lightImage": null,
+                  "name": "Natus Vincere",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "GX",
+                  "id": "115548424308414158:101383793572656373",
+                  "image": "http://static.lolesports.com/teams/1765897105091_GIANTX-logotype-white.png",
+                  "lightImage": null,
+                  "name": "GIANTX",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-31T16:45:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 3",
+              "id": "115548424308414198",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414199",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414198",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "SHFT",
+                  "id": "115548424308414198:107563714667537640",
+                  "image": "http://static.lolesports.com/teams/1765897071435_600px-Shifters_allmode.png",
+                  "lightImage": null,
+                  "name": "Shifters",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "FNC",
+                  "id": "115548424308414198:98767991866488695",
+                  "image": "http://static.lolesports.com/teams/1631819669150_fnc-2021-worlds.png",
+                  "lightImage": "http://static.lolesports.com/teams/1592591295312_FnaticFNC-02-SingleonDark.png",
+                  "name": "Fnatic",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-31T17:30:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            },
+            {
+              "__typename": "EventMatch",
+              "blockName": "Week 3",
+              "id": "115548424308414172",
+              "league": {
+                "__typename": "League",
+                "displayPriority": {
+                  "__typename": "Priority",
+                  "position": 2,
+                  "status": "selected"
+                },
+                "id": "98767991302996019",
+                "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                "name": "LEC",
+                "slug": "lec"
+              },
+              "match": {
+                "__typename": "Match",
+                "flags": [],
+                "games": [
+                  {
+                    "__typename": "Game",
+                    "id": "115548424308414173",
+                    "number": 1,
+                    "state": "unstarted",
+                    "vods": [],
+                    "recaps": []
+                  }
+                ],
+                "id": "115548424308414172",
+                "state": "unstarted",
+                "strategy": {
+                  "__typename": "MatchStrategy",
+                  "count": 1,
+                  "type": "bestOf"
+                },
+                "type": "normal"
+              },
+              "matchTeams": [
+                {
+                  "__typename": "MatchTeam",
+                  "code": "KCB",
+                  "id": "115548424308414172:105515219038427019",
+                  "image": "http://static.lolesports.com/teams/1765897112519_WHITE.png",
+                  "lightImage": null,
+                  "name": "Karmine Corp Blue",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                },
+                {
+                  "__typename": "MatchTeam",
+                  "code": "G2",
+                  "id": "115548424308414172:98767991926151025",
+                  "image": "http://static.lolesports.com/teams/G2-FullonDark.png",
+                  "lightImage": "http://static.lolesports.com/teams/G2-SingleonDark.png",
+                  "name": "G2 Esports",
+                  "result": {
+                    "__typename": "TeamResult",
+                    "gameWins": 0,
+                    "outcome": null
+                  }
+                }
+              ],
+              "startTime": "2026-01-31T18:15:00Z",
+              "state": "unstarted",
+              "streams": [],
+              "tournament": {
+                "__typename": "Tournament",
+                "id": "115548424304940735",
+                "name": "LEC Versus 2026"
+              },
+              "type": "match"
+            }
+          ],
+          "pages": {
+            "__typename": "Pages",
+            "newer": "bmV3ZXI6OjExNTU0ODQyNDMwODQxNDE3Mg==",
+            "older": null
+          }
+        }
+      }
+    }
+  ],
+  "GetSeasonForNavigation": [
+    {
+      "data": {
+        "__typename": "Query",
+        "seasons": [
+          {
+            "__typename": "Season",
+            "description": "LoL Esports is the game’s Tier 1 professional league, and is made up of five regions: Americas (LCS/CBLOL), EMEA (LEC), Korea (LCK), China (LPL), and Asia-Pacific (LCP). \n\nOver the course of the 2026 season, teams participate in a series of regional and international events that culminate at the final international event, Worlds, where the best team in the world is crowned.",
+            "splits": [
+              {
+                "__typename": "Split",
+                "endTime": "2026-03-07T23:00:00Z",
+                "id": "115547545030002701",
+                "name": "Split 1",
+                "region": "REGIONAL",
+                "slug": "split_1",
+                "startTime": "2026-01-11T23:00:00Z",
+                "tournaments": [
+                  {
+                    "__typename": "Tournament",
+                    "endTime": "2026-03-02T07:59:00Z",
+                    "id": "115564596163517554",
+                    "league": {
+                      "__typename": "League",
+                      "displayPriority": {
+                        "__typename": "Priority",
+                        "position": 0,
+                        "status": "selected"
+                      },
+                      "id": "98767991299243165",
+                      "image": "http://static.lolesports.com/leagues/1706356907418_LCSNew-01-FullonDark.png",
+                      "name": "LCS",
+                      "region": "NORTH AMERICA",
+                      "regionSlug": "na"
+                    },
+                    "name": "Split 1 2026",
+                    "startTime": "2026-01-24T08:00:01Z"
+                  },
+                  {
+                    "__typename": "Tournament",
+                    "endTime": "2026-03-01T02:59:00Z",
+                    "id": "115565518151768348",
+                    "league": {
+                      "__typename": "League",
+                      "displayPriority": {
+                        "__typename": "Priority",
+                        "position": 1,
+                        "status": "selected"
+                      },
+                      "id": "98767991332355509",
+                      "image": "http://static.lolesports.com/leagues/cblol-logo-symbol-offwhite.png",
+                      "name": "CBLOL",
+                      "region": "BRAZIL",
+                      "regionSlug": "br"
+                    },
+                    "name": "COPA CBLOL",
+                    "startTime": "2026-01-17T03:00:00Z"
+                  },
+                  {
+                    "__typename": "Tournament",
+                    "endTime": "2026-03-01T22:59:00Z",
+                    "id": "115548424304940735",
+                    "league": {
+                      "__typename": "League",
+                      "displayPriority": {
+                        "__typename": "Priority",
+                        "position": 2,
+                        "status": "selected"
+                      },
+                      "id": "98767991302996019",
+                      "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                      "name": "LEC",
+                      "region": "EMEA",
+                      "regionSlug": "emea"
+                    },
+                    "name": "LEC Versus 2026",
+                    "startTime": "2026-01-16T23:00:00Z"
+                  },
+                  {
+                    "__typename": "Tournament",
+                    "endTime": "2026-03-01T14:00:00Z",
+                    "id": "115570600643843079",
+                    "league": {
+                      "__typename": "League",
+                      "displayPriority": {
+                        "__typename": "Priority",
+                        "position": 2,
+                        "status": "not_selected"
+                      },
+                      "id": "113476371197627891",
+                      "image": "http://static.lolesports.com/leagues/1733468139601_lcp-color-golden.png",
+                      "name": "LCP",
+                      "region": "PACIFIC",
+                      "regionSlug": "pac"
+                    },
+                    "name": "Split 1 2026",
+                    "startTime": "2026-01-15T22:00:00Z"
+                  },
+                  {
+                    "__typename": "Tournament",
+                    "endTime": "2026-03-08T15:59:00Z",
+                    "id": "115610660442964993",
+                    "league": {
+                      "__typename": "League",
+                      "displayPriority": {
+                        "__typename": "Priority",
+                        "position": 1,
+                        "status": "not_selected"
+                      },
+                      "id": "98767991314006698",
+                      "image": "http://static.lolesports.com/leagues/1592516115322_LPL-01-FullonDark.png",
+                      "name": "LPL",
+                      "region": "CHINA",
+                      "regionSlug": "cn"
+                    },
+                    "name": "Split 1 2026",
+                    "startTime": "2026-01-13T16:00:00Z"
+                  },
+                  {
+                    "__typename": "Tournament",
+                    "endTime": "2026-03-01T14:59:00Z",
+                    "id": "115548106590082745",
+                    "league": {
+                      "__typename": "League",
+                      "displayPriority": {
+                        "__typename": "Priority",
+                        "position": 0,
+                        "status": "not_selected"
+                      },
+                      "id": "98767991310872058",
+                      "image": "http://static.lolesports.com/leagues/lck-color-on-black.png",
+                      "name": "LCK",
+                      "region": "KOREA",
+                      "regionSlug": "kr"
+                    },
+                    "name": "LCK Cup 2026",
+                    "startTime": "2026-01-13T15:00:00Z"
+                  }
+                ]
+              },
+              {
+                "__typename": "Split",
+                "endTime": "2026-03-21T23:00:00Z",
+                "id": "115548016979679444",
+                "name": "First Stand",
+                "region": "GLOBAL",
+                "slug": "first_stand",
+                "startTime": "2026-03-15T23:00:00Z",
+                "tournaments": [
+                  {
+                    "__typename": "Tournament",
+                    "endTime": "2026-03-22T23:59:00Z",
+                    "id": "115570858980956868",
+                    "league": {
+                      "__typename": "League",
+                      "displayPriority": {
+                        "__typename": "Priority",
+                        "position": 2,
+                        "status": "force_selected"
+                      },
+                      "id": "113464388705111224",
+                      "image": "http://static.lolesports.com/leagues/1740042025201_RG_LOL_FIRST_STAND_LOGO_VOLT_ALPHA.png",
+                      "name": "First Stand",
+                      "region": "INTERNATIONAL",
+                      "regionSlug": "intl"
+                    },
+                    "name": "2026",
+                    "startTime": "2026-03-16T00:00:00Z"
+                  }
+                ]
+              },
+              {
+                "__typename": "Split",
+                "endTime": "2026-06-20T22:00:00Z",
+                "id": "115548016979679445",
+                "name": "Split 2",
+                "region": "REGIONAL",
+                "slug": "split_2",
+                "startTime": "2026-03-29T22:00:00Z",
+                "tournaments": [
+                  {
+                    "__typename": "Tournament",
+                    "endTime": "2026-06-14T11:59:47Z",
+                    "id": "115615907996665826",
+                    "league": {
+                      "__typename": "League",
+                      "displayPriority": {
+                        "__typename": "Priority",
+                        "position": 1,
+                        "status": "not_selected"
+                      },
+                      "id": "98767991314006698",
+                      "image": "http://static.lolesports.com/leagues/1592516115322_LPL-01-FullonDark.png",
+                      "name": "LPL",
+                      "region": "CHINA",
+                      "regionSlug": "cn"
+                    },
+                    "name": "Split 2 2026",
+                    "startTime": "2026-04-04T11:59:47Z"
+                  },
+                  {
+                    "__typename": "Tournament",
+                    "endTime": "2026-06-14T21:59:00Z",
+                    "id": "115548668058343983",
+                    "league": {
+                      "__typename": "League",
+                      "displayPriority": {
+                        "__typename": "Priority",
+                        "position": 2,
+                        "status": "selected"
+                      },
+                      "id": "98767991302996019",
+                      "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                      "name": "LEC",
+                      "region": "EMEA",
+                      "regionSlug": "emea"
+                    },
+                    "name": "Spring 2026",
+                    "startTime": "2026-04-03T22:00:00Z"
+                  },
+                  {
+                    "__typename": "Tournament",
+                    "endTime": "2026-06-21T12:01:55Z",
+                    "id": "115570683338104198",
+                    "league": {
+                      "__typename": "League",
+                      "displayPriority": {
+                        "__typename": "Priority",
+                        "position": 2,
+                        "status": "not_selected"
+                      },
+                      "id": "113476371197627891",
+                      "image": "http://static.lolesports.com/leagues/1733468139601_lcp-color-golden.png",
+                      "name": "LCP",
+                      "region": "PACIFIC",
+                      "regionSlug": "pac"
+                    },
+                    "name": "Split 2 2026",
+                    "startTime": "2026-03-29T12:01:55Z"
+                  },
+                  {
+                    "__typename": "Tournament",
+                    "endTime": "2026-06-22T06:59:01Z",
+                    "id": "115564760172712809",
+                    "league": {
+                      "__typename": "League",
+                      "displayPriority": {
+                        "__typename": "Priority",
+                        "position": 0,
+                        "status": "selected"
+                      },
+                      "id": "98767991299243165",
+                      "image": "http://static.lolesports.com/leagues/1706356907418_LCSNew-01-FullonDark.png",
+                      "name": "LCS",
+                      "region": "NORTH AMERICA",
+                      "regionSlug": "na"
+                    },
+                    "name": "Split 2 2026",
+                    "startTime": "2026-03-29T08:00:01Z"
+                  },
+                  {
+                    "__typename": "Tournament",
+                    "endTime": "2026-06-21T14:59:00Z",
+                    "id": "115548128960088078",
+                    "league": {
+                      "__typename": "League",
+                      "displayPriority": {
+                        "__typename": "Priority",
+                        "position": 0,
+                        "status": "not_selected"
+                      },
+                      "id": "98767991310872058",
+                      "image": "http://static.lolesports.com/leagues/lck-color-on-black.png",
+                      "name": "LCK",
+                      "region": "KOREA",
+                      "regionSlug": "kr"
+                    },
+                    "name": "Split 2 2026",
+                    "startTime": "2026-03-28T15:00:00Z"
+                  },
+                  {
+                    "__typename": "Tournament",
+                    "endTime": "2026-06-14T02:59:01Z",
+                    "id": "115565650134506778",
+                    "league": {
+                      "__typename": "League",
+                      "displayPriority": {
+                        "__typename": "Priority",
+                        "position": 1,
+                        "status": "selected"
+                      },
+                      "id": "98767991332355509",
+                      "image": "http://static.lolesports.com/leagues/cblol-logo-symbol-offwhite.png",
+                      "name": "CBLOL",
+                      "region": "BRAZIL",
+                      "regionSlug": "br"
+                    },
+                    "name": "Split 1 2026",
+                    "startTime": "2026-03-28T03:00:01Z"
+                  }
+                ]
+              },
+              {
+                "__typename": "Split",
+                "endTime": "2026-07-11T22:00:00Z",
+                "id": "115548016979679446",
+                "name": "MSI",
+                "region": "GLOBAL",
+                "slug": "msi",
+                "startTime": "2026-06-25T22:00:00Z",
+                "tournaments": [
+                  {
+                    "__typename": "Tournament",
+                    "endTime": "2026-07-12T23:59:00Z",
+                    "id": "115570934354631452",
+                    "league": {
+                      "__typename": "League",
+                      "displayPriority": {
+                        "__typename": "Priority",
+                        "position": 1,
+                        "status": "force_selected"
+                      },
+                      "id": "98767991325878492",
+                      "image": "http://static.lolesports.com/leagues/1592594634248_MSIDarkBG.png",
+                      "name": "MSI",
+                      "region": "INTERNATIONAL",
+                      "regionSlug": "intl"
+                    },
+                    "name": "2026",
+                    "startTime": "2026-06-26T00:00:00Z"
+                  }
+                ]
+              },
+              {
+                "__typename": "Split",
+                "endTime": "2026-10-10T22:00:00Z",
+                "id": "115548016979679447",
+                "name": "Split 3",
+                "region": "REGIONAL",
+                "slug": "split_3",
+                "startTime": "2026-07-19T22:00:00Z",
+                "tournaments": [
+                  {
+                    "__typename": "Tournament",
+                    "endTime": "2026-10-04T02:59:01Z",
+                    "id": "115565671525288828",
+                    "league": {
+                      "__typename": "League",
+                      "displayPriority": {
+                        "__typename": "Priority",
+                        "position": 1,
+                        "status": "selected"
+                      },
+                      "id": "98767991332355509",
+                      "image": "http://static.lolesports.com/leagues/cblol-logo-symbol-offwhite.png",
+                      "name": "CBLOL",
+                      "region": "BRAZIL",
+                      "regionSlug": "br"
+                    },
+                    "name": "Split 2 2026",
+                    "startTime": "2026-07-25T03:00:01Z"
+                  },
+                  {
+                    "__typename": "Tournament",
+                    "endTime": "2026-09-09T13:31:48Z",
+                    "id": "115616254668930796",
+                    "league": {
+                      "__typename": "League",
+                      "displayPriority": {
+                        "__typename": "Priority",
+                        "position": 1,
+                        "status": "not_selected"
+                      },
+                      "id": "98767991314006698",
+                      "image": "http://static.lolesports.com/leagues/1592516115322_LPL-01-FullonDark.png",
+                      "name": "LPL",
+                      "region": "CHINA",
+                      "regionSlug": "cn"
+                    },
+                    "name": "Split 3 2026",
+                    "startTime": "2026-07-23T13:31:48Z"
+                  },
+                  {
+                    "__typename": "Tournament",
+                    "endTime": "2026-10-11T12:34:21Z",
+                    "id": "115570728597462574",
+                    "league": {
+                      "__typename": "League",
+                      "displayPriority": {
+                        "__typename": "Priority",
+                        "position": 2,
+                        "status": "not_selected"
+                      },
+                      "id": "113476371197627891",
+                      "image": "http://static.lolesports.com/leagues/1733468139601_lcp-color-golden.png",
+                      "name": "LCP",
+                      "region": "PACIFIC",
+                      "regionSlug": "pac"
+                    },
+                    "name": "Split 3 2026",
+                    "startTime": "2026-07-20T12:34:21Z"
+                  },
+                  {
+                    "__typename": "Tournament",
+                    "endTime": "2026-10-12T06:59:01Z",
+                    "id": "115564797158840434",
+                    "league": {
+                      "__typename": "League",
+                      "displayPriority": {
+                        "__typename": "Priority",
+                        "position": 0,
+                        "status": "selected"
+                      },
+                      "id": "98767991299243165",
+                      "image": "http://static.lolesports.com/leagues/1706356907418_LCSNew-01-FullonDark.png",
+                      "name": "LCS",
+                      "region": "NORTH AMERICA",
+                      "regionSlug": "na"
+                    },
+                    "name": "Split 3 2026",
+                    "startTime": "2026-07-20T07:00:01Z"
+                  },
+                  {
+                    "__typename": "Tournament",
+                    "endTime": "2026-10-11T14:59:00Z",
+                    "id": "115548147890329817",
+                    "league": {
+                      "__typename": "League",
+                      "displayPriority": {
+                        "__typename": "Priority",
+                        "position": 0,
+                        "status": "not_selected"
+                      },
+                      "id": "98767991310872058",
+                      "image": "http://static.lolesports.com/leagues/lck-color-on-black.png",
+                      "name": "LCK",
+                      "region": "KOREA",
+                      "regionSlug": "kr"
+                    },
+                    "name": "Split 3 2026",
+                    "startTime": "2026-07-19T15:00:00Z"
+                  },
+                  {
+                    "__typename": "Tournament",
+                    "endTime": "2026-09-20T21:59:00Z",
+                    "id": "115548681802226458",
+                    "league": {
+                      "__typename": "League",
+                      "displayPriority": {
+                        "__typename": "Priority",
+                        "position": 2,
+                        "status": "selected"
+                      },
+                      "id": "98767991302996019",
+                      "image": "http://static.lolesports.com/leagues/1592516184297_LEC-01-FullonDark.png",
+                      "name": "LEC",
+                      "region": "EMEA",
+                      "regionSlug": "emea"
+                    },
+                    "name": "Summer 2026",
+                    "startTime": "2026-07-18T11:00:00Z"
+                  }
+                ]
+              },
+              {
+                "__typename": "Split",
+                "endTime": "2026-11-19T23:00:00Z",
+                "id": "115548016979679448",
+                "name": "Worlds",
+                "region": "GLOBAL",
+                "slug": "worlds",
+                "startTime": "2026-10-19T22:00:00Z",
+                "tournaments": [
+                  {
+                    "__typename": "Tournament",
+                    "endTime": "2026-11-20T15:00:00Z",
+                    "id": "115660540725177488",
+                    "league": {
+                      "__typename": "League",
+                      "displayPriority": {
+                        "__typename": "Priority",
+                        "position": 0,
+                        "status": "force_selected"
+                      },
+                      "id": "98767975604431411",
+                      "image": "http://static.lolesports.com/leagues/1592594612171_WorldsDarkBG.png",
+                      "name": "Worlds",
+                      "region": "INTERNATIONAL",
+                      "regionSlug": "intl"
+                    },
+                    "name": "2026",
+                    "startTime": "2026-10-20T00:00:00Z"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "GetPickemsLeaguesSimple": [
+    {
+      "data": {
+        "__typename": "Query",
+        "pickemLeagues": [
+          {
+            "__typename": "League",
+            "hl": "en-US",
+            "id": "109222784797127274",
+            "name": "Game Changers Championship",
+            "pickemTournaments": [
+              {
+                "__typename": "Tournament",
+                "endTime": "2025-11-30T16:00:00Z",
+                "hl": "en-US",
+                "id": "115304711300787029",
+                "name": "2025",
+                "pickemTournamentConfig": {
+                  "__typename": "PickemTournamentConfig",
+                  "pickemCloseTime": "2025-11-20T08:20:00Z",
+                  "pickemOpenTime": "2025-11-13T15:45:00Z"
+                },
+                "startTime": "2025-11-20T00:00:00Z",
+                "state": "completed"
+              }
+            ],
+            "slug": "game_changers_championship",
+            "sport": "val"
+          },
+          {
+            "__typename": "League",
+            "hl": "en-US",
+            "id": "98767975604431411",
+            "name": "Worlds",
+            "pickemTournaments": [
+              {
+                "__typename": "Tournament",
+                "endTime": "2025-11-09T15:00:00Z",
+                "hl": "en-US",
+                "id": "113475452383887518",
+                "name": "2025",
+                "pickemTournamentConfig": {
+                  "__typename": "PickemTournamentConfig",
+                  "pickemCloseTime": "2025-10-28T07:20:00Z",
+                  "pickemOpenTime": "2025-10-07T14:15:00Z"
+                },
+                "startTime": "2025-10-14T00:00:00Z",
+                "state": "completed"
+              }
+            ],
+            "slug": "worlds",
+            "sport": "lol"
+          }
+        ]
+      }
+    }
+  ]
+}

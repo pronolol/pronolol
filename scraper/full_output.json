@@ -1,0 +1,150 @@
+
+> @pronolol/scraper@1.0.0 scrape
+> ts-node src/index.ts --all --pretty
+
+🌐 Launching browser...
+📊 Scraping data from 2026-01-09T22:07:43.113Z to 2026-04-09T22:07:43.113Z...
+🔗 Navigating to https://lolesports.com/en-US/leagues/first_stand,lec,msi,worlds...
+📡 Captured API response from homeEvents
+  ✓ Found 40 events
+📡 Captured API response from homeEvents
+  ✓ Found 0 events
+✅ Captured 40 total events from API calls
+{
+  "leagues": [
+    {
+      "id": "98767991302996019",
+      "name": "LEC",
+      "slug": "lec",
+      "region": "Europe"
+    }
+  ],
+  "teams": [
+    {
+      "id": "113770064260414203",
+      "name": "Los Ratones",
+      "tag": "LR",
+      "logo": "http://static.lolesports.com/teams/1736206905390_LR1.png"
+    },
+    {
+      "id": "98767991866488695",
+      "name": "Fnatic",
+      "tag": "FNC",
+      "logo": "http://static.lolesports.com/teams/1631819669150_fnc-2021-worlds.png"
+    },
+    {
+      "id": "107563714667537640",
+      "name": "Shifters",
+      "tag": "SHFT",
+      "logo": "http://static.lolesports.com/teams/1765897071435_600px-Shifters_allmode.png"
+    },
+    {
+      "id": "101383793572656373",
+      "name": "GIANTX",
+      "tag": "GX",
+      "logo": "http://static.lolesports.com/teams/1765897105091_GIANTX-logotype-white.png"
+    },
+    {
+      "id": "109637393694097670",
+      "name": "Team Heretics",
+      "tag": "TH",
+      "logo": "http://static.lolesports.com/teams/1672933861879_Heretics-Full-Color.png"
+    },
+    {
+      "id": "114868016111590239",
+      "name": "Natus Vincere",
+      "tag": "NAVI",
+      "logo": "http://static.lolesports.com/teams/1752746833620_NAVI_FullColor.png"
+    },
+    {
+      "id": "99322214695067838",
+      "name": "Team Vitality",
+      "tag": "VIT",
+      "logo": "http://static.lolesports.com/teams/1675865863968_Vitality_FullColor.png"
+    },
+    {
+      "id": "101383793567806688",
+      "name": "SK Gaming",
+      "tag": "SK",
+      "logo": "http://static.lolesports.com/teams/1643979272144_SK_Monochrome.png"
+    },
+    {
+      "id": "105515219038427019",
+      "name": "Karmine Corp Blue",
+      "tag": "KCB",
+      "logo": "http://static.lolesports.com/teams/1765897112519_WHITE.png"
+    },
+    {
+      "id": "111692118851466302",
+      "name": "Karmine Corp",
+      "tag": "KC",
+      "logo": "http://static.lolesports.com/teams/1704714951336_KC.png"
+    },
+    {
+      "id": "103461966965149786",
+      "name": "Movistar KOI",
+      "tag": "MKOI",
+      "logo": "http://static.lolesports.com/teams/1734012609283_MKOI_FullColor_Blue.png"
+    },
+    {
+      "id": "98767991926151025",
+      "name": "G2 Esports",
+      "tag": "G2",
+      "logo": "http://static.lolesports.com/teams/G2-FullonDark.png"
+    }
+  ],
+  "matches": [
+    {
+      "id": "115548424308414192",
+      "date": "2026-01-17T16:00:00Z",
+      "state": "unstarted",
+      "bestOf": 1,
+      "team1": {
+        "id": "113770064260414203",
+        "name": "Los Ratones",
+        "tag": "LR",
+        "logo": "http://static.lolesports.com/teams/1736206905390_LR1.png"
+      },
+      "team2": {
+        "id": "98767991866488695",
+        "name": "Fnatic",
+        "tag": "FNC",
+        "logo": "http://static.lolesports.com/teams/1631819669150_fnc-2021-worlds.png"
+      },
+      "league": {
+        "id": "98767991302996019",
+        "name": "LEC",
+        "slug": "lec"
+      },
+      "tournament": {
+        "name": "LEC Versus 2026",
+        "stage": "Week 1"
+      }
+    },
+    {
+      "id": "115548424308414160",
+      "date": "2026-01-17T16:45:00Z",
+      "state": "unstarted",
+      "bestOf": 1,
+      "team1": {
+        "id": "107563714667537640",
+        "name": "Shifters",
+        "tag": "SHFT",
+        "logo": "http://static.lolesports.com/teams/1765897071435_600px-Shifters_allmode.png"
+      },
+      "team2": {
+        "id": "101383793572656373",
+        "name": "GIANTX",
+        "tag": "GX",
+        "logo": "http://static.lolesports.com/teams/1765897105091_GIANTX-logotype-white.png"
+      },
+      "league": {
+        "id": "98767991302996019",
+        "name": "LEC",
+        "slug": "lec"
+      },
+      "tournament": {
+        "name": "LEC Versus 2026",
+        "stage": "Week 1"
+      }
+    },

@@ -1,0 +1,33 @@
+{
+  "name": "@pronolol/scraper",
+  "version": "1.0.0",
+  "description": "LoL Esports data scraper using lolesports.com GraphQL API",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "scrape": "ts-node src/index.ts",
+    "scrape:leagues": "ts-node src/index.ts --leagues",
+    "scrape:matches": "ts-node src/index.ts --matches",
+    "scrape:all": "ts-node src/index.ts --all",
+    "test-graphql": "ts-node test_graphql_operations.ts"
+  },
+  "keywords": [
+    "lol",
+    "esports",
+    "scraper",
+    "graphql"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.5",
+    "playwright": "^1.40.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
