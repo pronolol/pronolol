@@ -1,9 +1,6 @@
 const { Pool } = require('pg');
-const https = require('https');
-const fs = require('fs');
 const express = require('express');
 
-const PORT = 443;
 const pool = new Pool({
     host: '127.0.0.1',
     port: 5432,
@@ -12,6 +9,10 @@ const pool = new Pool({
     database: 'nuha8660_pronolol',
 });
 const app = express();
+
+app.get('/', (req, res) => {
+    res.send('Backend OK');
+});
 
 app.get('/users', async (req, res) => {
     try {
@@ -23,11 +24,4 @@ app.get('/users', async (req, res) => {
     }
 });
 
-const httpsOptions = {
-    key: fs.readFileSync('./env/private.key'),
-    cert: fs.readFileSync('./env/certificate.crt')
-};
-
-https.createServer(httpsOptions, app).listen(PORT, () => {
-    console.log(`Serveur HTTPS démarré sur le port ${PORT}`);
-});
+module.exports = app;
