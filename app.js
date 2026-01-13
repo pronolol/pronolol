@@ -1,6 +1,9 @@
 const { Pool } = require('pg');
-const http = require('http');
+const https = require('https');
+const fs = require('fs');
+const express = require('express');
 
+const PORT = 443;
 const pool = new Pool({
     host: '127.0.0.1',
     port: 5432,
@@ -8,17 +11,23 @@ const pool = new Pool({
     password: 'rF71Sj1t#2Wjv!j4*pMr',
     database: 'nuha8660_pronolol',
 });
+const app = express();
 
-var server = http.createServer(async (req, res) => { 
-    res.setHeader('Content-Type', 'application/json'); 
-    const result = await pool.query('SELECT id FROM users'); 
-    res.writeHead(200);
-    res.end(JSON.stringify(result.rows)); 
-
-    if (req.method === 'GET' && req.url === `${BASE}/users`) {
-      const result = await pool.query('SELECT * FROM users WHERE id = 1;');
-      res.writeHead(200);
-      return res.end(JSON.stringify(result.rows));
+app.get('/users', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT id FROM users');
+        res.json(result.rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
     }
-}); 
-server.listen();
+});
+
+const httpsOptions = {
+    key: fs.readFileSync('./env/private.key'),
+    cert: fs.readFileSync('./env/certificate.crt')
+};
+
+https.createServer(httpsOptions, app).listen(PORT, () => {
+    console.log(`Serveur HTTPS démarré sur le port ${PORT}`);
+});
