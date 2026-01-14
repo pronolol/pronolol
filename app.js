@@ -1,5 +1,5 @@
 const { Pool } = require('pg');
-const http = require('http');
+const express = require('express');
 
 const pool = new Pool({
     host: '127.0.0.1',
@@ -8,15 +8,19 @@ const pool = new Pool({
     password: '30M9K0f7W&2HDp^apz0P',
     database: 'nuha8660_pronolol',
 });
-var server = http.createServer(async (req, res) => { 
-    res.setHeader('Content-Type', 'application/json'); 
-    const result = await pool.query('SELECT id FROM users'); 
-    res.writeHead(200);
-    res.end(JSON.stringify(result.rows)); 
-    if (req.method === 'GET' && req.url === `${BASE}/users`) {
-      const result = await pool.query('SELECT * FROM users WHERE id = 1;');
-      res.writeHead(200);
-      return res.end(JSON.stringify(result.rows));
+const app = express();
+
+app.get('/', (req, res) => {
+    res.send('Backend OK');
+});
+
+app.get('/users', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT id FROM users');
+        res.json(result.rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
     }
-}); 
-server.listen();
+});
+module.exports = app;
