@@ -1,75 +1,66 @@
 # LoL Esports Scraper ✅
 
-**Status:** Fully functional and tested!
-
-A TypeScript-based scraper for League of Legends esports data from lolesports.com using Playwright browser automation.
+A TypeScript-based scraper for League of Legends esports data from lolesports.com using Playwright and PostgreSQL.
 
 ## Features
 
-- ✅ Fetches data from the official lolesports.com GraphQL API via browser automation
-- ✅ No authentication required - uses Playwright to handle browser context
-- ✅ Type-safe TypeScript implementation
-- ✅ CLI interface for easy execution
-- ✅ Tested and working with real LEC/MSI/Worlds data
-
-## Data Collected
-
-- **Leagues**: Name, slug, region
-- **Teams**: Name, tag, logo URL
-- **Matches**: Teams, date, best-of format, result, league/tournament
-- **Events**: Tournament name, dates, type (regular season, playoffs, etc.)
+- ✅ Fetches match and tournament data from the official lolesports.com GraphQL API.
+- ✅ Uses Playwright to reliably bypass API authentication.
+- ✅ Persists all scraped data into a PostgreSQL database.
+- ✅ Type-safe, modular, and refactored codebase.
+- ✅ CLI interface for easy execution and configuration.
 
 ## Installation
 
 ```bash
+# From the scraper/ directory
 npm install
 ```
 
+## Database Setup
+
+1.  **Create Database:** Set up a PostgreSQL database on your provider of choice.
+2.  **Initialize Schema:** Use the `database/schema.sql` file (located in the project root) to create the necessary tables (`leagues`, `teams`, `tournaments`, `matches`).
+3.  **Set Environment Variables:** The scraper connects to the database using environment variables. You can set these in your shell or use a `.env` file.
+
+    ```bash
+    export PG_HOST=your_database_host
+    export PG_USER=your_database_user
+    export PG_DATABASE=your_database_name
+    export PG_PASSWORD=your_database_password
+    export PG_PORT=5432
+    ```
+
 ## Usage
 
-### Development Mode (with ts-node)
+By default, running the scraper will fetch the data and save it to the configured PostgreSQL database.
 
 ```bash
-# Scrape everything
+# Scrape default leagues and save to DB
 npm run scrape
 
-# Scrape specific data
-npm run scrape:leagues
-npm run scrape:matches
-npm run scrape:all
+# Scrape specific leagues and save to DB
+npm run scrape -- --leagues=lck,lpl,lec
+
+# Scrape without saving to the database (outputs to stdout)
+npm run scrape -- --no-save
+
+# Scrape and pretty-print the JSON output without saving
+npm run scrape -- --no-save --pretty > output.json
 ```
 
-### Production Mode
+### Scheduling with Cron
+
+You can schedule this scraper to run periodically using cron.
 
 ```bash
-# Build first
-npm run build
+# Run every hour to keep the database updated
+0 * * * * cd /path/to/pronolol_backend/scraper && npm run scrape
 
-# Run
-npm start
-```
-
-### Scheduling
-
-You can schedule this scraper using cron:
-
-```bash
-# Run every hour
-0 * * * * cd /path/to/scraper && npm run scrape
-
-# Run every day at 3 AM
-0 3 * * * cd /path/to/scraper && npm run scrape
+# Run once a day at 3 AM
+0 3 * * * cd /path/to/pronolol_backend/scraper && npm run scrape
 ```
 
 ## Output
 
-Data is output to `stdout` in JSON format. You can redirect it to a file or pipe it to your API:
-
-```bash
-npm run scrape > data.json
-```
-
-## API Endpoints Used
-
-- GraphQL API: `https://lolesports.com/api/gql`
-- Uses persisted queries (no authentication needed)
+Data is persisted to the database by default. If you use the `--no-save` flag, the scraped data will be printed to `stdout` in JSON format.

@@ -146,8 +146,11 @@ export interface NormalizedMatch {
     slug: string;
   };
   tournament: {
+    id: string;
     name: string;
     stage?: string; // e.g., "Quarts de finale", "Système suisse"
+    startDate?: string;
+    endDate?: string;
   };
 }
 
@@ -159,11 +162,11 @@ export interface NormalizedLeague {
   image?: string;
 }
 
-export interface NormalizedEvent {
+export interface NormalizedTournament {
   id: string;
   name: string;
-  startDate: string;
-  endDate: string;
+  startTime?: string;
+  endTime?: string;
   league: NormalizedLeague;
   type: string; // Tournament type/stage
 }
@@ -173,7 +176,7 @@ export interface ScraperOutput {
   leagues: NormalizedLeague[];
   teams: NormalizedTeam[];
   matches: NormalizedMatch[];
-  events: NormalizedEvent[];
+  tournaments: NormalizedTournament[];
   metadata: {
     scrapedAt: string;
     dateRange: {
