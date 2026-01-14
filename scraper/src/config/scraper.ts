@@ -1,5 +1,5 @@
 export const config = {
-  defaultLeagues: ["first_stand", "lec", "msi", "worlds"],
+  defaultLeagues: ["first_stand", "lec", "msi", "worlds", "lck"],
 
   baseUrl: "https://lolesports.com",
 
