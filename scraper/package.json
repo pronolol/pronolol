@@ -18,12 +18,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^17.2.3",
     "pg": "^8.11.3",
     "playwright": "^1.40.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
-    "@types/pg": "^8.10.9",
+    "@types/pg": "^8.16.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }

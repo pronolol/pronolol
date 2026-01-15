@@ -4,8 +4,7 @@
 -- Table for storing league information
 CREATE TABLE leagues (
     id TEXT PRIMARY KEY,
-    name TEXT NOT NULL,
-    slug TEXT NOT NULL UNIQUE,
+    name TEXT NOT NULL UNIQUE,
     region TEXT
 );
 
