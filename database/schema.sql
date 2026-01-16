@@ -43,6 +43,17 @@ CREATE TABLE matches (
     team2_score INTEGER
 );
 
+-- Table for storing user information
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY,
+    username VARCHAR(25) NOT NULL UNIQUE,
+    emoji varchar,
+    cpin varchar(64)
+);
+
+-- Data test insertions
+INSERT INTO users (id, username, emoji, cpin) VALUES (0, 'testuser', '😀', 'testcpin');
+
 -- Add indexes for foreign keys to improve query performance
 CREATE INDEX ON tournaments (league_id);
 CREATE INDEX ON matches (tournament_id);
@@ -50,3 +61,4 @@ CREATE INDEX ON matches (team1_id);
 CREATE INDEX ON matches (team2_id);
 CREATE INDEX ON matches (winner_id);
 CREATE INDEX ON matches (match_date);
+CREATE INDEX ON users (username);
