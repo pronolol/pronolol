@@ -104,7 +104,7 @@ app.get('/matches', async (req, res) => {
     const { userId, tournament, time } = req.query; // time can be 'upcoming' or 'past'
     
     let query = `
-        SELECT m.id, t1.tag as team1_code, t1.logo_url as team1_url, t2.tag as team2_code, t2.logo_url as team2_url, m.match_date, m.best_of, m.team1_score, m.team2_score, m.tournament_id, p.result
+        SELECT m.id, t1.tag as team1_code, t1.logo_url as team1_url, t2.tag as team2_code, t2.logo_url as team2_url, m.match_date, m.best_of, m.team1_score, m.team2_score, m.tournament_id, p.team1_result, p.team2_result
         FROM matches m
         LEFT JOIN teams t1 ON m.team1_id = t1.id
         LEFT JOIN teams t2 ON m.team2_id = t2.id
@@ -145,7 +145,7 @@ app.get('/users/:id/predictions', async (req, res) => {
     const { tournament } = req.query;
 
     let query = `
-        SELECT m.id, t1.tag as team1_code, t1.logo_url as team1_url, t2.tag as team2_code, t2.logo_url as team2_url, m.match_date, m.best_of, m.team1_score, m.team2_score, t.id as tournament_id, p.result
+        SELECT m.id, t1.tag as team1_code, t1.logo_url as team1_url, t2.tag as team2_code, t2.logo_url as team2_url, m.match_date, m.best_of, m.team1_score, m.team2_score, t.id as tournament_id, p.team1_result, p.team2_result
         FROM matches m
         LEFT JOIN teams t1 ON m.team1_id = t1.id
         LEFT JOIN teams t2 ON m.team2_id = t2.id
@@ -173,7 +173,7 @@ app.get('/users/:id/predictions', async (req, res) => {
 
 
 app.post('/predictions', async (req, res) => {
-    const { matchId, userId, score } = req.body;
+    const { matchId, userId, team1Result, team2Result } = req.body;
     try {
         const matchResult = await pool.query('SELECT match_date FROM matches WHERE id = $1', [matchId]);
         if (matchResult.rows.length === 0) {
@@ -184,8 +184,8 @@ app.post('/predictions', async (req, res) => {
         }
 
         const result = await pool.query(
-            'INSERT INTO predictions (match_id, user_id, result) VALUES ($1, $2, $3) RETURNING *',
-            [matchId, userId, score]
+            'INSERT INTO predictions (match_id, user_id, team1_result, team2_result) VALUES ($1, $2, $3, $4) RETURNING *',
+            [matchId, userId, team1Result, team2Result]
         );
         res.status(201).json(result.rows[0]);
     } catch (err) {
@@ -198,7 +198,7 @@ app.post('/predictions', async (req, res) => {
 });
 
 app.put('/predictions', async (req, res) => {
-    const { matchId, userId, score } = req.body;
+    const { matchId, userId, team1Result, team2Result } = req.body;
      try {
         const matchResult = await pool.query('SELECT match_date FROM matches WHERE id = $1', [matchId]);
         if (matchResult.rows.length === 0) {
@@ -209,8 +209,8 @@ app.put('/predictions', async (req, res) => {
         }
         
         const result = await pool.query(
-            'UPDATE predictions SET result = $1 WHERE match_id = $2 AND user_id = $3 RETURNING *',
-            [score, matchId, userId]
+            'UPDATE predictions SET team1_result = $1, team2_result = $2 WHERE match_id = $3 AND user_id = $4 RETURNING *',
+            [team1Result, team2Result, matchId, userId]
         );
 
         if (result.rows.length === 0) {
@@ -229,7 +229,7 @@ app.get('/ranking/:tournament', async (req, res) => {
     try {
         // TODO: Ranking logid
         const result = await pool.query(`
-            SELECT u.id, u.username, u.emoji, p.result, m.team1_score, m.team2_score, m.best_of
+            SELECT u.id, u.username, u.emoji, p.team1_result, p.team2_result, m.team1_score, m.team2_score, m.best_of
             FROM users u
             INNER JOIN predictions p ON u.id = p.user_id
             INNER JOIN matches m ON p.match_id = m.id
@@ -247,7 +247,7 @@ app.get('/matches/:id/predictions', async (req, res) => {
     const { id } = req.params;
     try {
         const result = await pool.query(`
-            SELECT u.id, u.username, u.emoji, p.result
+            SELECT u.id, u.username, u.emoji, p.team1_result, p.team2_result
             FROM users u
             INNER JOIN predictions p ON u.id = p.user_id
             WHERE p.match_id = $1`,

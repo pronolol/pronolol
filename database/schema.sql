@@ -55,12 +55,13 @@ CREATE TABLE users (
 CREATE TABLE predictions (
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     match_id TEXT NOT NULL REFERENCES matches(id) ON DELETE CASCADE,
-    result TEXT NOT NULL, -- e.g., '2-0', '1-2'
+    team1_result INTEGER NOT NULL,
+    team2_result INTEGER NOT NULL,
     PRIMARY KEY (user_id, match_id)
 );
 
 -- Data test insertions
-INSERT INTO users (id, username, emoji, cpin) VALUES (0, 'testuser', '😀', 'testcpin');
+INSERT INTO users (id, username, emoji, cpin) VALUES (0, 'testuser', '😀', '1234');
 
 -- Add indexes for foreign keys to improve query performance
 CREATE INDEX ON tournaments (league_id);
