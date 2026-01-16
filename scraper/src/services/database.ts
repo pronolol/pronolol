@@ -7,6 +7,8 @@ import {
   NormalizedMatch,
 } from "../types";
 
+import "dotenv/config";
+
 export class DatabaseService {
   private pool: Pool;
 
@@ -46,21 +48,21 @@ export class DatabaseService {
 
     for (const league of leagues) {
       const query = `
-        INSERT INTO leagues (id, name, slug, region)
-        VALUES ($1, $2, $3, $4)
+        INSERT INTO leagues (id, name, image_url, region, region_slug)
+        VALUES ($1, $2, $3, $4, $5)
         ON CONFLICT (id) DO UPDATE SET
           name = EXCLUDED.name,
-          slug = EXCLUDED.slug,
-          region = EXCLUDED.region;
+          image_url = EXCLUDED.image_url;
       `;
       await this.pool.query(query, [
         league.id,
         league.name,
-        league.slug,
+        league.image,
         league.region,
+        league.regionSlug,
       ]);
     }
-    console.error(`   Upserted ${leagues.length} leagues.`);
+    console.error(`\tUpserted ${leagues.length} leagues.`);
   }
 
   private async upsertTeams(teams: NormalizedTeam[]): Promise<void> {
@@ -79,7 +81,7 @@ export class DatabaseService {
       `;
       await this.pool.query(query, [team.id, team.name, team.tag, team.logo]);
     }
-    console.error(`   Upserted ${teams.length} teams.`);
+    console.error(`\tUpserted ${teams.length} teams.`);
   }
 
   private async upsertTournaments(
@@ -89,13 +91,13 @@ export class DatabaseService {
 
     for (const tournament of tournaments) {
       const query = `
-        INSERT INTO tournaments (id, name, start_date, end_date, league_id)
-        VALUES ($1, $2, $3, $4, $5)
+        INSERT INTO tournaments (id, name, start_date, end_date, league_id, type)
+        VALUES ($1, $2, $3, $4, $5, $6)
         ON CONFLICT (id) DO UPDATE SET
           name = EXCLUDED.name,
           start_date = EXCLUDED.start_date,
           end_date = EXCLUDED.end_date,
-          league_id = EXcluded.league_id;
+          league_id = EXCLUDED.league_id;
       `;
       await this.pool.query(query, [
         tournament.id,
@@ -103,9 +105,10 @@ export class DatabaseService {
         tournament.startTime,
         tournament.endTime,
         tournament.league.id,
+        tournament.type,
       ]);
     }
-    console.error(`   Upserted ${tournaments.length} tournaments.`);
+    console.error(`\tUpserted ${tournaments.length} tournaments.`);
   }
 
   private async upsertMatches(matches: NormalizedMatch[]): Promise<void> {
@@ -125,20 +128,18 @@ export class DatabaseService {
           match_date = EXCLUDED.match_date;
       `;
 
-      const score = match.result?.score?.split("-").map(Number);
-
       await this.pool.query(query, [
         match.id,
         match.date,
         match.state,
         match.bestOf,
-        match.tournament.stage,
+        match.stage,
         match.tournament.id,
         match.team1.id,
         match.team2.id,
         match.result?.winner,
-        score ? score[0] : null,
-        score ? score[1] : null,
+        match.result?.team1Score,
+        match.result?.team2Score,
       ]);
     }
     console.error(`   Upserted ${matches.length} matches.`);

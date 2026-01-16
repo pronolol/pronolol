@@ -63,42 +63,10 @@ export interface Match {
   }>;
 }
 
-// Event types (from lolesports API)
-export interface Event {
-  __typename: string;
-  id: string;
-  type: "match" | "show";
-  tournament: {
-    __typename: string;
-    id: string;
-    name: string;
-  };
-  league: {
-    __typename: string;
-    id: string;
-    slug: string;
-    name: string;
-    image: string;
-    displayPriority?: {
-      __typename: string;
-      position: number;
-      status: string;
-    };
-  };
-  match: Match;
-  matchTeams: MatchTeam[];
-  startTime: string;
-  state: MatchState;
-  blockName: string;
-  streams: any[];
-}
-
 // API Response types
 export interface HomeEventsResponse {
   data: {
-    schedule: {
-      events: Event[];
-    };
+    events: Event[];
   };
 }
 
@@ -126,7 +94,6 @@ export interface NormalizedTeam {
   name: string;
   tag: string;
   logo: string;
-  slug?: string;
 }
 
 export interface NormalizedMatch {
@@ -138,7 +105,8 @@ export interface NormalizedMatch {
   team2: NormalizedTeam;
   result?: {
     winner?: string; // Team ID
-    score: string; // e.g., "2-1"
+    team1Score: number;
+    team2Score: number;
   };
   league: {
     id: string;
@@ -148,18 +116,18 @@ export interface NormalizedMatch {
   tournament: {
     id: string;
     name: string;
-    stage?: string; // e.g., "Quarts de finale", "Système suisse"
     startDate?: string;
     endDate?: string;
   };
+  stage: string;
 }
 
 export interface NormalizedLeague {
   id: string;
   name: string;
-  slug: string;
+  regionSlug: string;
   region: string;
-  image?: string;
+  image: string;
 }
 
 export interface NormalizedTournament {
@@ -185,3 +153,192 @@ export interface ScraperOutput {
     };
   };
 }
+
+// START: Generated types from output/test.json
+
+export type Event =
+  | HomeEvent
+  | GetSeasonForNavigation
+  | GetPickemsLeaguesSimple;
+
+// Types for HomeEvents
+export interface HomeEvent {
+  data: {
+    __typename: "Query";
+    esports: {
+      __typename: "EsportsData";
+      events: HomeEventMatch[];
+      pages: {
+        __typename: "Pages";
+        newer: string | null;
+        older: string | null;
+      };
+    };
+  };
+}
+
+export interface HomeEventMatch {
+  __typename: "EventMatch";
+  blockName: string;
+  id: string;
+  league: EventLeague;
+  match: EventMatchDetails;
+  matchTeams: EventMatchTeam[];
+  startTime: string;
+  state: string;
+  streams: any[];
+  tournament: EventTournament;
+  type: string;
+}
+
+export interface EventLeague {
+  __typename: "League";
+  displayPriority: DisplayPriority;
+  id: string;
+  image: string;
+  name: string;
+  slug: string;
+}
+
+export interface DisplayPriority {
+  __typename: "Priority";
+  position: number;
+  status: string;
+}
+
+export interface EventMatchDetails {
+  __typename: "Match";
+  flags: string[];
+  games: EventGame[];
+  id: string;
+  state: string;
+  strategy: MatchStrategyInfo;
+  type: string;
+}
+
+export interface EventGame {
+  __typename: "Game";
+  id: string;
+  number: number;
+  state: string;
+  vods: MainVod[];
+  recaps: any[];
+}
+
+export interface MainVod {
+  __typename: "MainVod";
+  endMillis: number;
+  id: string;
+  parameter: string;
+  startMillis: number;
+}
+
+export interface MatchStrategyInfo {
+  __typename: "MatchStrategy";
+  count: number;
+  type: string;
+}
+
+export interface EventMatchTeam {
+  __typename: "MatchTeam";
+  code: string;
+  id: string;
+  image: string;
+  lightImage: string | null;
+  name: string;
+  result: TeamResult;
+}
+
+export interface TeamResult {
+  __typename: "TeamResult";
+  gameWins: number;
+  outcome: string;
+}
+
+export interface EventTournament {
+  __typename: "Tournament";
+  id: string;
+  name: string;
+}
+
+// Types for GetSeasonForNavigation
+export interface GetSeasonForNavigation {
+  data: {
+    __typename: "Query";
+    seasons: Season[];
+  };
+}
+
+export interface Season {
+  __typename: "Season";
+  description: string;
+  splits: Split[];
+}
+
+export interface Split {
+  __typename: "Split";
+  endTime: string;
+  id: string;
+  name: string;
+  region: string;
+  slug: string;
+  startTime: string;
+  tournaments: SeasonTournament[];
+}
+
+export interface SeasonTournament {
+  __typename: "Tournament";
+  endTime: string;
+  id: string;
+  league: SeasonLeague;
+  name: string;
+  startTime: string;
+  region: string;
+}
+
+export interface SeasonLeague {
+  __typename: "League";
+  displayPriority: DisplayPriority;
+  id: string;
+  image: string;
+  name: string;
+  region: string;
+  regionSlug: string;
+}
+
+// Types for GetPickemsLeaguesSimple
+export interface GetPickemsLeaguesSimple {
+  data: {
+    __typename: "Query";
+    pickemLeagues: PickemLeague[];
+  };
+}
+
+export interface PickemLeague {
+  __typename: "League";
+  hl: string;
+  id: string;
+  name: string;
+  pickemTournaments: PickemTournament[];
+  slug: string;
+  sport: string;
+}
+
+export interface PickemTournament {
+  __typename: "Tournament";
+  endTime: string;
+  hl: string;
+  id: string;
+  name: string;
+  pickemTournamentConfig: PickemTournamentConfig;
+  startTime: string;
+  state: string;
+}
+
+export interface PickemTournamentConfig {
+  __typename: "PickemTournamentConfig";
+  pickemCloseTime: string;
+  pickemOpenTime: string;
+}
+
+// END: Generated types from output/test.json

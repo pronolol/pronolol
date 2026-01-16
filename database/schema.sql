@@ -4,8 +4,10 @@
 -- Table for storing league information
 CREATE TABLE leagues (
     id TEXT PRIMARY KEY,
-    name TEXT NOT NULL UNIQUE,
-    region TEXT
+    name TEXT NOT NULL,
+    image_url TEXT,
+    region TEXT,
+    region_slug TEXT
 );
 
 -- Table for storing team information
@@ -22,7 +24,8 @@ CREATE TABLE tournaments (
     name TEXT NOT NULL,
     start_date TIMESTAMPTZ,
     end_date TIMESTAMPTZ,
-    league_id TEXT NOT NULL REFERENCES leagues(id)
+    league_id TEXT NOT NULL REFERENCES leagues(id),
+    type TEXT
 );
 
 -- Table for storing match details and results

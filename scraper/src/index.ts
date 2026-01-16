@@ -64,6 +64,10 @@ async function main() {
 
     const rawData = await fetcher.fetchData(leaguesToScrape);
     const processedData = parser.parse(rawData);
+    console.error("✅ Data parsing complete.");
+    console.error(
+      `📊 Summary: scraped from ${processedData.metadata.dateRange.start} to ${processedData.metadata.dateRange.end}`
+    );
 
     if (!flags.noSave) {
       try {
