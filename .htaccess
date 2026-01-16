@@ -1,7 +1,0 @@
-PassengerEnabled on
-PassengerAppType node
-PassengerAppRoot /home/nuha8660/backend
-PassengerStartupFile app.js
-PassengerNodejs /home/nuha8660/.nvm/versions/node/v16.20.2/bin/node
-PassengerLogLevel 3
-PassengerLogFile /home/nuha8660/backend/passenger.log

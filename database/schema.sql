@@ -51,6 +51,14 @@ CREATE TABLE users (
     cpin varchar(64)
 );
 
+-- Table for storing user predictions
+CREATE TABLE predictions (
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    match_id TEXT NOT NULL REFERENCES matches(id) ON DELETE CASCADE,
+    result TEXT NOT NULL, -- e.g., '2-0', '1-2'
+    PRIMARY KEY (user_id, match_id)
+);
+
 -- Data test insertions
 INSERT INTO users (id, username, emoji, cpin) VALUES (0, 'testuser', '😀', 'testcpin');
 
@@ -62,3 +70,5 @@ CREATE INDEX ON matches (team2_id);
 CREATE INDEX ON matches (winner_id);
 CREATE INDEX ON matches (match_date);
 CREATE INDEX ON users (username);
+CREATE INDEX ON predictions (user_id);
+CREATE INDEX ON predictions (match_id);

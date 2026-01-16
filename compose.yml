@@ -23,6 +23,21 @@ services:
       timeout: 5s
       retries: 5
 
+  api:
+    build: ./api
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      PG_HOST: db
+      PG_PORT: 5432
+      PG_USER: ${POSTGRES_USER:-user}
+      PG_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      PG_DATABASE: ${POSTGRES_DB:-pronolol}
+    depends_on:
+      db:
+        condition: service_healthy
+
   scraper:
     build: ./scraper
     environment:
