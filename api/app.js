@@ -45,6 +45,19 @@ app.get('/users/:id', async (req, res) => {
     }
 });
 
+app.get('/users/cpin/:cpin', async (req, res) => {
+    const { cpin } = req.params;
+    try {
+        const result = await pool.query('SELECT id, username, emoji FROM users WHERE cpin = $1', [cpin]);
+        if (result.rows.length === 0) {
+            return res.status(404).send('User not found');
+        }
+        res.json(result.rows[0]);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
 
 app.post('/login', async (req, res) => {
     const { cpin, username } = req.body;
@@ -138,6 +151,7 @@ app.get('/matches', async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
+
 
 
 app.get('/users/:id/predictions', async (req, res) => {
@@ -235,6 +249,24 @@ app.get('/ranking/:tournament', async (req, res) => {
             INNER JOIN matches m ON p.match_id = m.id
             WHERE m.tournament_id = $1 AND m.match_date < NOW()`,
             [tournament]
+        );
+        res.json(result.rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
+app.get('/ranking', async (req, res) => {
+    const { tournament } = req.params;
+    try {
+        // TODO: Ranking logid
+        const result = await pool.query(`
+            SELECT u.id, u.username, u.emoji, p.team1_result, p.team2_result, m.team1_score, m.team2_score, m.best_of
+            FROM users u
+            INNER JOIN predictions p ON u.id = p.user_id
+            INNER JOIN matches m ON p.match_id = m.id
+            WHERE m.match_date < NOW()`
         );
         res.json(result.rows);
     } catch (err) {
