@@ -45,6 +45,20 @@ app.get('/users/:id', async (req, res) => {
     }
 });
 
+app.get('/users/cpin/:cpin', async (req, res) => {
+    const { cpin } = req.params;
+    try {
+        const result = await pool.query('SELECT id, username, emoji FROM users WHERE cpin = $1', [cpin]);
+        if (result.rows.length === 0) {
+            return res.status(404).send('User not found');
+        }
+        res.json(result.rows[0]);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
 app.post('/login', async (req, res) => {
     const { cpin, username } = req.body;
     if (!cpin || !username) {
