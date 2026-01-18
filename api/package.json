@@ -1,4 +1,5 @@
 {
+  "name": "@pronolol/api",
   "dependencies": {
     "express": "^5.2.1",
     "pg": "^8.16.3",

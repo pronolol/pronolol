@@ -1,0 +1,9 @@
+{
+  "name": "pronolol",
+  "private": true,
+  "workspaces": [
+    "api",
+    "scraper",
+    "packages/*"
+  ]
+}
