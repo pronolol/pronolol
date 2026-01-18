@@ -1,0 +1,169 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model League {
+  id         Int      @id
+  name       String
+  imageUrl   String
+  region     String
+  regionSlug String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  tournaments Tournament[]
+
+  @@map("league")
+}
+
+model Team {
+  id        Int      @id
+  name      String
+  tag       String
+  logoUrl   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  matchesAsA  Match[]      @relation("TeamA")
+  matchesAsB  Match[]      @relation("TeamB")
+  matchesWon  Match[]      @relation("Winner")
+  predictions Prediction[]
+
+  @@map("team")
+}
+
+model Tournament {
+  id        Int       @id
+  name      String
+  startDate DateTime? @db.Timestamptz
+  endDate   DateTime? @db.Timestamptz
+  leagueId  Int
+  type      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  league  League  @relation(fields: [leagueId], references: [id])
+  matches Match[]
+
+  @@map("tournament")
+}
+
+model Match {
+  id           Int      @id
+  matchDate    DateTime @db.Timestamptz
+  state        String
+  bestOf       Int
+  stage        String?
+  tournamentId Int
+  teamAId      Int
+  teamBId      Int
+  winnerId     Int?
+  teamAScore   Int?
+  teamBScore   Int?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  tournament  Tournament   @relation(fields: [tournamentId], references: [id])
+  teamA       Team         @relation("TeamA", fields: [teamAId], references: [id])
+  teamB       Team         @relation("TeamB", fields: [teamBId], references: [id])
+  winner      Team?        @relation("Winner", fields: [winnerId], references: [id])
+  predictions Prediction[]
+
+  @@map("match")
+}
+
+model User {
+  id            String       @id
+  name          String
+  email         String
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
+  sessions      Session[]
+  accounts      Account[]
+  predictions   Prediction[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}
+
+model Prediction {
+  id      String @id @default(cuid())
+  userId  String
+  matchId Int
+  teamId  Int
+
+  predictedTeamAScore Int
+  predictedTeamBScore Int
+
+  isCorrect Boolean?
+  isExact   Boolean?
+  points    Int      @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  match Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  team  Team  @relation(fields: [teamId], references: [id])
+
+  @@unique([userId, matchId])
+  @@map("prediction")
+}
