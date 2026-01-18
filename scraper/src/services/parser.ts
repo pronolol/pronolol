@@ -69,18 +69,18 @@ export class ParserService {
         )
           continue;
         const match: NormalizedMatch = {
-          id: parseInt(event.match.id),
+          id: event.match.id,
           date: event.startTime,
           bestOf: event.match.strategy.count,
           state: event.match.state as NormalizedMatch["state"],
           team1: {
-            id: parseInt(event.matchTeams[0].id.split(":")[1]),
+            id: event.matchTeams[0].id.split(":")[1],
             name: event.matchTeams[0].name,
             tag: event.matchTeams[0].code,
             logo: event.matchTeams[0].image,
           },
           team2: {
-            id: parseInt(event.matchTeams[1].id.split(":")[1]),
+            id: event.matchTeams[1].id.split(":")[1],
             name: event.matchTeams[1].name,
             tag: event.matchTeams[1].code,
             logo: event.matchTeams[1].image,
@@ -88,18 +88,18 @@ export class ParserService {
           result: {
             winner:
               event.matchTeams[0].result.outcome === "win"
-                ? parseInt(event.matchTeams[0].id.split(":")[1])
-                : parseInt(event.matchTeams[1].id.split(":")[1]),
+                ? event.matchTeams[0].id.split(":")[1]
+                : event.matchTeams[1].id.split(":")[1],
             team1Score: event.matchTeams[0].result.gameWins,
             team2Score: event.matchTeams[1].result.gameWins,
           },
           league: {
-            id: parseInt(event.league.id),
+            id: event.league.id,
             name: event.league.name,
             slug: event.league.slug,
           },
           tournament: {
-            id: parseInt(event.tournament.id),
+            id: event.tournament.id,
             name: event.tournament.name,
           },
           stage: event.blockName,
@@ -124,13 +124,13 @@ export class ParserService {
         for (const split of season.splits) {
           for (const tour of split.tournaments) {
             const tournament: NormalizedTournament = {
-              id: parseInt(tour.id),
+              id: tour.id,
               name: tour.name,
               startTime: tour.startTime,
               endTime: tour.endTime,
               type: split.region,
               league: {
-                id: parseInt(tour.league.id),
+                id: tour.league.id,
                 name: tour.league.name,
                 image: tour.league.image,
                 region: tour.league.region,

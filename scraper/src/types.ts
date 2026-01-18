@@ -90,31 +90,31 @@ export interface HomeEventsVariables {
 
 // Processed/Normalized types for easier consumption
 export interface NormalizedTeam {
-  id: number;
+  id: string;
   name: string;
   tag: string;
   logo: string;
 }
 
 export interface NormalizedMatch {
-  id: number;
+  id: string;
   date: string;
   state: MatchState;
   bestOf: number;
   team1: NormalizedTeam;
   team2: NormalizedTeam;
   result?: {
-    winner?: number; // Team ID
+    winner?: string; // Team ID
     team1Score: number;
     team2Score: number;
   };
   league: {
-    id: number;
+    id: string;
     name: string;
     slug: string;
   };
   tournament: {
-    id: number;
+    id: string;
     name: string;
     startDate?: string;
     endDate?: string;
@@ -123,7 +123,7 @@ export interface NormalizedMatch {
 }
 
 export interface NormalizedLeague {
-  id: number;
+  id: string;
   name: string;
   regionSlug: string;
   region: string;
@@ -131,7 +131,7 @@ export interface NormalizedLeague {
 }
 
 export interface NormalizedTournament {
-  id: number;
+  id: string;
   name: string;
   startTime?: string;
   endTime?: string;

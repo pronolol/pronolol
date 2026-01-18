@@ -14,7 +14,7 @@ datasource db {
 }
 
 model League {
-  id         Int      @id
+  id         String   @id
   name       String
   imageUrl   String
   region     String
@@ -28,7 +28,7 @@ model League {
 }
 
 model Team {
-  id        Int      @id
+  id        String   @id
   name      String
   tag       String
   logoUrl   String
@@ -44,11 +44,11 @@ model Team {
 }
 
 model Tournament {
-  id        Int       @id
+  id        String    @id
   name      String
   startDate DateTime? @db.Timestamptz
   endDate   DateTime? @db.Timestamptz
-  leagueId  Int
+  leagueId  String
   type      String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -60,15 +60,15 @@ model Tournament {
 }
 
 model Match {
-  id           Int      @id
+  id           String   @id
   matchDate    DateTime @db.Timestamptz
   state        String
   bestOf       Int
   stage        String?
-  tournamentId Int
-  teamAId      Int
-  teamBId      Int
-  winnerId     Int?
+  tournamentId String
+  teamAId      String
+  teamBId      String
+  winnerId     String?
   teamAScore   Int?
   teamBScore   Int?
   createdAt    DateTime @default(now())
@@ -147,15 +147,15 @@ model Verification {
 model Prediction {
   id      String @id @default(cuid())
   userId  String
-  matchId Int
-  teamId  Int
+  matchId String
+  teamId  String
 
   predictedTeamAScore Int
   predictedTeamBScore Int
 
   isCorrect Boolean?
   isExact   Boolean?
-  points    Int      @default(0)
+  points    Int?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

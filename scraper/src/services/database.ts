@@ -67,8 +67,8 @@ export class DatabaseService {
       data: tournaments.map((tournament) => ({
         id: tournament.id,
         name: tournament.name,
-        startTime: tournament.startTime,
-        endTime: tournament.endTime,
+        startDate: tournament.startTime,
+        endDate: tournament.endTime,
         leagueId: tournament.league.id,
         type: tournament.type,
       })),
