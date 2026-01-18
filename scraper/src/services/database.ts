@@ -1,4 +1,3 @@
-import { Pool } from "pg";
 import {
   ScraperOutput,
   NormalizedLeague,
@@ -7,26 +6,11 @@ import {
   NormalizedMatch,
 } from "../types";
 
+import { prisma } from "@pronolol/database";
+
 import "dotenv/config";
 
 export class DatabaseService {
-  private pool: Pool;
-
-  constructor() {
-    this.pool = new Pool({
-      user: process.env.PG_USER,
-      host: process.env.PG_HOST,
-      database: process.env.PG_DATABASE,
-      password: process.env.PG_PASSWORD,
-      port: process.env.PG_PORT ? parseInt(process.env.PG_PORT, 10) : 5432,
-    });
-
-    this.pool.on("error", (err, client) => {
-      console.error("Unexpected error on idle client", err);
-      process.exit(-1);
-    });
-  }
-
   async saveScrapedData(data: ScraperOutput): Promise<void> {
     console.error("💾 Saving data to the database...");
 
@@ -39,75 +23,59 @@ export class DatabaseService {
     console.error("✅ Database save complete.");
   }
 
-  async disconnect(): Promise<void> {
-    await this.pool.end();
-  }
-
   private async upsertLeagues(leagues: NormalizedLeague[]): Promise<void> {
     if (leagues.length === 0) return;
 
-    for (const league of leagues) {
-      const query = `
-        INSERT INTO leagues (id, name, image_url, region, region_slug)
-        VALUES ($1, $2, $3, $4, $5)
-        ON CONFLICT (id) DO UPDATE SET
-          name = EXCLUDED.name,
-          image_url = EXCLUDED.image_url;
-      `;
-      await this.pool.query(query, [
-        league.id,
-        league.name,
-        league.image,
-        league.region,
-        league.regionSlug,
-      ]);
-    }
-    console.error(`\tUpserted ${leagues.length} leagues.`);
+    const result = await prisma.league.createMany({
+      data: leagues.map((league) => ({
+        id: league.id,
+        name: league.name,
+        imageUrl: league.image,
+        region: league.region,
+        regionSlug: league.regionSlug,
+      })),
+      skipDuplicates: true,
+    });
+
+    console.error(`\tInserted ${result.count} new leagues.`);
+    console.error(`\tUpserted ${result.count} leagues.`);
   }
 
   private async upsertTeams(teams: NormalizedTeam[]): Promise<void> {
     if (teams.length === 0) return;
 
-    for (const team of teams) {
-      // The team with id '0' is a placeholder for TBD teams, skip it.
-      if (team.id === "0") continue;
-      const query = `
-        INSERT INTO teams (id, name, tag, logo_url)
-        VALUES ($1, $2, $3, $4)
-        ON CONFLICT (id) DO UPDATE SET
-          name = EXCLUDED.name,
-          tag = EXCLUDED.tag,
-          logo_url = EXCLUDED.logo_url;
-      `;
-      await this.pool.query(query, [team.id, team.name, team.tag, team.logo]);
-    }
-    console.error(`\tUpserted ${teams.length} teams.`);
+    const result = await prisma.team.createMany({
+      data: teams.map((team) => ({
+        id: team.id,
+        name: team.name,
+        tag: team.tag,
+        logoUrl: team.logo,
+      })),
+      skipDuplicates: true,
+    });
+
+    console.error(`\tInserted ${result.count} new teams.`);
+    console.error(`\tUpserted ${result.count} teams.`);
   }
 
   private async upsertTournaments(
-    tournaments: NormalizedTournament[]
+    tournaments: NormalizedTournament[],
   ): Promise<void> {
     if (tournaments.length === 0) return;
 
-    for (const tournament of tournaments) {
-      const query = `
-        INSERT INTO tournaments (id, name, start_date, end_date, league_id, type)
-        VALUES ($1, $2, $3, $4, $5, $6)
-        ON CONFLICT (id) DO UPDATE SET
-          name = EXCLUDED.name,
-          start_date = EXCLUDED.start_date,
-          end_date = EXCLUDED.end_date,
-          league_id = EXCLUDED.league_id;
-      `;
-      await this.pool.query(query, [
-        tournament.id,
-        tournament.name,
-        tournament.startTime,
-        tournament.endTime,
-        tournament.league.id,
-        tournament.type,
-      ]);
-    }
+    const result = await prisma.tournament.createMany({
+      data: tournaments.map((tournament) => ({
+        id: tournament.id,
+        name: tournament.name,
+        startTime: tournament.startTime,
+        endTime: tournament.endTime,
+        leagueId: tournament.league.id,
+        type: tournament.type,
+      })),
+      skipDuplicates: true,
+    });
+
+    console.error(`\tInserted ${result.count} new tournaments.`);
     console.error(`\tUpserted ${tournaments.length} tournaments.`);
   }
 
@@ -115,33 +83,66 @@ export class DatabaseService {
     if (matches.length === 0) return;
 
     for (const match of matches) {
-      // Skip matches involving a TBD team
-      if (match.team1.id === "0" || match.team2.id === "0") continue;
-      const query = `
-        INSERT INTO matches (id, match_date, state, best_of, stage, tournament_id, team1_id, team2_id, winner_id, team1_score, team2_score)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
-        ON CONFLICT (id) DO UPDATE SET
-          state = EXCLUDED.state,
-          winner_id = EXCLUDED.winner_id,
-          team1_score = EXCLUDED.team1_score,
-          team2_score = EXCLUDED.team2_score,
-          match_date = EXCLUDED.match_date;
-      `;
+      const winnerId = match.result?.winner || null;
+      const isFinished = match.state === "completed";
 
-      await this.pool.query(query, [
-        match.id,
-        match.date,
-        match.state,
-        match.bestOf,
-        match.stage,
-        match.tournament.id,
-        match.team1.id,
-        match.team2.id,
-        match.result?.winner,
-        match.result?.team1Score,
-        match.result?.team2Score,
-      ]);
+      await prisma.$transaction(async (tx) => {
+        const updatedMatch = await tx.match.upsert({
+          where: { id: match.id },
+          update: {
+            state: match.state,
+            winnerId: winnerId,
+            teamAScore: match.result?.team1Score,
+            teamBScore: match.result?.team2Score,
+          },
+          create: {
+            id: match.id,
+            matchDate: new Date(match.date),
+            state: match.state,
+            bestOf: match.bestOf,
+            stage: match.stage,
+            tournamentId: match.tournament.id,
+            teamAId: match.team1.id,
+            teamBId: match.team2.id,
+            winnerId: winnerId,
+            teamAScore: match.result?.team1Score,
+            teamBScore: match.result?.team2Score,
+          },
+        });
+
+        if (isFinished && winnerId) {
+          await this.settlePredictions(tx, updatedMatch);
+        }
+      });
     }
-    console.error(`   Upserted ${matches.length} matches.`);
+
+    console.error(`\tUpserted ${matches.length} matches.`);
+  }
+
+  private async settlePredictions(tx: any, match: any): Promise<void> {
+    const predictions = await tx.prediction.findMany({
+      where: { matchId: match.id, points: null },
+    });
+
+    for (const pred of predictions) {
+      const isWinnerCorrect = pred.teamId === match.winnerId;
+      const isExactScore =
+        pred.predictedTeamAScore === match.teamAScore &&
+        pred.predictedTeamBScore === match.teamBScore;
+
+      let pointsEarned = 0;
+      if (isWinnerCorrect) {
+        pointsEarned = isExactScore ? 3 : 1; // 3 for perfect, 1 for winner only
+      }
+
+      await tx.prediction.update({
+        where: { id: pred.id },
+        data: {
+          isCorrect: isWinnerCorrect,
+          isExact: isExactScore,
+          points: pointsEarned,
+        },
+      });
+    }
   }
 }

@@ -4,6 +4,7 @@ import { FetcherService } from "./services/fetcher";
 import { ParserService } from "./services/parser";
 import { DatabaseService } from "./services/database";
 import { config } from "./config/scraper";
+import { prisma } from "@pronolol/database";
 const args = process.argv.slice(2);
 const flags = {
   all: args.includes("--all"),
@@ -66,7 +67,7 @@ async function main() {
     const processedData = parser.parse(rawData);
     console.error("✅ Data parsing complete.");
     console.error(
-      `📊 Summary: scraped from ${processedData.metadata.dateRange.start} to ${processedData.metadata.dateRange.end}`
+      `📊 Summary: scraped from ${processedData.metadata.dateRange.start} to ${processedData.metadata.dateRange.end}`,
     );
 
     if (!flags.noSave) {
@@ -75,12 +76,12 @@ async function main() {
       } catch (dbError) {
         console.error("❌ Database error:", dbError);
         console.error(
-          "   Please ensure your database is running and the connection environment variables are set correctly."
+          "   Please ensure your database is running and the connection environment variables are set correctly.",
         );
       }
     } else {
       console.error(
-        "📋 --no-save flag present, skipping database persistence."
+        "📋 --no-save flag present, skipping database persistence.",
       );
     }
 
@@ -119,7 +120,7 @@ async function main() {
     process.exit(1);
   } finally {
     await fetcher.close();
-    await dbService.disconnect();
+    await prisma.$disconnect();
   }
 }
 
