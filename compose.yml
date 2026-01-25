@@ -22,32 +22,50 @@ services:
       timeout: 5s
       retries: 5
 
-  api:
-    build: ./api
-    restart: always
-    ports:
-      - "3000:3000"
+  migrator:
+    build:
+      context: .
+      dockerfile: packages/database/Dockerfile
     environment:
-      PG_HOST: db
-      PG_PORT: 5432
       PG_USER: ${POSTGRES_USER:-user}
       PG_PASSWORD: ${POSTGRES_PASSWORD:-password}
       PG_DATABASE: ${POSTGRES_DB:-pronolol}
+      PG_HOST: db
+      PG_PORT: 5432
+      DATABASE_URL: postgresql://${POSTGRES_USER:-user}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-pronolol}?sslmode=disable
     depends_on:
       db:
         condition: service_healthy
 
+  # api:
+  #   build: ./api
+  #   restart: always
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     PG_HOST: db
+  #     PG_PORT: 5432
+  #     PG_USER: ${POSTGRES_USER:-user}
+  #     PG_PASSWORD: ${POSTGRES_PASSWORD:-password}
+  #     PG_DATABASE: ${POSTGRES_DB:-pronolol}
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+
   scraper:
-    build: ./scraper
+    build:
+      context: .
+      dockerfile: apps/scraper/Dockerfile
     environment:
       PG_USER: ${POSTGRES_USER:-user}
       PG_PASSWORD: ${POSTGRES_PASSWORD:-password}
       PG_DATABASE: ${POSTGRES_DB:-pronolol}
       PG_HOST: db
       PG_PORT: 5432
+      DATABASE_URL: postgresql://${POSTGRES_USER:-user}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-pronolol}?sslmode=disable
     depends_on:
-      db:
-        condition: service_healthy
+      migrator:
+        condition: service_completed_successfully
 
 volumes:
   postgres_data:

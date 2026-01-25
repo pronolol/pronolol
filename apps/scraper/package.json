@@ -3,21 +3,24 @@
   "version": "1.0.0",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsup",
     "start": "node dist/index.js",
-    "scrape": "tsx src/index.ts"
+    "scrape": "tsx src/index.ts",
+    "generate": "prisma generate"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^17.2.3",
     "pg": "^8.11.3",
-    "playwright": "^1.40.0"
+    "playwright": "^1.40.0",
+    "@pronolol/database": "*"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
     "@types/pg": "^8.16.0",
     "ts-node": "^10.9.2",
+    "tsup": "^8.5.1",
     "tsx": "^4.21.0",
     "typescript": "^5.3.3"
   }

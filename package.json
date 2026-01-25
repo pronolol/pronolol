@@ -2,8 +2,7 @@
   "name": "pronolol",
   "private": true,
   "workspaces": [
-    "api",
-    "scraper",
+    "apps/*",
     "packages/*"
   ]
 }
