@@ -1,11 +1,10 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig({
-  entry: ["src/index.ts"],
+  entry: ["index.ts"],
   clean: true,
   format: ["esm"],
   platform: "node",
-  minify: true,
-  external: ["playwright", "@prisma/client", "@pronolol/database"],
+  external: ["@prisma/client", "@prisma/adapter-pg", "pg"],
   sourcemap: false,
 });
