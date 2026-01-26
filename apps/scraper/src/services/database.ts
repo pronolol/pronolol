@@ -44,18 +44,22 @@ export class DatabaseService {
   private async upsertTeams(teams: NormalizedTeam[]): Promise<void> {
     if (teams.length === 0) return;
 
-    const result = await prisma.team.createMany({
-      data: teams.map((team) => ({
-        id: team.id,
-        name: team.name,
-        tag: team.tag,
-        logoUrl: team.logo,
-      })),
-      skipDuplicates: true,
-    });
+    for (const team of teams) {
+      await prisma.team.upsert({
+        where: { id: team.id },
+        update: {
+          logoUrl: team.logo,
+        },
+        create: {
+          id: team.id,
+          name: team.name,
+          tag: team.tag,
+          logoUrl: team.logo,
+        },
+      });
+    }
 
-    console.error(`\tInserted ${result.count} new teams.`);
-    console.error(`\tUpserted ${result.count} teams.`);
+    console.error(`\tUpserted ${teams.length} teams.`);
   }
 
   private async upsertTournaments(
