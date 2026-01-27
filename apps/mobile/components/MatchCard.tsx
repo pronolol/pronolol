@@ -34,11 +34,13 @@ export default function MatchCard({
 
       <View style={styles.matchContent}>
         <View style={styles.teamContainer}>
-          <Image
-            style={styles.teamLogo}
-            source={teamA.logoUrl}
-            contentFit="contain"
-          />
+          <View style={styles.logoWrapper}>
+            <Image
+              style={styles.teamLogo}
+              source={teamA.logoUrl}
+              contentFit="contain"
+            />
+          </View>
           <Text style={styles.teamName}>{teamA.name}</Text>
         </View>
 
@@ -59,11 +61,13 @@ export default function MatchCard({
         </View>
 
         <View style={styles.teamContainer}>
-          <Image
-            style={styles.teamLogo}
-            source={teamB.logoUrl}
-            contentFit="contain"
-          />
+          <View style={styles.logoWrapper}>
+            <Image
+              style={styles.teamLogo}
+              source={teamB.logoUrl}
+              contentFit="contain"
+            />
+          </View>
           <Text style={styles.teamName}>{teamB.name}</Text>
         </View>
       </View>
@@ -105,9 +109,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 8,
   },
-  teamLogo: {
+  logoWrapper: {
     width: 64,
     height: 64,
+    backgroundColor: "#dee2e6",
+    borderRadius: 8,
+    padding: 8,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  teamLogo: {
+    width: "100%",
+    height: "100%",
   },
   teamName: {
     fontSize: 16,

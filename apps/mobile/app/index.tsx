@@ -4,11 +4,24 @@ import {
   ScrollView,
   Text,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
-import MatchCard from "../components/MatchCard";
-import { useGetMatches } from "../api";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
+import { useEffect } from "react";
+import MatchCard from "@/components/MatchCard";
+import { useGetMatches } from "@/api";
+import { useSession, signOut } from "@/lib/auth-client";
 
 export default function Index() {
+  const router = useRouter();
+  const { data: session, isPending: isSessionLoading } = useSession();
+
+  useEffect(() => {
+    if (!isSessionLoading && !session) {
+      router.replace("/(auth)/sign-in");
+    }
+  }, [session, isSessionLoading]);
   const {
     data: matches,
     isLoading,
@@ -18,19 +31,29 @@ export default function Index() {
     limit: "20",
   });
 
-  console.log("Match data:", { matches, isLoading, error });
+  const handleSignOut = async () => {
+    await signOut();
+  };
+
+  if (isSessionLoading) {
+    return (
+      <SafeAreaView style={[styles.container, styles.centered]}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </SafeAreaView>
+    );
+  }
 
   if (isLoading) {
     return (
-      <View style={[styles.container, styles.centered]}>
+      <SafeAreaView style={[styles.container, styles.centered]}>
         <ActivityIndicator size="large" color="#0000ff" />
-      </View>
+      </SafeAreaView>
     );
   }
 
   if (error) {
     return (
-      <View style={[styles.container, styles.centered]}>
+      <SafeAreaView style={[styles.container, styles.centered]}>
         <Text style={styles.errorText}>Error loading matches</Text>
         <Text style={styles.errorDetail}>
           {error instanceof Error ? error.message : JSON.stringify(error)}
@@ -38,20 +61,38 @@ export default function Index() {
         <Text style={styles.errorDetail}>
           Make sure the API is running at http://localhost:3000
         </Text>
-      </View>
+      </SafeAreaView>
     );
   }
 
   if (!matches || matches.length === 0) {
     return (
-      <View style={[styles.container, styles.centered]}>
+      <SafeAreaView style={[styles.container, styles.centered]}>
         <Text style={styles.emptyText}>No upcoming matches found</Text>
-      </View>
+      </SafeAreaView>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <View style={styles.userInfo}>
+          <Text style={styles.welcomeText}>
+            Welcome,{" "}
+            {session?.user?.displayUsername ||
+              session?.user?.username ||
+              session?.user?.name}
+            !
+          </Text>
+          <TouchableOpacity
+            style={styles.signOutButton}
+            onPress={handleSignOut}
+          >
+            <Text style={styles.signOutButtonText}>Sign Out</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
@@ -77,7 +118,7 @@ export default function Index() {
           />
         ))}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -89,6 +130,63 @@ const styles = StyleSheet.create({
   centered: {
     justifyContent: "center",
     alignItems: "center",
+  },
+  header: {
+    backgroundColor: "#fff",
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: "#e0e0e0",
+  },
+  userInfo: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  welcomeText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#333",
+  },
+  signOutButton: {
+    backgroundColor: "#f0f0f0",
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 8,
+  },
+  signOutButtonText: {
+    color: "#666",
+    fontSize: 14,
+    fontWeight: "600",
+  },
+  authButtons: {
+    flexDirection: "row",
+    gap: 12,
+  },
+  signInButton: {
+    flex: 1,
+    backgroundColor: "#007AFF",
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  signInButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  signUpButton: {
+    flex: 1,
+    backgroundColor: "#fff",
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#007AFF",
+  },
+  signUpButtonText: {
+    color: "#007AFF",
+    fontSize: 16,
+    fontWeight: "600",
   },
   scrollView: {
     flex: 1,

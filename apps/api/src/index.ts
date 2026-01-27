@@ -5,30 +5,29 @@ import { prisma } from "@pronolol/database";
 import { GetMatchesQuerySchema } from "./dto/match.dto";
 import { ZodError } from "zod";
 import { openApiDocument } from "./openapi";
+import { toNodeHandler } from "better-auth/node";
+import { auth } from "./lib/auth";
+import cors from "cors";
 
 const app = express();
 app.use(express.json());
 const port = process.env.PORT || 3000;
-const host = process.env.HOST || "0.0.0.0"; // Listen on all interfaces
+const host = process.env.HOST || "0.0.0.0";
 
-// Enable CORS for mobile app
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    if (req.method === "OPTIONS") {
-        return res.sendStatus(200);
-    }
-    next();
-});
 
-// OpenAPI Documentation
+app.use(cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+}))
+
+app.use("/api/auth", toNodeHandler(auth));
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openApiDocument));
 app.get("/openapi.json", (req: Request, res: Response) => {
     res.json(openApiDocument);
 });
 
-// Error handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof ZodError) {
         return res.status(400).json({
@@ -40,7 +39,6 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     res.status(500).json({ error: "Internal server error" });
 });
 
-// Root endpoint
 app.get("/", (req: Request, res: Response) => {
     res.json({ message: "Welcome to the Pronolol API!" });
 });
@@ -48,10 +46,8 @@ app.get("/", (req: Request, res: Response) => {
 // GET /matches - Get all matches with filters
 app.get("/matches", async (req: Request, res: Response) => {
     try {
-        // Validate query parameters
         const query = GetMatchesQuerySchema.parse(req.query);
 
-        // Build where clause
         const where: any = {};
 
         if (query.tournamentId) {
@@ -75,7 +71,6 @@ app.get("/matches", async (req: Request, res: Response) => {
             }
         }
 
-        // Query matches with Prisma
         const matches = await prisma.match.findMany({
             where,
             include: {
@@ -177,11 +172,11 @@ app.get("/matches/:id", async (req: Request, res: Response) => {
     }
 });
 
-app.listen(port, host, () => {
-    console.log(`🚀 Server listening on http://${host}:${port}`);
-    console.log(`📚 API Documentation: http://localhost:${port}/api-docs`);
-    console.log(`📄 OpenAPI Spec: http://localhost:${port}/openapi.json`);
-    console.log(`📱 Mobile access: http://192.168.1.116:${port}`);
+app.listen(port, () => {
+    console.log(`Server listening on http://localhost:${port}`);
+    console.log(`API Documentation: http://localhost:${port}/api-docs`);
+    console.log(`OpenAPI Spec: http://localhost:${port}/openapi.json`);
+    console.log(`Mobile access: http://192.168.1.116:${port}`);
 });
 
 // Graceful shutdown
