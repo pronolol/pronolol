@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Image } from "expo-image";
 
 interface Team {
@@ -15,6 +15,7 @@ interface MatchCardProps {
     teamA: number;
     teamB: number;
   };
+  onPress?: () => void;
 }
 
 export default function MatchCard({
@@ -23,9 +24,10 @@ export default function MatchCard({
   matchTime,
   league,
   score,
+  onPress,
 }: MatchCardProps) {
-  return (
-    <View style={styles.card}>
+  const CardContent = (
+    <>
       {league && (
         <View style={styles.leagueHeader}>
           <Text style={styles.leagueText}>{league}</Text>
@@ -71,8 +73,18 @@ export default function MatchCard({
           <Text style={styles.teamName}>{teamB.name}</Text>
         </View>
       </View>
-    </View>
+    </>
   );
+
+  if (onPress) {
+    return (
+      <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.7}>
+        {CardContent}
+      </TouchableOpacity>
+    );
+  }
+
+  return <View style={styles.card}>{CardContent}</View>;
 }
 
 const styles = StyleSheet.create({

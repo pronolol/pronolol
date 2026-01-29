@@ -1,5 +1,6 @@
 import Axios, { AxiosRequestConfig } from "axios";
 import { Platform } from "react-native";
+import * as SecureStore from "expo-secure-store";
 
 // For WSL, use the Windows host IP
 // You can find it with: cat /etc/resolv.conf | grep nameserver | awk '{print $2}'
@@ -11,10 +12,36 @@ export const AXIOS_INSTANCE = Axios.create({
   timeout: 10000,
 });
 
-// Add request interceptor for debugging
+// Add request interceptor to include auth headers
 AXIOS_INSTANCE.interceptors.request.use(
-  (config) => {
+  async (config) => {
     console.log("API Request:", config.method?.toUpperCase(), config.url, config.baseURL);
+    
+    // Get all stored keys to debug
+    const keys = [
+      "pronolol_session_token",
+      "pronolol.session_token",
+      "pronolol_session",
+      "pronolol.session",
+    ];
+    
+    let sessionToken = null;
+    for (const key of keys) {
+      const value = await SecureStore.getItemAsync(key);
+      if (value) {
+        console.log(`Found auth token at key: ${key}`);
+        sessionToken = value;
+        break;
+      }
+    }
+    
+    if (sessionToken) {
+      // Better-auth expects the token in a cookie named after the session cookie name
+      config.headers.Cookie = `better_call_token=${sessionToken}`;
+    } else {
+      console.log("No auth token found in SecureStore");
+    }
+    
     return config;
   },
   (error) => {

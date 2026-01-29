@@ -27,7 +27,7 @@ export default function Index() {
     isLoading,
     error,
   } = useGetMatches({
-    state: "completed",
+    state: "upcoming",
     limit: "20",
   });
 
@@ -115,6 +115,7 @@ export default function Index() {
                 ? { teamA: match.teamAScore, teamB: match.teamBScore }
                 : undefined
             }
+            onPress={() => router.push(`/matches/${match.id}`)}
           />
         ))}
       </ScrollView>
