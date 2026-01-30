@@ -1,0 +1,63 @@
+# ===============================
+# Development Compose Override
+# ===============================
+#
+# Usage: docker compose -f compose.yml -f compose.dev.yml up
+#
+# Features:
+#   - Hot reload with volume mounts
+#   - Debug ports exposed
+#   - Source maps enabled
+#
+# Note: Mobile app (Expo) runs separately with `npm run start`
+
+services:
+  # ===============================
+  # API with Hot Reload
+  # ===============================
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+      target: builder # Stop at builder stage for dev
+    command: ["npm", "run", "dev"]
+    volumes:
+      # Mount source for hot reload
+      - ./apps/api/src:/app/apps/api/src:ro
+      - ./packages/database:/app/packages/database:ro
+    environment:
+      NODE_ENV: development
+    ports:
+      - "${API_PORT:-3000}:3000"
+      # Debug port
+      - "9229:9229"
+
+  # ===============================
+  # Database with pgAdmin access
+  # ===============================
+  db:
+    ports:
+      - "5432:5432"
+
+  # ===============================
+  # pgAdmin (Optional DB GUI)
+  # ===============================
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    profiles: ["tools"] # Only start with: docker compose --profile tools up
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@admin.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - db
+    networks:
+      - pronolol-network
+
+volumes:
+  pgadmin_data:
+    driver: local

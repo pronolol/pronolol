@@ -1,7 +1,26 @@
+# ===============================
+# Pronolol Docker Compose
+# ===============================
+#
+# Usage:
+#   Production:   docker compose up -d
+#   Development:  docker compose -f compose.yml -f compose.dev.yml up
+#   Build all:    docker compose build
+#   View logs:    docker compose logs -f [service]
+#
+# Services:
+#   - db:       PostgreSQL database
+#   - migrator: Runs Prisma migrations (one-shot)
+#   - api:      Express API server
+#   - scraper:  Playwright web scraper
+
 services:
+  # ===============================
+  # PostgreSQL Database
+  # ===============================
   db:
     image: postgres:15-alpine
-    restart: always
+    restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-user}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
@@ -9,49 +28,94 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      # Expose port 5432 to the host machine for local debugging.
-      # You may want to remove this in a production environment for security.
-      - "5432:5432"
+      - "${DB_PORT:-5432}:5432"
     healthcheck:
       test:
         [
           "CMD-SHELL",
-          "pg_isready -U $${POSTGRES_USER:-user} -d $${POSTGRES_DB:-pronolol}",
+          "pg_isready -U ${POSTGRES_USER:-user} -d ${POSTGRES_DB:-pronolol}",
         ]
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - pronolol-network
 
+  # ===============================
+  # Database Migrator (one-shot)
+  # ===============================
   migrator:
     build:
       context: .
       dockerfile: packages/database/Dockerfile
     environment:
-      PG_USER: ${POSTGRES_USER:-user}
-      PG_PASSWORD: ${POSTGRES_PASSWORD:-password}
-      PG_DATABASE: ${POSTGRES_DB:-pronolol}
-      PG_HOST: db
-      PG_PORT: 5432
       DATABASE_URL: postgresql://${POSTGRES_USER:-user}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-pronolol}?sslmode=disable
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - pronolol-network
+    # Exit after migration completes
+    restart: "no"
 
+  # ===============================
+  # API Server
+  # ===============================
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "${API_PORT:-3000}:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      HOST: 0.0.0.0
+      DATABASE_URL: postgresql://${POSTGRES_USER:-user}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-pronolol}?sslmode=disable
+      BETTER_AUTH_URL: ${BETTER_AUTH_URL:-http://localhost:3000}
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:-change-me-in-production}
+      DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID:-}
+      DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET:-}
+    depends_on:
+      migrator:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      start_period: 10s
+      retries: 3
+    networks:
+      - pronolol-network
+
+  # ===============================
+  # Web Scraper
+  # ===============================
   scraper:
     build:
       context: .
       dockerfile: apps/scraper/Dockerfile
     environment:
-      PG_USER: ${POSTGRES_USER:-user}
-      PG_PASSWORD: ${POSTGRES_PASSWORD:-password}
-      PG_DATABASE: ${POSTGRES_DB:-pronolol}
-      PG_HOST: db
-      PG_PORT: 5432
       DATABASE_URL: postgresql://${POSTGRES_USER:-user}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-pronolol}?sslmode=disable
     depends_on:
       migrator:
         condition: service_completed_successfully
+    networks:
+      - pronolol-network
+    # Scraper runs once and exits
+    restart: "no"
 
+# ===============================
+# Volumes
+# ===============================
 volumes:
   postgres_data:
     driver: local
+
+# ===============================
+# Networks
+# ===============================
+networks:
+  pronolol-network:
+    driver: bridge
