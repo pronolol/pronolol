@@ -1,20 +1,20 @@
 import {
   OpenAPIRegistry,
   OpenApiGeneratorV3,
-} from "@asteasolutions/zod-to-openapi";
+} from "@asteasolutions/zod-to-openapi"
 import {
   MatchSchema,
   GetMatchesQuerySchema,
   ErrorResponseSchema,
-} from "./dto/match.dto";
-import { z } from "zod";
+} from "./dto/match.dto"
+import { z } from "zod"
 
-const registry = new OpenAPIRegistry();
+const registry = new OpenAPIRegistry()
 
 // Register schemas
-registry.register("Team", MatchSchema.shape.teamA);
-registry.register("Match", MatchSchema);
-registry.register("ErrorResponse", ErrorResponseSchema);
+registry.register("Team", MatchSchema.shape.teamA)
+registry.register("Match", MatchSchema)
+registry.register("ErrorResponse", ErrorResponseSchema)
 
 // Register paths
 registry.registerPath({
@@ -34,7 +34,7 @@ registry.registerPath({
       },
     },
   },
-});
+})
 
 registry.registerPath({
   method: "get",
@@ -72,7 +72,7 @@ registry.registerPath({
       },
     },
   },
-});
+})
 
 registry.registerPath({
   method: "get",
@@ -115,9 +115,9 @@ registry.registerPath({
       },
     },
   },
-});
+})
 
-const generator = new OpenApiGeneratorV3(registry.definitions);
+const generator = new OpenApiGeneratorV3(registry.definitions)
 
 export const openApiDocument = generator.generateDocument({
   openapi: "3.1.0",
@@ -141,4 +141,4 @@ export const openApiDocument = generator.generateDocument({
       description: "Match management endpoints",
     },
   ],
-});
+})

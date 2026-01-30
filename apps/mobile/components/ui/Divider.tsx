@@ -1,7 +1,7 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native"
 
 interface DividerProps {
-  text?: string;
+  text?: string
 }
 
 export default function Divider({ text = "or" }: DividerProps) {
@@ -11,7 +11,7 @@ export default function Divider({ text = "or" }: DividerProps) {
       <Text style={styles.dividerText}>{text}</Text>
       <View style={styles.dividerLine} />
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -30,4 +30,4 @@ const styles = StyleSheet.create({
     color: "#666",
     fontSize: 14,
   },
-});
+})

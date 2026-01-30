@@ -1,52 +1,52 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { authClient } from "@/lib/auth-client";
-import { API_BASE_URL } from "@/config/env";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { authClient } from "@/lib/auth-client"
+import { API_BASE_URL } from "@/config/env"
 
 // Types
 export interface Prediction {
-  id: string;
-  userId: string;
-  matchId: string;
-  teamId: string;
-  predictedTeamAScore: number;
-  predictedTeamBScore: number;
-  isCorrect: boolean | null;
-  isExact: boolean | null;
-  points: number | null;
-  createdAt: string;
-  updatedAt: string;
+  id: string
+  userId: string
+  matchId: string
+  teamId: string
+  predictedTeamAScore: number
+  predictedTeamBScore: number
+  isCorrect: boolean | null
+  isExact: boolean | null
+  points: number | null
+  createdAt: string
+  updatedAt: string
   team: {
-    id: string;
-    name: string;
-    tag: string;
-    logoUrl: string;
-  };
+    id: string
+    name: string
+    tag: string
+    logoUrl: string
+  }
   user?: {
-    id: string;
-    displayUsername: string | null;
-    username: string | null;
-    name: string | null;
-    image: string | null;
-  };
+    id: string
+    displayUsername: string | null
+    username: string | null
+    name: string | null
+    image: string | null
+  }
 }
 
 export interface PredictionsResponse {
-  myPrediction: Prediction | null;
-  predictions: Prediction[] | null;
+  myPrediction: Prediction | null
+  predictions: Prediction[] | null
 }
 
 export interface CreatePredictionDto {
-  teamId: string;
-  predictedTeamAScore: number;
-  predictedTeamBScore: number;
+  teamId: string
+  predictedTeamAScore: number
+  predictedTeamBScore: number
 }
 
 // Helper to make authenticated requests using better-auth cookies
 const authenticatedFetch = async <T>(
   path: string,
-  options: RequestInit = {},
+  options: RequestInit = {}
 ): Promise<T> => {
-  const cookies = authClient.getCookie();
+  const cookies = authClient.getCookie()
 
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
@@ -56,34 +56,34 @@ const authenticatedFetch = async <T>(
       ...(cookies ? { Cookie: cookies } : {}),
     },
     credentials: "omit", // We're manually setting cookies in headers
-  });
+  })
 
   if (!response.ok) {
     const error = await response
       .json()
-      .catch(() => ({ message: response.statusText }));
-    throw new Error(error.message || `Request failed: ${response.status}`);
+      .catch(() => ({ message: response.statusText }))
+    throw new Error(error.message || `Request failed: ${response.status}`)
   }
 
-  return response.json();
-};
+  return response.json()
+}
 
 // API functions
 export const getPredictions = async (
-  matchId: string,
+  matchId: string
 ): Promise<PredictionsResponse> => {
-  return authenticatedFetch(`/matches/${matchId}/predictions`);
-};
+  return authenticatedFetch(`/matches/${matchId}/predictions`)
+}
 
 export const createPrediction = async (
   matchId: string,
-  data: CreatePredictionDto,
+  data: CreatePredictionDto
 ): Promise<Prediction> => {
   return authenticatedFetch(`/matches/${matchId}/predictions`, {
     method: "POST",
     body: JSON.stringify(data),
-  });
-};
+  })
+}
 
 // Hooks
 export const useGetPredictions = (matchId: string) => {
@@ -91,16 +91,16 @@ export const useGetPredictions = (matchId: string) => {
     queryKey: ["predictions", matchId],
     queryFn: () => getPredictions(matchId),
     enabled: !!matchId,
-  });
-};
+  })
+}
 
 export const useCreatePrediction = (matchId: string) => {
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: (data: CreatePredictionDto) => createPrediction(matchId, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["predictions", matchId] });
+      queryClient.invalidateQueries({ queryKey: ["predictions", matchId] })
     },
-  });
-};
+  })
+}

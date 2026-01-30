@@ -6,17 +6,17 @@ import {
   ScrollView,
   Platform,
   TouchableOpacity,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
+} from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
+import { useRouter } from "expo-router"
 
 interface AuthContainerProps {
-  title: string;
-  subtitle: string;
-  children: React.ReactNode;
-  footerText?: string;
-  footerLinkText?: string;
-  footerLinkTo?: string;
+  title: string
+  subtitle: string
+  children: React.ReactNode
+  footerText?: string
+  footerLinkText?: string
+  footerLinkTo?: string
 }
 
 export default function AuthContainer({
@@ -27,7 +27,7 @@ export default function AuthContainer({
   footerLinkText,
   footerLinkTo,
 }: AuthContainerProps) {
-  const router = useRouter();
+  const router = useRouter()
 
   return (
     <SafeAreaView style={styles.container}>
@@ -59,7 +59,7 @@ export default function AuthContainer({
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -110,4 +110,4 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
   },
-});
+})

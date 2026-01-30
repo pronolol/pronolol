@@ -1,0 +1,8 @@
+node_modules
+dist
+build
+.expo
+*.lock
+package-lock.json
+generated
+*.config.js

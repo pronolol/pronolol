@@ -7,9 +7,9 @@ import {
   NormalizedTournament,
   HomeEvent,
   GetSeasonForNavigation,
-} from "../types";
+} from "../types"
 // Type definition for the raw data captured by the Fetcher
-export type RawApiData = { [key: string]: any[] };
+export type RawApiData = { [key: string]: any[] }
 
 /**
  * The Parser service is responsible for transforming the raw API data
@@ -21,23 +21,23 @@ export class ParserService {
    * @param rawData - The raw data object from the FetcherService.
    */
   public parse(rawData: RawApiData): ScraperOutput {
-    const { matches, teams } = this.parseHomeEvents(rawData["homeEvents"]);
+    const { matches, teams } = this.parseHomeEvents(rawData["homeEvents"])
 
     const { tournaments, leagues } = this.parseGetSeasonForNavigation(
-      rawData["GetSeasonForNavigation"],
-    );
+      rawData["GetSeasonForNavigation"]
+    )
 
     const filteredMatches = matches.filter((match) =>
-      tournaments.find((t) => t.id === match.tournament.id),
-    );
+      tournaments.find((t) => t.id === match.tournament.id)
+    )
 
     const allDates = filteredMatches.map((match) =>
-      new Date(match.date).getTime(),
-    );
+      new Date(match.date).getTime()
+    )
     const minDate =
-      allDates.length > 0 ? new Date(Math.min(...allDates)) : new Date();
+      allDates.length > 0 ? new Date(Math.min(...allDates)) : new Date()
     const maxDate =
-      allDates.length > 0 ? new Date(Math.max(...allDates)) : new Date();
+      allDates.length > 0 ? new Date(Math.max(...allDates)) : new Date()
 
     return {
       leagues,
@@ -51,23 +51,23 @@ export class ParserService {
           end: maxDate.toISOString(),
         },
       },
-    };
+    }
   }
 
   private parseHomeEvents(homeEvents: HomeEvent[]): {
-    matches: NormalizedMatch[];
-    teams: NormalizedTeam[];
+    matches: NormalizedMatch[]
+    teams: NormalizedTeam[]
   } {
-    console.log(homeEvents.length);
+    console.log(homeEvents.length)
 
-    const matches: NormalizedMatch[] = [];
+    const matches: NormalizedMatch[] = []
     for (const homeEvent of homeEvents) {
       for (const event of homeEvent.data.esports.events) {
         if (
           event.matchTeams[0].code === "TBD" ||
           event.matchTeams[1].code === "TBD"
         )
-          continue;
+          continue
         const match: NormalizedMatch = {
           id: event.match.id,
           date: event.startTime,
@@ -103,22 +103,22 @@ export class ParserService {
             name: event.tournament.name,
           },
           stage: event.blockName,
-        };
-        matches.push(match);
+        }
+        matches.push(match)
       }
     }
     return {
       matches,
       teams: Array.from(
-        new Set(matches.flatMap((match) => [match.team1, match.team2])),
+        new Set(matches.flatMap((match) => [match.team1, match.team2]))
       ),
-    };
+    }
   }
 
   private parseGetSeasonForNavigation(
-    getSeasonForNavigations: GetSeasonForNavigation[],
+    getSeasonForNavigations: GetSeasonForNavigation[]
   ): { tournaments: NormalizedTournament[]; leagues: NormalizedLeague[] } {
-    const tournaments: NormalizedTournament[] = [];
+    const tournaments: NormalizedTournament[] = []
     for (const getSeasonForNavigation of getSeasonForNavigations) {
       for (const season of getSeasonForNavigation.data.seasons) {
         for (const split of season.splits) {
@@ -136,8 +136,8 @@ export class ParserService {
                 region: tour.league.region,
                 regionSlug: tour.league.regionSlug,
               },
-            };
-            tournaments.push(tournament);
+            }
+            tournaments.push(tournament)
           }
         }
       }
@@ -145,6 +145,6 @@ export class ParserService {
     return {
       tournaments,
       leagues: Array.from(new Set(tournaments.map((t) => t.league))),
-    };
+    }
   }
 }

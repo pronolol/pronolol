@@ -1,61 +1,61 @@
-import { useState } from "react";
-import { Alert } from "react-native";
-import { useRouter } from "expo-router";
-import { signIn } from "@/lib/auth-client";
-import * as WebBrowser from "expo-web-browser";
-import AuthContainer from "@/components/ui/AuthContainer";
-import Input from "@/components/ui/Input";
-import Button from "@/components/ui/Button";
-import Divider from "@/components/ui/Divider";
+import { useState } from "react"
+import { Alert } from "react-native"
+import { useRouter } from "expo-router"
+import { signIn } from "@/lib/auth-client"
+import * as WebBrowser from "expo-web-browser"
+import AuthContainer from "@/components/ui/AuthContainer"
+import Input from "@/components/ui/Input"
+import Button from "@/components/ui/Button"
+import Divider from "@/components/ui/Divider"
 
-WebBrowser.maybeCompleteAuthSession();
+WebBrowser.maybeCompleteAuthSession()
 
 export default function SignInScreen() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
   const handleDiscordSignIn = async () => {
-    setIsLoading(true);
+    setIsLoading(true)
     try {
       await signIn.social({
         provider: "discord",
         callbackURL: "/callback",
-      });
+      })
     } catch (error: any) {
-      console.error("Discord OAuth error:", error);
-      Alert.alert("Error", error.message || "Discord sign in failed");
+      console.error("Discord OAuth error:", error)
+      Alert.alert("Error", error.message || "Discord sign in failed")
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
   const handleSignIn = async () => {
     if (!email || !password) {
-      Alert.alert("Error", "Please fill in all fields");
-      return;
+      Alert.alert("Error", "Please fill in all fields")
+      return
     }
 
-    setIsLoading(true);
+    setIsLoading(true)
     try {
       const result = await signIn.email({
         email,
         password,
-      });
+      })
 
       if (result.error) {
         Alert.alert(
           "Sign In Failed",
-          result.error.message || "Invalid credentials",
-        );
+          result.error.message || "Invalid credentials"
+        )
       } else {
-        router.replace("/");
+        router.replace("/")
       }
     } catch (error: any) {
-      Alert.alert("Error", error.message || "An error occurred during sign in");
+      Alert.alert("Error", error.message || "An error occurred during sign in")
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   return (
     <AuthContainer
@@ -104,5 +104,5 @@ export default function SignInScreen() {
         disabled={isLoading}
       />
     </AuthContainer>
-  );
+  )
 }

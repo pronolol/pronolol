@@ -4,12 +4,12 @@ import {
   StyleSheet,
   ActivityIndicator,
   TouchableOpacityProps,
-} from "react-native";
+} from "react-native"
 
 interface ButtonProps extends TouchableOpacityProps {
-  title: string;
-  variant?: "primary" | "secondary" | "discord";
-  loading?: boolean;
+  title: string
+  variant?: "primary" | "secondary" | "discord"
+  loading?: boolean
 }
 
 export default function Button({
@@ -26,12 +26,12 @@ export default function Button({
     variant === "discord" && styles.discordButton,
     (disabled || loading) && styles.buttonDisabled,
     style,
-  ];
+  ]
 
   const textStyle = [
     styles.buttonText,
     variant === "secondary" && styles.secondaryButtonText,
-  ];
+  ]
 
   return (
     <TouchableOpacity
@@ -47,7 +47,7 @@ export default function Button({
         <Text style={textStyle}>{title}</Text>
       )}
     </TouchableOpacity>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -77,4 +77,4 @@ const styles = StyleSheet.create({
   secondaryButtonText: {
     color: "#007AFF",
   },
-});
+})

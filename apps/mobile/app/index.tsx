@@ -5,23 +5,23 @@ import {
   Text,
   ActivityIndicator,
   TouchableOpacity,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
-import { useEffect } from "react";
-import MatchCard from "@/components/MatchCard";
-import { useGetMatches } from "@/api";
-import { useSession, signOut } from "@/lib/auth-client";
+} from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
+import { useRouter } from "expo-router"
+import { useEffect } from "react"
+import MatchCard from "@/components/MatchCard"
+import { useGetMatches } from "@/api"
+import { useSession, signOut } from "@/lib/auth-client"
 
 export default function Index() {
-  const router = useRouter();
-  const { data: session, isPending: isSessionLoading } = useSession();
+  const router = useRouter()
+  const { data: session, isPending: isSessionLoading } = useSession()
 
   useEffect(() => {
     if (!isSessionLoading && !session) {
-      router.replace("/(auth)/sign-in");
+      router.replace("/(auth)/sign-in")
     }
-  }, [session, isSessionLoading]);
+  }, [session, isSessionLoading])
   const {
     data: matches,
     isLoading,
@@ -29,18 +29,18 @@ export default function Index() {
   } = useGetMatches({
     limit: "20",
     state: "completed",
-  });
+  })
 
   const handleSignOut = async () => {
-    await signOut();
-  };
+    await signOut()
+  }
 
   if (isSessionLoading) {
     return (
       <SafeAreaView style={[styles.container, styles.centered]}>
         <ActivityIndicator size="large" color="#0000ff" />
       </SafeAreaView>
-    );
+    )
   }
 
   if (isLoading) {
@@ -48,7 +48,7 @@ export default function Index() {
       <SafeAreaView style={[styles.container, styles.centered]}>
         <ActivityIndicator size="large" color="#0000ff" />
       </SafeAreaView>
-    );
+    )
   }
 
   if (error) {
@@ -62,7 +62,7 @@ export default function Index() {
           Make sure the API is running at http://localhost:3000
         </Text>
       </SafeAreaView>
-    );
+    )
   }
 
   if (!matches || matches.length === 0) {
@@ -70,7 +70,7 @@ export default function Index() {
       <SafeAreaView style={[styles.container, styles.centered]}>
         <Text style={styles.emptyText}>No upcoming matches found</Text>
       </SafeAreaView>
-    );
+    )
   }
 
   return (
@@ -120,7 +120,7 @@ export default function Index() {
         ))}
       </ScrollView>
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -210,4 +210,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#6c757d",
   },
-});
+})

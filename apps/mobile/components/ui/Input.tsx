@@ -1,14 +1,8 @@
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  TextInputProps,
-} from "react-native";
+import { View, Text, TextInput, StyleSheet, TextInputProps } from "react-native"
 
 interface InputProps extends TextInputProps {
-  label: string;
-  error?: string;
+  label: string
+  error?: string
 }
 
 export default function Input({ label, error, style, ...props }: InputProps) {
@@ -22,7 +16,7 @@ export default function Input({ label, error, style, ...props }: InputProps) {
       />
       {error && <Text style={styles.error}>{error}</Text>}
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -53,4 +47,4 @@ const styles = StyleSheet.create({
     color: "#dc3545",
     marginTop: 4,
   },
-});
+})

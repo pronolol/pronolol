@@ -16,8 +16,8 @@
  * Set EXPO_PUBLIC_API_URL to your production domain (e.g., https://api.yourdomain.com)
  */
 
-import Constants from "expo-constants";
-import { Platform } from "react-native";
+import Constants from "expo-constants"
+import { Platform } from "react-native"
 
 /**
  * Get API base URL from environment variables
@@ -25,10 +25,10 @@ import { Platform } from "react-native";
  */
 export const getApiUrl = (): string => {
   // Try to get from Expo's environment variables
-  const envUrl = process.env.EXPO_PUBLIC_API_URL;
+  const envUrl = process.env.EXPO_PUBLIC_API_URL
 
   if (envUrl) {
-    return envUrl;
+    return envUrl
   }
 
   // Fallback for development
@@ -36,24 +36,24 @@ export const getApiUrl = (): string => {
     console.warn(
       "⚠️  EXPO_PUBLIC_API_URL not configured!\n" +
         "Please create a .env.local file with your API URL.\n" +
-        "See .env.example for instructions.",
-    );
+        "See .env.example for instructions."
+    )
 
     // Default development fallback
     if (Platform.OS === "android") {
-      return "http://10.0.2.2:3000"; // Android emulator default
+      return "http://10.0.2.2:3000" // Android emulator default
     }
-    return "http://localhost:3000";
+    return "http://localhost:3000"
   }
 
   // Production should always have this configured
   throw new Error(
     "EXPO_PUBLIC_API_URL must be configured in production. " +
-      "Set this environment variable before building.",
-  );
-};
+      "Set this environment variable before building."
+  )
+}
 
-export const API_BASE_URL = getApiUrl();
+export const API_BASE_URL = getApiUrl()
 
 // Log current configuration in development
 if (__DEV__) {
@@ -61,5 +61,5 @@ if (__DEV__) {
     url: API_BASE_URL,
     platform: Platform.OS,
     isDev: __DEV__,
-  });
+  })
 }

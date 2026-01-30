@@ -8,4 +8,4 @@ export const config = {
     navigationTimeout: 60000, // 60 seconds
     loadMoreTimeout: 5000, // 5 seconds to wait after clicking "load more"
   },
-};
+}

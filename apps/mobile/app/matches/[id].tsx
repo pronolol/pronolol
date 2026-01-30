@@ -5,90 +5,90 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import { Image } from "expo-image";
-import { useState, useMemo } from "react";
-import { useGetMatches, useGetPredictions, useCreatePrediction } from "@/api";
-import { Ionicons } from "@expo/vector-icons";
+} from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
+import { useLocalSearchParams, useRouter } from "expo-router"
+import { Image } from "expo-image"
+import { useState, useMemo } from "react"
+import { useGetMatches, useGetPredictions, useCreatePrediction } from "@/api"
+import { Ionicons } from "@expo/vector-icons"
 
-type ScoreOption = { teamA: number; teamB: number };
+type ScoreOption = { teamA: number; teamB: number }
 
 export default function MatchDetail() {
-  const { id } = useLocalSearchParams<{ id: string }>();
-  const router = useRouter();
+  const { id } = useLocalSearchParams<{ id: string }>()
+  const router = useRouter()
 
   // Fetch match data
-  const { data: matches, isLoading: isLoadingMatch } = useGetMatches({});
-  const match = matches?.find((m) => m.id === id);
+  const { data: matches, isLoading: isLoadingMatch } = useGetMatches({})
+  const match = matches?.find((m) => m.id === id)
 
   // Fetch predictions (includes myPrediction and all predictions)
   const { data: predictionsData, isLoading: isLoadingPredictions } =
-    useGetPredictions(id!);
-  const myPrediction = predictionsData?.myPrediction;
-  const allPredictions = predictionsData?.predictions;
+    useGetPredictions(id!)
+  const myPrediction = predictionsData?.myPrediction
+  const allPredictions = predictionsData?.predictions
 
   // Mutation for creating prediction
-  const createPrediction = useCreatePrediction(id!);
+  const createPrediction = useCreatePrediction(id!)
 
   // Local state for prediction form
-  const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
-  const [selectedScore, setSelectedScore] = useState<ScoreOption | null>(null);
+  const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null)
+  const [selectedScore, setSelectedScore] = useState<ScoreOption | null>(null)
 
   // Calculate if predictions are locked
   const isPredictionLocked = useMemo(() => {
-    if (!match?.matchDate) return false;
+    if (!match?.matchDate) return false
     const lockTime = new Date(
-      new Date(match.matchDate).getTime() + 5 * 60 * 1000,
-    );
-    return new Date() > lockTime;
-  }, [match?.matchDate]);
+      new Date(match.matchDate).getTime() + 5 * 60 * 1000
+    )
+    return new Date() > lockTime
+  }, [match?.matchDate])
 
   // Generate possible scores based on bestOf
   const possibleScores = useMemo((): ScoreOption[] => {
-    if (!match || !selectedTeamId) return [];
+    if (!match || !selectedTeamId) return []
 
-    const maxWins = Math.ceil(match.bestOf / 2);
-    const isTeamA = selectedTeamId === match.teamA.id;
-    const scores: ScoreOption[] = [];
+    const maxWins = Math.ceil(match.bestOf / 2)
+    const isTeamA = selectedTeamId === match.teamA.id
+    const scores: ScoreOption[] = []
 
     for (let loserScore = 0; loserScore < maxWins; loserScore++) {
       scores.push({
         teamA: isTeamA ? maxWins : loserScore,
         teamB: isTeamA ? loserScore : maxWins,
-      });
+      })
     }
 
-    return scores;
-  }, [match, selectedTeamId]);
+    return scores
+  }, [match, selectedTeamId])
 
   const handleSubmitPrediction = async () => {
-    if (!selectedTeamId || !selectedScore) return;
+    if (!selectedTeamId || !selectedScore) return
 
     try {
       await createPrediction.mutateAsync({
         teamId: selectedTeamId,
         predictedTeamAScore: selectedScore.teamA,
         predictedTeamBScore: selectedScore.teamB,
-      });
-      setSelectedTeamId(null);
-      setSelectedScore(null);
+      })
+      setSelectedTeamId(null)
+      setSelectedScore(null)
     } catch (error) {
-      console.error("Failed to create prediction:", error);
+      console.error("Failed to create prediction:", error)
     }
-  };
+  }
 
   const handleTeamSelect = (teamId: string) => {
-    if (hasPredicted || isPredictionLocked) return;
+    if (hasPredicted || isPredictionLocked) return
     if (selectedTeamId === teamId) {
-      setSelectedTeamId(null);
-      setSelectedScore(null);
+      setSelectedTeamId(null)
+      setSelectedScore(null)
     } else {
-      setSelectedTeamId(teamId);
-      setSelectedScore(null);
+      setSelectedTeamId(teamId)
+      setSelectedScore(null)
     }
-  };
+  }
 
   if (isLoadingMatch || isLoadingPredictions) {
     return (
@@ -96,7 +96,7 @@ export default function MatchDetail() {
         <ActivityIndicator size="large" color="#6366f1" />
         <Text style={styles.loadingText}>Loading match...</Text>
       </SafeAreaView>
-    );
+    )
   }
 
   if (!match) {
@@ -111,24 +111,24 @@ export default function MatchDetail() {
           <Text style={styles.errorButtonText}>Go Back</Text>
         </TouchableOpacity>
       </SafeAreaView>
-    );
+    )
   }
 
-  const hasPredicted = !!myPrediction;
-  const isMatchCompleted = match.state === "completed";
+  const hasPredicted = !!myPrediction
+  const isMatchCompleted = match.state === "completed"
   const selectedTeam =
-    selectedTeamId === match.teamA.id ? match.teamA : match.teamB;
+    selectedTeamId === match.teamA.id ? match.teamA : match.teamB
 
   // Get prediction result status
   const getPredictionStatus = () => {
-    if (!myPrediction || !isMatchCompleted) return null;
+    if (!myPrediction || !isMatchCompleted) return null
     if (myPrediction.isExact)
-      return { label: "Exact!", color: "#10b981", icon: "trophy" };
+      return { label: "Exact!", color: "#10b981", icon: "trophy" }
     if (myPrediction.isCorrect)
-      return { label: "Correct", color: "#6366f1", icon: "checkmark-circle" };
-    return { label: "Wrong", color: "#ef4444", icon: "close-circle" };
-  };
-  const predictionStatus = getPredictionStatus();
+      return { label: "Correct", color: "#6366f1", icon: "checkmark-circle" }
+    return { label: "Wrong", color: "#ef4444", icon: "close-circle" }
+  }
+  const predictionStatus = getPredictionStatus()
 
   return (
     <SafeAreaView style={styles.container}>
@@ -316,7 +316,7 @@ export default function MatchDetail() {
               {possibleScores.map((score, index) => {
                 const isSelected =
                   selectedScore?.teamA === score.teamA &&
-                  selectedScore?.teamB === score.teamB;
+                  selectedScore?.teamB === score.teamB
                 return (
                   <TouchableOpacity
                     key={index}
@@ -335,7 +335,7 @@ export default function MatchDetail() {
                       {score.teamA} - {score.teamB}
                     </Text>
                   </TouchableOpacity>
-                );
+                )
               })}
             </View>
 
@@ -498,7 +498,7 @@ export default function MatchDetail() {
                   <Text style={styles.statLabel}>
                     {
                       allPredictions.filter(
-                        (p) => p.isCorrect === true && p.isExact !== true,
+                        (p) => p.isCorrect === true && p.isExact !== true
                       ).length
                     }{" "}
                     Correct
@@ -517,23 +517,23 @@ export default function MatchDetail() {
             <View style={styles.predictionsList}>
               {allPredictions.map((prediction, index) => {
                 // Determine prediction result for completed matches
-                let resultIcon = null;
-                let resultColor = "#6c757d";
-                let resultBadgeStyle = null;
+                let resultIcon = null
+                let resultColor = "#6c757d"
+                let resultBadgeStyle = null
 
                 if (isMatchCompleted && prediction.points !== null) {
                   if (prediction.isExact) {
-                    resultIcon = "trophy";
-                    resultColor = "#10b981";
-                    resultBadgeStyle = styles.resultBadgeExact;
+                    resultIcon = "trophy"
+                    resultColor = "#10b981"
+                    resultBadgeStyle = styles.resultBadgeExact
                   } else if (prediction.isCorrect) {
-                    resultIcon = "checkmark-circle";
-                    resultColor = "#6366f1";
-                    resultBadgeStyle = styles.resultBadgeCorrect;
+                    resultIcon = "checkmark-circle"
+                    resultColor = "#6366f1"
+                    resultBadgeStyle = styles.resultBadgeCorrect
                   } else {
-                    resultIcon = "close-circle";
-                    resultColor = "#ef4444";
-                    resultBadgeStyle = styles.resultBadgeWrong;
+                    resultIcon = "close-circle"
+                    resultColor = "#ef4444"
+                    resultBadgeStyle = styles.resultBadgeWrong
                   }
                 }
 
@@ -612,7 +612,7 @@ export default function MatchDetail() {
                       )}
                     </View>
                   </View>
-                );
+                )
               })}
             </View>
           </View>
@@ -629,7 +629,7 @@ export default function MatchDetail() {
         )}
       </ScrollView>
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -1266,4 +1266,4 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "600",
   },
-});
+})

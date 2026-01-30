@@ -1,6 +1,6 @@
-import { Stack } from "expo-router";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { StatusBar } from "expo-status-bar";
+import { Stack } from "expo-router"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { StatusBar } from "expo-status-bar"
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -9,7 +9,7 @@ const queryClient = new QueryClient({
       retry: 1,
     },
   },
-});
+})
 
 export default function RootLayout() {
   return (
@@ -17,8 +17,8 @@ export default function RootLayout() {
       <StatusBar style="dark" />
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" />
-        <Stack.Screen 
-          name="matches/[id]" 
+        <Stack.Screen
+          name="matches/[id]"
           options={{
             presentation: "modal",
             animation: "slide_from_bottom",
@@ -29,5 +29,5 @@ export default function RootLayout() {
         <Stack.Screen name="(auth)/callback" />
       </Stack>
     </QueryClientProvider>
-  );
+  )
 }

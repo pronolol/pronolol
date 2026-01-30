@@ -1,21 +1,21 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { Image } from "expo-image";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native"
+import { Image } from "expo-image"
 
 interface Team {
-  name: string;
-  logoUrl: string;
+  name: string
+  logoUrl: string
 }
 
 interface MatchCardProps {
-  teamA: Team;
-  teamB: Team;
-  matchTime?: string;
-  league?: string;
+  teamA: Team
+  teamB: Team
+  matchTime?: string
+  league?: string
   score?: {
-    teamA: number;
-    teamB: number;
-  };
-  onPress?: () => void;
+    teamA: number
+    teamB: number
+  }
+  onPress?: () => void
 }
 
 export default function MatchCard({
@@ -74,17 +74,21 @@ export default function MatchCard({
         </View>
       </View>
     </>
-  );
+  )
 
   if (onPress) {
     return (
-      <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.7}>
+      <TouchableOpacity
+        style={styles.card}
+        onPress={onPress}
+        activeOpacity={0.7}
+      >
         {CardContent}
       </TouchableOpacity>
-    );
+    )
   }
 
-  return <View style={styles.card}>{CardContent}</View>;
+  return <View style={styles.card}>{CardContent}</View>
 }
 
 const styles = StyleSheet.create({
@@ -163,4 +167,4 @@ const styles = StyleSheet.create({
     color: "#6c757d",
     marginTop: 4,
   },
-});
+})

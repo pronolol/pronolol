@@ -4,27 +4,27 @@ import {
   NormalizedTeam,
   NormalizedTournament,
   NormalizedMatch,
-} from "../types";
+} from "../types"
 
-import { prisma } from "@pronolol/database";
+import { prisma } from "@pronolol/database"
 
-import "dotenv/config";
+import "dotenv/config"
 
 export class DatabaseService {
   async saveScrapedData(data: ScraperOutput): Promise<void> {
-    console.error("💾 Saving data to the database...");
+    console.error("💾 Saving data to the database...")
 
     // The order is important to respect foreign key constraints.
-    await this.upsertLeagues(data.leagues);
-    await this.upsertTeams(data.teams);
-    await this.upsertTournaments(data.tournaments);
-    await this.upsertMatches(data.matches);
+    await this.upsertLeagues(data.leagues)
+    await this.upsertTeams(data.teams)
+    await this.upsertTournaments(data.tournaments)
+    await this.upsertMatches(data.matches)
 
-    console.error("✅ Database save complete.");
+    console.error("✅ Database save complete.")
   }
 
   private async upsertLeagues(leagues: NormalizedLeague[]): Promise<void> {
-    if (leagues.length === 0) return;
+    if (leagues.length === 0) return
 
     const result = await prisma.league.createMany({
       data: leagues.map((league) => ({
@@ -35,14 +35,14 @@ export class DatabaseService {
         regionSlug: league.regionSlug,
       })),
       skipDuplicates: true,
-    });
+    })
 
-    console.error(`\tInserted ${result.count} new leagues.`);
-    console.error(`\tUpserted ${result.count} leagues.`);
+    console.error(`\tInserted ${result.count} new leagues.`)
+    console.error(`\tUpserted ${result.count} leagues.`)
   }
 
   private async upsertTeams(teams: NormalizedTeam[]): Promise<void> {
-    if (teams.length === 0) return;
+    if (teams.length === 0) return
 
     for (const team of teams) {
       await prisma.team.upsert({
@@ -56,16 +56,16 @@ export class DatabaseService {
           tag: team.tag,
           logoUrl: team.logo,
         },
-      });
+      })
     }
 
-    console.error(`\tUpserted ${teams.length} teams.`);
+    console.error(`\tUpserted ${teams.length} teams.`)
   }
 
   private async upsertTournaments(
-    tournaments: NormalizedTournament[],
+    tournaments: NormalizedTournament[]
   ): Promise<void> {
-    if (tournaments.length === 0) return;
+    if (tournaments.length === 0) return
 
     const result = await prisma.tournament.createMany({
       data: tournaments.map((tournament) => ({
@@ -77,18 +77,18 @@ export class DatabaseService {
         type: tournament.type,
       })),
       skipDuplicates: true,
-    });
+    })
 
-    console.error(`\tInserted ${result.count} new tournaments.`);
-    console.error(`\tUpserted ${tournaments.length} tournaments.`);
+    console.error(`\tInserted ${result.count} new tournaments.`)
+    console.error(`\tUpserted ${tournaments.length} tournaments.`)
   }
 
   private async upsertMatches(matches: NormalizedMatch[]): Promise<void> {
-    if (matches.length === 0) return;
+    if (matches.length === 0) return
 
     for (const match of matches) {
-      const winnerId = match.result?.winner || null;
-      const isFinished = match.state === "completed";
+      const winnerId = match.result?.winner || null
+      const isFinished = match.state === "completed"
 
       await prisma.$transaction(async (tx) => {
         const updatedMatch = await tx.match.upsert({
@@ -112,31 +112,31 @@ export class DatabaseService {
             teamAScore: match.result?.team1Score,
             teamBScore: match.result?.team2Score,
           },
-        });
+        })
 
         if (isFinished && winnerId) {
-          await this.settlePredictions(tx, updatedMatch);
+          await this.settlePredictions(tx, updatedMatch)
         }
-      });
+      })
     }
 
-    console.error(`\tUpserted ${matches.length} matches.`);
+    console.error(`\tUpserted ${matches.length} matches.`)
   }
 
   private async settlePredictions(tx: any, match: any): Promise<void> {
     const predictions = await tx.prediction.findMany({
       where: { matchId: match.id, points: null },
-    });
+    })
 
     for (const pred of predictions) {
-      const isWinnerCorrect = pred.teamId === match.winnerId;
+      const isWinnerCorrect = pred.teamId === match.winnerId
       const isExactScore =
         pred.predictedTeamAScore === match.teamAScore &&
-        pred.predictedTeamBScore === match.teamBScore;
+        pred.predictedTeamBScore === match.teamBScore
 
-      let pointsEarned = 0;
+      let pointsEarned = 0
       if (isWinnerCorrect) {
-        pointsEarned = isExactScore ? 3 : 1; // 3 for perfect, 1 for winner only
+        pointsEarned = isExactScore ? 3 : 1 // 3 for perfect, 1 for winner only
       }
 
       await tx.prediction.update({
@@ -146,7 +146,7 @@ export class DatabaseService {
           isExact: isExactScore,
           points: pointsEarned,
         },
-      });
+      })
     }
   }
 }
