@@ -1,14 +1,17 @@
 import {
   TouchableOpacity,
-  Text,
   StyleSheet,
   ActivityIndicator,
   TouchableOpacityProps,
 } from "react-native"
+import { colors, spacing, borderRadius } from "./theme"
+import { Typography } from "./Typography"
 
-interface ButtonProps extends TouchableOpacityProps {
+type ButtonVariant = "primary" | "secondary" | "discord"
+
+type ButtonProps = TouchableOpacityProps & {
   title: string
-  variant?: "primary" | "secondary" | "discord"
+  variant?: ButtonVariant
   loading?: boolean
 }
 
@@ -28,10 +31,7 @@ export default function Button({
     style,
   ]
 
-  const textStyle = [
-    styles.buttonText,
-    variant === "secondary" && styles.secondaryButtonText,
-  ]
+  const textColor = variant === "secondary" ? "primary" : "inverse"
 
   return (
     <TouchableOpacity
@@ -41,10 +41,14 @@ export default function Button({
     >
       {loading ? (
         <ActivityIndicator
-          color={variant === "secondary" ? "#007AFF" : "#fff"}
+          color={
+            variant === "secondary" ? colors.secondary : colors.textInverse
+          }
         />
       ) : (
-        <Text style={textStyle}>{title}</Text>
+        <Typography variant="subtitle" color={textColor as any}>
+          {title}
+        </Typography>
       )}
     </TouchableOpacity>
   )
@@ -52,29 +56,21 @@ export default function Button({
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#007AFF",
-    borderRadius: 8,
-    padding: 16,
+    backgroundColor: colors.secondary,
+    borderRadius: borderRadius.sm,
+    padding: spacing.lg,
     alignItems: "center",
-    marginTop: 8,
+    marginTop: spacing.sm,
   },
   secondaryButton: {
-    backgroundColor: "#fff",
+    backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: "#007AFF",
+    borderColor: colors.secondary,
   },
   discordButton: {
-    backgroundColor: "#5865F2",
+    backgroundColor: colors.discord,
   },
   buttonDisabled: {
     opacity: 0.6,
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  secondaryButtonText: {
-    color: "#007AFF",
   },
 })

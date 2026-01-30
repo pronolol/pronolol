@@ -1,6 +1,8 @@
-import { View, Text, StyleSheet } from "react-native"
+import { View, StyleSheet } from "react-native"
+import { colors, spacing } from "./theme"
+import { Typography } from "./Typography"
 
-interface DividerProps {
+type DividerProps = {
   text?: string
 }
 
@@ -8,7 +10,9 @@ export default function Divider({ text = "or" }: DividerProps) {
   return (
     <View style={styles.divider}>
       <View style={styles.dividerLine} />
-      <Text style={styles.dividerText}>{text}</Text>
+      <Typography variant="body" color="secondary" style={styles.dividerText}>
+        {text}
+      </Typography>
       <View style={styles.dividerLine} />
     </View>
   )
@@ -18,16 +22,14 @@ const styles = StyleSheet.create({
   divider: {
     flexDirection: "row",
     alignItems: "center",
-    marginVertical: 20,
+    marginVertical: spacing.xl,
   },
   dividerLine: {
     flex: 1,
     height: 1,
-    backgroundColor: "#ddd",
+    backgroundColor: colors.border,
   },
   dividerText: {
-    marginHorizontal: 16,
-    color: "#666",
-    fontSize: 14,
+    marginHorizontal: spacing.lg,
   },
 })

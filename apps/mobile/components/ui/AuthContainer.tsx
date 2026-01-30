@@ -1,6 +1,5 @@
 import {
   View,
-  Text,
   StyleSheet,
   KeyboardAvoidingView,
   ScrollView,
@@ -9,8 +8,10 @@ import {
 } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useRouter } from "expo-router"
+import { colors, spacing, borderRadius, shadow } from "./theme"
+import { Typography } from "./Typography"
 
-interface AuthContainerProps {
+type AuthContainerProps = {
   title: string
   subtitle: string
   children: React.ReactNode
@@ -40,18 +41,32 @@ export default function AuthContainer({
           keyboardShouldPersistTaps="handled"
         >
           <View style={styles.form}>
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.subtitle}>{subtitle}</Text>
+            <Typography variant="display">{title}</Typography>
+            <Typography
+              variant="body"
+              color="secondary"
+              style={styles.subtitle}
+            >
+              {subtitle}
+            </Typography>
 
             {children}
 
             {footerText && footerLinkText && footerLinkTo && (
               <View style={styles.footer}>
-                <Text style={styles.footerText}>{footerText} </Text>
+                <Typography variant="body" color="secondary">
+                  {footerText}{" "}
+                </Typography>
                 <TouchableOpacity
                   onPress={() => router.push(footerLinkTo as any)}
                 >
-                  <Text style={styles.link}>{footerLinkText}</Text>
+                  <Typography
+                    variant="body"
+                    weight="semibold"
+                    style={styles.link}
+                  >
+                    {footerLinkText}
+                  </Typography>
                 </TouchableOpacity>
               </View>
             )}
@@ -65,7 +80,7 @@ export default function AuthContainer({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: colors.backgroundSecondary,
   },
   keyboardView: {
     flex: 1,
@@ -73,41 +88,24 @@ const styles = StyleSheet.create({
   scrollContent: {
     flexGrow: 1,
     justifyContent: "center",
-    padding: 20,
+    padding: spacing.xl,
   },
   form: {
-    backgroundColor: "#fff",
-    borderRadius: 16,
-    padding: 24,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "#333",
-    marginBottom: 8,
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.xl,
+    padding: spacing.xxl,
+    ...shadow.md,
   },
   subtitle: {
-    fontSize: 16,
-    color: "#666",
-    marginBottom: 32,
+    marginTop: spacing.sm,
+    marginBottom: spacing.xxxl,
   },
   footer: {
     flexDirection: "row",
     justifyContent: "center",
-    marginTop: 24,
-  },
-  footerText: {
-    color: "#666",
-    fontSize: 14,
+    marginTop: spacing.xxl,
   },
   link: {
-    color: "#007AFF",
-    fontSize: 14,
-    fontWeight: "600",
+    color: colors.secondary,
   },
 })

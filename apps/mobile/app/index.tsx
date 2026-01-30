@@ -1,11 +1,4 @@
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  Text,
-  ActivityIndicator,
-  TouchableOpacity,
-} from "react-native"
+import { StyleSheet, View, ScrollView, TouchableOpacity } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useRouter } from "expo-router"
 import { useEffect } from "react"
@@ -13,6 +6,13 @@ import MatchCard from "@/components/MatchCard"
 import { useGetMatches } from "@/api"
 import { useAuth } from "@/lib/auth-context"
 import { signOut } from "@/lib/auth-client"
+import { colors, spacing, borderRadius } from "@/components/ui/theme"
+import { Typography } from "@/components/ui/Typography"
+import {
+  LoadingScreen,
+  ErrorScreen,
+  EmptyState,
+} from "@/components/ui/ScreenStates"
 
 export default function Index() {
   const router = useRouter()
@@ -22,7 +22,8 @@ export default function Index() {
     if (!isSessionLoading && !isAuthenticated) {
       router.replace("/(auth)/sign-in")
     }
-  }, [isAuthenticated, isSessionLoading])
+  }, [isAuthenticated, isSessionLoading, router])
+
   const {
     data: matches,
     isLoading,
@@ -35,72 +36,54 @@ export default function Index() {
   const handleSignOut = async () => {
     try {
       const result = await signOut()
-
       if (result.success || result.error) {
-        // Redirect to sign in page after sign out (success or failure)
         router.replace("/(auth)/sign-in")
       }
     } catch (error) {
       console.error("Sign out error:", error)
-      // Still redirect to sign in even if there's an error
       router.replace("/(auth)/sign-in")
     }
   }
 
-  if (isSessionLoading) {
-    return (
-      <SafeAreaView style={[styles.container, styles.centered]}>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </SafeAreaView>
-    )
-  }
-
-  if (isLoading) {
-    return (
-      <SafeAreaView style={[styles.container, styles.centered]}>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </SafeAreaView>
-    )
+  if (isSessionLoading || isLoading) {
+    return <LoadingScreen message="Loading matches..." />
   }
 
   if (error) {
     return (
-      <SafeAreaView style={[styles.container, styles.centered]}>
-        <Text style={styles.errorText}>Error loading matches</Text>
-        <Text style={styles.errorDetail}>
-          {error instanceof Error ? error.message : JSON.stringify(error)}
-        </Text>
-        <Text style={styles.errorDetail}>
-          Make sure the API is running at http://localhost:3000
-        </Text>
-      </SafeAreaView>
+      <ErrorScreen
+        title="Error loading matches"
+        message={
+          error instanceof Error
+            ? error.message
+            : "Make sure the API is running"
+        }
+      />
     )
   }
 
   if (!matches || matches.length === 0) {
     return (
-      <SafeAreaView style={[styles.container, styles.centered]}>
-        <Text style={styles.emptyText}>No upcoming matches found</Text>
+      <SafeAreaView style={styles.container}>
+        <Header
+          userName={
+            user?.displayUsername || user?.username || user?.name || "User"
+          }
+          onSignOut={handleSignOut}
+        />
+        <EmptyState icon="calendar-outline" title="No upcoming matches found" />
       </SafeAreaView>
     )
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.userInfo}>
-          <Text style={styles.welcomeText}>
-            Welcome,{" "}
-            {user?.displayUsername || user?.username || user?.name || "User"}!
-          </Text>
-          <TouchableOpacity
-            style={styles.signOutButton}
-            onPress={handleSignOut}
-          >
-            <Text style={styles.signOutButtonText}>Sign Out</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      <Header
+        userName={
+          user?.displayUsername || user?.username || user?.name || "User"
+        }
+        onSignOut={handleSignOut}
+      />
 
       <ScrollView
         style={styles.scrollView}
@@ -117,7 +100,11 @@ export default function Index() {
               name: match.teamB.tag,
               logoUrl: match.teamB.logoUrl,
             }}
-            matchTime={new Date(match.matchDate).toLocaleString()}
+            matchTime={
+              match.matchDate
+                ? new Date(match.matchDate).toLocaleString()
+                : "TBD"
+            }
             league={`${match.tournament.league.name} - ${match.tournament.name}`}
             score={
               match.teamAScore !== null && match.teamBScore !== null
@@ -132,91 +119,53 @@ export default function Index() {
   )
 }
 
+type HeaderProps = {
+  userName: string
+  onSignOut: () => void
+}
+
+function Header({ userName, onSignOut }: HeaderProps) {
+  return (
+    <View style={styles.header}>
+      <View style={styles.userInfo}>
+        <Typography variant="subtitle">Welcome, {userName}!</Typography>
+        <TouchableOpacity style={styles.signOutButton} onPress={onSignOut}>
+          <Typography variant="label" color="secondary">
+            Sign Out
+          </Typography>
+        </TouchableOpacity>
+      </View>
+    </View>
+  )
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
-  },
-  centered: {
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: colors.backgroundSecondary,
   },
   header: {
-    backgroundColor: "#fff",
-    padding: 16,
+    backgroundColor: colors.surface,
+    padding: spacing.lg,
     borderBottomWidth: 1,
-    borderBottomColor: "#e0e0e0",
+    borderBottomColor: colors.border,
   },
   userInfo: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
-  welcomeText: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#333",
-  },
   signOutButton: {
-    backgroundColor: "#f0f0f0",
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
-  },
-  signOutButtonText: {
-    color: "#666",
-    fontSize: 14,
-    fontWeight: "600",
-  },
-  authButtons: {
-    flexDirection: "row",
-    gap: 12,
-  },
-  signInButton: {
-    flex: 1,
-    backgroundColor: "#007AFF",
-    paddingVertical: 12,
-    borderRadius: 8,
-    alignItems: "center",
-  },
-  signInButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  signUpButton: {
-    flex: 1,
-    backgroundColor: "#fff",
-    paddingVertical: 12,
-    borderRadius: 8,
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#007AFF",
-  },
-  signUpButtonText: {
-    color: "#007AFF",
-    fontSize: 16,
-    fontWeight: "600",
+    backgroundColor: colors.surfaceSecondary,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm,
+    borderRadius: borderRadius.sm,
   },
   scrollView: {
     flex: 1,
   },
   scrollContent: {
-    padding: 16,
-    gap: 12,
-  },
-  errorText: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: "#dc3545",
-    marginBottom: 8,
-  },
-  errorDetail: {
-    fontSize: 14,
-    color: "#6c757d",
-  },
-  emptyText: {
-    fontSize: 16,
-    color: "#6c757d",
+    padding: spacing.lg,
+    gap: spacing.md,
   },
 })

@@ -1,6 +1,13 @@
-import { View, Text, TextInput, StyleSheet, TextInputProps } from "react-native"
+import { View, TextInput, StyleSheet, TextInputProps } from "react-native"
+import {
+  colors,
+  spacing,
+  borderRadius,
+  fontSize as themeFontSize,
+} from "./theme"
+import { Typography, Small } from "./Typography"
 
-interface InputProps extends TextInputProps {
+type InputProps = TextInputProps & {
   label: string
   error?: string
 }
@@ -8,43 +15,44 @@ interface InputProps extends TextInputProps {
 export default function Input({ label, error, style, ...props }: InputProps) {
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>{label}</Text>
+      <Typography variant="label" style={styles.label}>
+        {label}
+      </Typography>
       <TextInput
         style={[styles.input, error && styles.inputError, style]}
-        placeholderTextColor="#999"
+        placeholderTextColor={colors.textMuted}
         {...props}
       />
-      {error && <Text style={styles.error}>{error}</Text>}
+      {error && (
+        <Small color="error" style={styles.error}>
+          {error}
+        </Small>
+      )}
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 20,
+    marginBottom: spacing.xl,
   },
   label: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#333",
-    marginBottom: 8,
+    marginBottom: spacing.sm,
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    fontSize: 16,
-    backgroundColor: "#fff",
-    color: "#333",
+    borderColor: colors.border,
+    borderRadius: borderRadius.sm,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md + 2,
+    fontSize: themeFontSize.xl,
+    backgroundColor: colors.surface,
+    color: colors.textPrimary,
   },
   inputError: {
-    borderColor: "#dc3545",
+    borderColor: colors.error,
   },
   error: {
-    fontSize: 12,
-    color: "#dc3545",
-    marginTop: 4,
+    marginTop: spacing.xs,
   },
 })

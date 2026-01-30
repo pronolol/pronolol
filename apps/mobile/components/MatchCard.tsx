@@ -1,21 +1,76 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native"
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  ViewStyle,
+  StyleProp,
+} from "react-native"
 import { Image } from "expo-image"
+import { colors, spacing, borderRadius, shadow } from "./ui/theme"
+import { Typography, Label, Small } from "./ui/Typography"
 
-interface Team {
+type Team = {
   name: string
   logoUrl: string
 }
 
-interface MatchCardProps {
+type MatchScore = {
+  teamA: number
+  teamB: number
+}
+
+type MatchCardProps = {
   teamA: Team
   teamB: Team
   matchTime?: string
   league?: string
-  score?: {
-    teamA: number
-    teamB: number
-  }
+  score?: MatchScore
   onPress?: () => void
+  style?: StyleProp<ViewStyle>
+}
+
+function TeamDisplay({ team }: { team: Team }) {
+  return (
+    <View style={styles.teamContainer}>
+      <View style={styles.logoWrapper}>
+        <Image
+          style={styles.teamLogo}
+          source={team.logoUrl}
+          contentFit="contain"
+        />
+      </View>
+      <Typography variant="subtitle" weight="bold" center numberOfLines={1}>
+        {team.name}
+      </Typography>
+    </View>
+  )
+}
+
+type MatchCenterProps = {
+  score?: MatchScore
+  matchTime?: string
+}
+
+function MatchCenter({ score, matchTime }: MatchCenterProps) {
+  return (
+    <View style={styles.vsContainer}>
+      {score ? (
+        <>
+          <Typography variant="title" weight="bold" style={styles.scoreText}>
+            {score.teamA} - {score.teamB}
+          </Typography>
+          {matchTime && <Small style={styles.timeText}>{matchTime}</Small>}
+        </>
+      ) : (
+        <>
+          <Label color="muted" weight="extrabold" uppercase>
+            VS
+          </Label>
+          {matchTime && <Small style={styles.timeText}>{matchTime}</Small>}
+        </>
+      )}
+    </View>
+  )
 }
 
 export default function MatchCard({
@@ -25,112 +80,71 @@ export default function MatchCard({
   league,
   score,
   onPress,
+  style,
 }: MatchCardProps) {
   const CardContent = (
     <>
       {league && (
         <View style={styles.leagueHeader}>
-          <Text style={styles.leagueText}>{league}</Text>
+          <Label color="secondary" uppercase>
+            {league}
+          </Label>
         </View>
       )}
 
       <View style={styles.matchContent}>
-        <View style={styles.teamContainer}>
-          <View style={styles.logoWrapper}>
-            <Image
-              style={styles.teamLogo}
-              source={teamA.logoUrl}
-              contentFit="contain"
-            />
-          </View>
-          <Text style={styles.teamName}>{teamA.name}</Text>
-        </View>
-
-        <View style={styles.vsContainer}>
-          {score ? (
-            <>
-              <Text style={styles.scoreText}>
-                {score.teamA} - {score.teamB}
-              </Text>
-              {matchTime && <Text style={styles.timeText}>{matchTime}</Text>}
-            </>
-          ) : (
-            <>
-              <Text style={styles.vsText}>VS</Text>
-              {matchTime && <Text style={styles.timeText}>{matchTime}</Text>}
-            </>
-          )}
-        </View>
-
-        <View style={styles.teamContainer}>
-          <View style={styles.logoWrapper}>
-            <Image
-              style={styles.teamLogo}
-              source={teamB.logoUrl}
-              contentFit="contain"
-            />
-          </View>
-          <Text style={styles.teamName}>{teamB.name}</Text>
-        </View>
+        <TeamDisplay team={teamA} />
+        <MatchCenter score={score} matchTime={matchTime} />
+        <TeamDisplay team={teamB} />
       </View>
     </>
   )
 
+  const cardStyle = [styles.card, style]
+
   if (onPress) {
     return (
-      <TouchableOpacity
-        style={styles.card}
-        onPress={onPress}
-        activeOpacity={0.7}
-      >
+      <TouchableOpacity style={cardStyle} onPress={onPress} activeOpacity={0.7}>
         {CardContent}
       </TouchableOpacity>
     )
   }
 
-  return <View style={styles.card}>{CardContent}</View>
+  return <View style={cardStyle}>{CardContent}</View>
 }
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#ffffff",
-    borderRadius: 16,
-    shadowColor: "#000",
-    elevation: 4,
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.xl,
     overflow: "hidden",
+    ...shadow.md,
   },
   leagueHeader: {
-    backgroundColor: "#f8f9fa",
-    paddingVertical: 8,
-    paddingHorizontal: 16,
+    backgroundColor: colors.surfaceSecondary,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.lg,
     borderBottomWidth: 1,
-    borderBottomColor: "#e9ecef",
-  },
-  leagueText: {
-    fontSize: 12,
-    fontWeight: "600",
-    color: "#6c757d",
-    textTransform: "uppercase",
-    letterSpacing: 0.5,
+    borderBottomColor: colors.border,
   },
   matchContent: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingVertical: 20,
-    paddingHorizontal: 16,
+    paddingVertical: spacing.xl,
+    paddingHorizontal: spacing.lg,
   },
   teamContainer: {
     flex: 1,
     alignItems: "center",
-    gap: 8,
+    gap: spacing.sm,
   },
   logoWrapper: {
     width: 64,
     height: 64,
-    backgroundColor: "#dee2e6",
-    borderRadius: 8,
-    padding: 8,
+    backgroundColor: colors.textPrimary,
+    borderRadius: borderRadius.lg,
+    padding: spacing.sm,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -138,33 +152,16 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  teamName: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: "#212529",
-    textAlign: "center",
-  },
   vsContainer: {
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: 16,
-    gap: 4,
-  },
-  vsText: {
-    fontSize: 14,
-    fontWeight: "800",
-    color: "#adb5bd",
-    letterSpacing: 1,
+    paddingHorizontal: spacing.lg,
+    gap: spacing.xs,
   },
   scoreText: {
     fontSize: 24,
-    fontWeight: "700",
-    color: "#212529",
   },
   timeText: {
-    fontSize: 11,
-    fontWeight: "500",
-    color: "#6c757d",
-    marginTop: 4,
+    marginTop: spacing.xs,
   },
 })
