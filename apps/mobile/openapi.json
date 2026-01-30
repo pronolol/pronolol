@@ -149,6 +149,29 @@
           {
             "schema": {
               "type": "string",
+              "description": "ISO date string to use as cursor for pagination. If not provided, current time is used.",
+              "example": "2026-01-30T12:00:00.000Z"
+            },
+            "required": false,
+            "description": "ISO date string to use as cursor for pagination. If not provided, current time is used.",
+            "name": "cursor",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": ["before", "after", "around"],
+              "description": "Direction to fetch matches relative to cursor. 'around' returns matches both before and after.",
+              "example": "around"
+            },
+            "required": false,
+            "description": "Direction to fetch matches relative to cursor. 'around' returns matches both before and after.",
+            "name": "direction",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
               "description": "Maximum number of results to return",
               "example": "20"
             },
