@@ -27,8 +27,8 @@ export default function Index() {
     isLoading,
     error,
   } = useGetMatches({
-    state: "upcoming",
     limit: "20",
+    state: "completed",
   });
 
   const handleSignOut = async () => {

@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { authClient } from "@/lib/auth-client";
-
-const API_BASE_URL = "http://192.168.1.116:3000";
+import { API_BASE_URL } from "@/config/env";
 
 // Types
 export interface Prediction {
@@ -43,21 +42,26 @@ export interface CreatePredictionDto {
 }
 
 // Helper to make authenticated requests using better-auth cookies
-const authenticatedFetch = async <T>(path: string, options: RequestInit = {}): Promise<T> => {
+const authenticatedFetch = async <T>(
+  path: string,
+  options: RequestInit = {},
+): Promise<T> => {
   const cookies = authClient.getCookie();
-  
+
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
     headers: {
       ...options.headers,
       "Content-Type": "application/json",
-      ...(cookies ? { "Cookie": cookies } : {}),
+      ...(cookies ? { Cookie: cookies } : {}),
     },
     credentials: "omit", // We're manually setting cookies in headers
   });
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ message: response.statusText }));
+    const error = await response
+      .json()
+      .catch(() => ({ message: response.statusText }));
     throw new Error(error.message || `Request failed: ${response.status}`);
   }
 
@@ -65,11 +69,16 @@ const authenticatedFetch = async <T>(path: string, options: RequestInit = {}): P
 };
 
 // API functions
-export const getPredictions = async (matchId: string): Promise<PredictionsResponse> => {
+export const getPredictions = async (
+  matchId: string,
+): Promise<PredictionsResponse> => {
   return authenticatedFetch(`/matches/${matchId}/predictions`);
 };
 
-export const createPrediction = async (matchId: string, data: CreatePredictionDto): Promise<Prediction> => {
+export const createPrediction = async (
+  matchId: string,
+  data: CreatePredictionDto,
+): Promise<Prediction> => {
   return authenticatedFetch(`/matches/${matchId}/predictions`, {
     method: "POST",
     body: JSON.stringify(data),
@@ -87,7 +96,7 @@ export const useGetPredictions = (matchId: string) => {
 
 export const useCreatePrediction = (matchId: string) => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: (data: CreatePredictionDto) => createPrediction(matchId, data),
     onSuccess: () => {

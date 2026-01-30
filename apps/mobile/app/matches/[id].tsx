@@ -11,7 +11,6 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { Image } from "expo-image";
 import { useState, useMemo } from "react";
 import { useGetMatches, useGetPredictions, useCreatePrediction } from "@/api";
-import { useSession } from "@/lib/auth-client";
 import { Ionicons } from "@expo/vector-icons";
 
 type ScoreOption = { teamA: number; teamB: number };
@@ -19,14 +18,14 @@ type ScoreOption = { teamA: number; teamB: number };
 export default function MatchDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
-  const { data: session } = useSession();
 
   // Fetch match data
   const { data: matches, isLoading: isLoadingMatch } = useGetMatches({});
   const match = matches?.find((m) => m.id === id);
 
   // Fetch predictions (includes myPrediction and all predictions)
-  const { data: predictionsData, isLoading: isLoadingPredictions } = useGetPredictions(id!);
+  const { data: predictionsData, isLoading: isLoadingPredictions } =
+    useGetPredictions(id!);
   const myPrediction = predictionsData?.myPrediction;
   const allPredictions = predictionsData?.predictions;
 
@@ -40,7 +39,9 @@ export default function MatchDetail() {
   // Calculate if predictions are locked
   const isPredictionLocked = useMemo(() => {
     if (!match?.matchDate) return false;
-    const lockTime = new Date(new Date(match.matchDate).getTime() + 5 * 60 * 1000);
+    const lockTime = new Date(
+      new Date(match.matchDate).getTime() + 5 * 60 * 1000,
+    );
     return new Date() > lockTime;
   }, [match?.matchDate]);
 
@@ -103,7 +104,10 @@ export default function MatchDetail() {
       <SafeAreaView style={[styles.container, styles.centered]}>
         <Ionicons name="alert-circle-outline" size={48} color="#dc3545" />
         <Text style={styles.errorText}>Match not found</Text>
-        <TouchableOpacity style={styles.errorButton} onPress={() => router.back()}>
+        <TouchableOpacity
+          style={styles.errorButton}
+          onPress={() => router.back()}
+        >
           <Text style={styles.errorButtonText}>Go Back</Text>
         </TouchableOpacity>
       </SafeAreaView>
@@ -112,13 +116,16 @@ export default function MatchDetail() {
 
   const hasPredicted = !!myPrediction;
   const isMatchCompleted = match.state === "completed";
-  const selectedTeam = selectedTeamId === match.teamA.id ? match.teamA : match.teamB;
+  const selectedTeam =
+    selectedTeamId === match.teamA.id ? match.teamA : match.teamB;
 
   // Get prediction result status
   const getPredictionStatus = () => {
     if (!myPrediction || !isMatchCompleted) return null;
-    if (myPrediction.isExact) return { label: "Exact!", color: "#10b981", icon: "trophy" };
-    if (myPrediction.isCorrect) return { label: "Correct", color: "#6366f1", icon: "checkmark-circle" };
+    if (myPrediction.isExact)
+      return { label: "Exact!", color: "#10b981", icon: "trophy" };
+    if (myPrediction.isCorrect)
+      return { label: "Correct", color: "#6366f1", icon: "checkmark-circle" };
     return { label: "Wrong", color: "#ef4444", icon: "close-circle" };
   };
   const predictionStatus = getPredictionStatus();
@@ -127,7 +134,10 @@ export default function MatchDetail() {
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => router.back()}
+        >
           <Ionicons name="chevron-back" size={24} color="#1a1a2e" />
         </TouchableOpacity>
         <View style={styles.headerCenter}>
@@ -137,7 +147,10 @@ export default function MatchDetail() {
         <View style={styles.headerSpacer} />
       </View>
 
-      <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+      >
         {/* Match Card */}
         <View style={styles.matchCard}>
           {/* Match Status Badge */}
@@ -166,40 +179,57 @@ export default function MatchDetail() {
             <TouchableOpacity
               style={[
                 styles.teamCard,
-                !hasPredicted && !isPredictionLocked && selectedTeamId === match.teamA.id && styles.teamCardSelected,
-                hasPredicted && myPrediction?.teamId === match.teamA.id && styles.teamCardPredicted,
+                !hasPredicted &&
+                  !isPredictionLocked &&
+                  selectedTeamId === match.teamA.id &&
+                  styles.teamCardSelected,
+                hasPredicted &&
+                  myPrediction?.teamId === match.teamA.id &&
+                  styles.teamCardPredicted,
               ]}
               onPress={() => handleTeamSelect(match.teamA.id)}
               disabled={hasPredicted || isPredictionLocked}
               activeOpacity={hasPredicted || isPredictionLocked ? 1 : 0.7}
             >
-              {!hasPredicted && !isPredictionLocked && selectedTeamId === match.teamA.id && (
-                <View style={styles.checkBadge}>
-                  <Ionicons name="checkmark" size={14} color="#fff" />
-                </View>
-              )}
+              {!hasPredicted &&
+                !isPredictionLocked &&
+                selectedTeamId === match.teamA.id && (
+                  <View style={styles.checkBadge}>
+                    <Ionicons name="checkmark" size={14} color="#fff" />
+                  </View>
+                )}
               <View style={styles.teamLogoContainer}>
-                <Image source={match.teamA.logoUrl} style={styles.teamLogo} contentFit="contain" />
+                <Image
+                  source={match.teamA.logoUrl}
+                  style={styles.teamLogo}
+                  contentFit="contain"
+                />
               </View>
               <Text style={styles.teamTag}>{match.teamA.tag}</Text>
-              <Text style={styles.teamName} numberOfLines={1}>{match.teamA.name}</Text>
+              <Text style={styles.teamName} numberOfLines={1}>
+                {match.teamA.name}
+              </Text>
             </TouchableOpacity>
 
             {/* Score / VS */}
             <View style={styles.matchScoreContainer}>
               {match.teamAScore !== null && match.teamBScore !== null ? (
                 <View style={styles.scoreBox}>
-                  <Text style={[
-                    styles.scoreNumber,
-                    match.teamAScore > match.teamBScore && styles.scoreWinner
-                  ]}>
+                  <Text
+                    style={[
+                      styles.scoreNumber,
+                      match.teamAScore > match.teamBScore && styles.scoreWinner,
+                    ]}
+                  >
                     {match.teamAScore}
                   </Text>
                   <Text style={styles.scoreDivider}>:</Text>
-                  <Text style={[
-                    styles.scoreNumber,
-                    match.teamBScore > match.teamAScore && styles.scoreWinner
-                  ]}>
+                  <Text
+                    style={[
+                      styles.scoreNumber,
+                      match.teamBScore > match.teamAScore && styles.scoreWinner,
+                    ]}
+                  >
                     {match.teamBScore}
                   </Text>
                 </View>
@@ -215,23 +245,36 @@ export default function MatchDetail() {
             <TouchableOpacity
               style={[
                 styles.teamCard,
-                !hasPredicted && !isPredictionLocked && selectedTeamId === match.teamB.id && styles.teamCardSelected,
-                hasPredicted && myPrediction?.teamId === match.teamB.id && styles.teamCardPredicted,
+                !hasPredicted &&
+                  !isPredictionLocked &&
+                  selectedTeamId === match.teamB.id &&
+                  styles.teamCardSelected,
+                hasPredicted &&
+                  myPrediction?.teamId === match.teamB.id &&
+                  styles.teamCardPredicted,
               ]}
               onPress={() => handleTeamSelect(match.teamB.id)}
               disabled={hasPredicted || isPredictionLocked}
               activeOpacity={hasPredicted || isPredictionLocked ? 1 : 0.7}
             >
-              {!hasPredicted && !isPredictionLocked && selectedTeamId === match.teamB.id && (
-                <View style={styles.checkBadge}>
-                  <Ionicons name="checkmark" size={14} color="#fff" />
-                </View>
-              )}
+              {!hasPredicted &&
+                !isPredictionLocked &&
+                selectedTeamId === match.teamB.id && (
+                  <View style={styles.checkBadge}>
+                    <Ionicons name="checkmark" size={14} color="#fff" />
+                  </View>
+                )}
               <View style={styles.teamLogoContainer}>
-                <Image source={match.teamB.logoUrl} style={styles.teamLogo} contentFit="contain" />
+                <Image
+                  source={match.teamB.logoUrl}
+                  style={styles.teamLogo}
+                  contentFit="contain"
+                />
               </View>
               <Text style={styles.teamTag}>{match.teamB.tag}</Text>
-              <Text style={styles.teamName} numberOfLines={1}>{match.teamB.name}</Text>
+              <Text style={styles.teamName} numberOfLines={1}>
+                {match.teamB.name}
+              </Text>
             </TouchableOpacity>
           </View>
 
@@ -241,11 +284,11 @@ export default function MatchDetail() {
               <Ionicons name="calendar-outline" size={16} color="#6c757d" />
               <Text style={styles.matchDateText}>
                 {new Date(match.matchDate).toLocaleDateString(undefined, {
-                  weekday: 'short',
-                  month: 'short',
-                  day: 'numeric',
-                  hour: '2-digit',
-                  minute: '2-digit'
+                  weekday: "short",
+                  month: "short",
+                  day: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
                 })}
               </Text>
             </View>
@@ -258,21 +301,37 @@ export default function MatchDetail() {
             <View style={styles.scoreSelectionHeader}>
               <Text style={styles.sectionTitle}>Predict the Score</Text>
               <View style={styles.selectedTeamBadge}>
-                <Image source={selectedTeam.logoUrl} style={styles.miniLogo} contentFit="contain" />
-                <Text style={styles.selectedTeamText}>{selectedTeam.tag} wins</Text>
+                <Image
+                  source={selectedTeam.logoUrl}
+                  style={styles.miniLogo}
+                  contentFit="contain"
+                />
+                <Text style={styles.selectedTeamText}>
+                  {selectedTeam.tag} wins
+                </Text>
               </View>
             </View>
 
             <View style={styles.scoresGrid}>
               {possibleScores.map((score, index) => {
-                const isSelected = selectedScore?.teamA === score.teamA && selectedScore?.teamB === score.teamB;
+                const isSelected =
+                  selectedScore?.teamA === score.teamA &&
+                  selectedScore?.teamB === score.teamB;
                 return (
                   <TouchableOpacity
                     key={index}
-                    style={[styles.scorePill, isSelected && styles.scorePillSelected]}
+                    style={[
+                      styles.scorePill,
+                      isSelected && styles.scorePillSelected,
+                    ]}
                     onPress={() => setSelectedScore(score)}
                   >
-                    <Text style={[styles.scorePillText, isSelected && styles.scorePillTextSelected]}>
+                    <Text
+                      style={[
+                        styles.scorePillText,
+                        isSelected && styles.scorePillTextSelected,
+                      ]}
+                    >
                       {score.teamA} - {score.teamB}
                     </Text>
                   </TouchableOpacity>
@@ -282,7 +341,10 @@ export default function MatchDetail() {
 
             {selectedScore && (
               <TouchableOpacity
-                style={[styles.submitButton, createPrediction.isPending && styles.submitButtonDisabled]}
+                style={[
+                  styles.submitButton,
+                  createPrediction.isPending && styles.submitButtonDisabled,
+                ]}
                 onPress={handleSubmitPrediction}
                 disabled={createPrediction.isPending}
               >
@@ -291,7 +353,9 @@ export default function MatchDetail() {
                 ) : (
                   <>
                     <Ionicons name="send" size={18} color="#fff" />
-                    <Text style={styles.submitButtonText}>Submit Prediction</Text>
+                    <Text style={styles.submitButtonText}>
+                      Submit Prediction
+                    </Text>
                   </>
                 )}
               </TouchableOpacity>
@@ -301,7 +365,8 @@ export default function MatchDetail() {
               <View style={styles.errorContainer}>
                 <Ionicons name="alert-circle" size={18} color="#dc3545" />
                 <Text style={styles.errorMessage}>
-                  {(createPrediction.error as any)?.message || "Failed to submit prediction"}
+                  {(createPrediction.error as any)?.message ||
+                    "Failed to submit prediction"}
                 </Text>
               </View>
             )}
@@ -311,9 +376,11 @@ export default function MatchDetail() {
         {/* Select Team Prompt */}
         {!hasPredicted && !isPredictionLocked && !selectedTeamId && (
           <View style={styles.promptCard}>
-            <Ionicons name="hand-left-outline" size={32} color="#6366f1" />
+            <Ionicons name="rocket-outline" size={32} color="#6366f1" />
             <Text style={styles.promptTitle}>Make Your Prediction</Text>
-            <Text style={styles.promptText}>Tap on the team you think will win</Text>
+            <Text style={styles.promptText}>
+              Tap on the team you think will win
+            </Text>
           </View>
         )}
 
@@ -322,25 +389,42 @@ export default function MatchDetail() {
           <View style={styles.lockedCard}>
             <Ionicons name="lock-closed" size={32} color="#f59e0b" />
             <Text style={styles.lockedTitle}>Predictions Locked</Text>
-            <Text style={styles.lockedText}>This match has already started</Text>
+            <Text style={styles.lockedText}>
+              This match has already started
+            </Text>
           </View>
         )}
 
         {/* User's Prediction */}
         {hasPredicted && (
-          <View style={[
-            styles.myPredictionCard,
-            predictionStatus?.color && { borderColor: predictionStatus.color }
-          ]}>
+          <View
+            style={[
+              styles.myPredictionCard,
+              predictionStatus?.color && {
+                borderColor: predictionStatus.color,
+              },
+            ]}
+          >
             <View style={styles.myPredictionHeader}>
               <View style={styles.myPredictionTitleRow}>
                 <Ionicons name="bookmark" size={20} color="#6366f1" />
                 <Text style={styles.sectionTitle}>Your Prediction</Text>
               </View>
               {predictionStatus && (
-                <View style={[styles.resultBadge, { backgroundColor: predictionStatus.color }]}>
-                  <Ionicons name={predictionStatus.icon as any} size={14} color="#fff" />
-                  <Text style={styles.resultBadgeText}>{predictionStatus.label}</Text>
+                <View
+                  style={[
+                    styles.resultBadge,
+                    { backgroundColor: predictionStatus.color },
+                  ]}
+                >
+                  <Ionicons
+                    name={predictionStatus.icon as any}
+                    size={14}
+                    color="#fff"
+                  />
+                  <Text style={styles.resultBadgeText}>
+                    {predictionStatus.label}
+                  </Text>
                 </View>
               )}
             </View>
@@ -348,10 +432,16 @@ export default function MatchDetail() {
             <View style={styles.myPredictionContent}>
               <View style={styles.predictionTeamInfo}>
                 <View style={styles.predictionLogoContainer}>
-                  <Image source={myPrediction.team.logoUrl} style={styles.predictionLogo} contentFit="contain" />
+                  <Image
+                    source={myPrediction.team.logoUrl}
+                    style={styles.predictionLogo}
+                    contentFit="contain"
+                  />
                 </View>
                 <View>
-                  <Text style={styles.predictionTeamTag}>{myPrediction.team.tag}</Text>
+                  <Text style={styles.predictionTeamTag}>
+                    {myPrediction.team.tag}
+                  </Text>
                   <Text style={styles.predictionLabel}>Winner</Text>
                 </View>
               </View>
@@ -359,14 +449,20 @@ export default function MatchDetail() {
               <View style={styles.predictionScoreBox}>
                 <Text style={styles.predictionScoreLabel}>Score</Text>
                 <Text style={styles.predictionScoreValue}>
-                  {myPrediction.predictedTeamAScore} - {myPrediction.predictedTeamBScore}
+                  {myPrediction.predictedTeamAScore} -{" "}
+                  {myPrediction.predictedTeamBScore}
                 </Text>
               </View>
 
               {myPrediction.points !== null && (
                 <View style={styles.pointsBox}>
                   <Text style={styles.pointsLabel}>Points</Text>
-                  <Text style={[styles.pointsValue, { color: predictionStatus?.color || "#6366f1" }]}>
+                  <Text
+                    style={[
+                      styles.pointsValue,
+                      { color: predictionStatus?.color || "#6366f1" },
+                    ]}
+                  >
                     +{myPrediction.points}
                   </Text>
                 </View>
@@ -382,44 +478,142 @@ export default function MatchDetail() {
               <Ionicons name="people" size={20} color="#6c757d" />
               <Text style={styles.sectionTitle}>Community Predictions</Text>
               <View style={styles.predictionCountBadge}>
-                <Text style={styles.predictionCountText}>{allPredictions.length}</Text>
+                <Text style={styles.predictionCountText}>
+                  {allPredictions.length}
+                </Text>
               </View>
             </View>
 
-            <View style={styles.predictionsList}>
-              {allPredictions.map((prediction, index) => (
-                <View
-                  key={prediction.id}
-                  style={[
-                    styles.predictionListItem,
-                    index === allPredictions.length - 1 && styles.predictionListItemLast
-                  ]}
-                >
-                  <View style={styles.predictionUserInfo}>
-                    {prediction.user?.image ? (
-                      <Image source={prediction.user.image} style={styles.userAvatar} />
-                    ) : (
-                      <View style={styles.userAvatarPlaceholder}>
-                        <Text style={styles.avatarInitial}>
-                          {(prediction.user?.displayUsername || prediction.user?.username || "?")[0].toUpperCase()}
-                        </Text>
-                      </View>
-                    )}
-                    <Text style={styles.userName} numberOfLines={1}>
-                      {prediction.user?.displayUsername || prediction.user?.username || prediction.user?.name || "Anonymous"}
-                    </Text>
-                  </View>
-
-                  <View style={styles.predictionValue}>
-                    <View style={styles.miniLogoContainer}>
-                      <Image source={prediction.team.logoUrl} style={styles.miniLogo} contentFit="contain" />
-                    </View>
-                    <Text style={styles.predictionValueScore}>
-                      {prediction.predictedTeamAScore}-{prediction.predictedTeamBScore}
-                    </Text>
-                  </View>
+            {isMatchCompleted && (
+              <View style={styles.statsRow}>
+                <View style={styles.statItem}>
+                  <Ionicons name="trophy" size={16} color="#10b981" />
+                  <Text style={styles.statLabel}>
+                    {allPredictions.filter((p) => p.isExact === true).length}{" "}
+                    Exact
+                  </Text>
                 </View>
-              ))}
+                <View style={styles.statItem}>
+                  <Ionicons name="checkmark-circle" size={16} color="#6366f1" />
+                  <Text style={styles.statLabel}>
+                    {
+                      allPredictions.filter(
+                        (p) => p.isCorrect === true && p.isExact !== true,
+                      ).length
+                    }{" "}
+                    Correct
+                  </Text>
+                </View>
+                <View style={styles.statItem}>
+                  <Ionicons name="close-circle" size={16} color="#ef4444" />
+                  <Text style={styles.statLabel}>
+                    {allPredictions.filter((p) => p.isCorrect === false).length}{" "}
+                    Wrong
+                  </Text>
+                </View>
+              </View>
+            )}
+
+            <View style={styles.predictionsList}>
+              {allPredictions.map((prediction, index) => {
+                // Determine prediction result for completed matches
+                let resultIcon = null;
+                let resultColor = "#6c757d";
+                let resultBadgeStyle = null;
+
+                if (isMatchCompleted && prediction.points !== null) {
+                  if (prediction.isExact) {
+                    resultIcon = "trophy";
+                    resultColor = "#10b981";
+                    resultBadgeStyle = styles.resultBadgeExact;
+                  } else if (prediction.isCorrect) {
+                    resultIcon = "checkmark-circle";
+                    resultColor = "#6366f1";
+                    resultBadgeStyle = styles.resultBadgeCorrect;
+                  } else {
+                    resultIcon = "close-circle";
+                    resultColor = "#ef4444";
+                    resultBadgeStyle = styles.resultBadgeWrong;
+                  }
+                }
+
+                return (
+                  <View
+                    key={prediction.id}
+                    style={[
+                      styles.predictionListItem,
+                      index === allPredictions.length - 1 &&
+                        styles.predictionListItemLast,
+                      isMatchCompleted &&
+                        prediction.isCorrect &&
+                        styles.predictionListItemCorrect,
+                      isMatchCompleted &&
+                        prediction.isCorrect === false &&
+                        styles.predictionListItemWrong,
+                    ]}
+                  >
+                    <View style={styles.predictionUserInfo}>
+                      {prediction.user?.image ? (
+                        <Image
+                          source={prediction.user.image}
+                          style={styles.userAvatar}
+                        />
+                      ) : (
+                        <View style={styles.userAvatarPlaceholder}>
+                          <Text style={styles.avatarInitial}>
+                            {(prediction.user?.displayUsername ||
+                              prediction.user?.username ||
+                              "?")[0].toUpperCase()}
+                          </Text>
+                        </View>
+                      )}
+                      <View style={styles.userNameContainer}>
+                        <Text style={styles.userName} numberOfLines={1}>
+                          {prediction.user?.displayUsername ||
+                            prediction.user?.username ||
+                            prediction.user?.name ||
+                            "Anonymous"}
+                        </Text>
+                        {isMatchCompleted && prediction.points !== null && (
+                          <Text
+                            style={[
+                              styles.pointsBadgeSmall,
+                              { color: resultColor },
+                            ]}
+                          >
+                            +{prediction.points} pts
+                          </Text>
+                        )}
+                      </View>
+                    </View>
+
+                    <View style={styles.predictionValue}>
+                      <View style={styles.miniLogoContainer}>
+                        <Image
+                          source={prediction.team.logoUrl}
+                          style={styles.miniLogo}
+                          contentFit="contain"
+                        />
+                      </View>
+                      <Text style={styles.predictionValueScore}>
+                        {prediction.predictedTeamAScore}-
+                        {prediction.predictedTeamBScore}
+                      </Text>
+                      {resultIcon && (
+                        <View
+                          style={[styles.resultIconBadge, resultBadgeStyle]}
+                        >
+                          <Ionicons
+                            name={resultIcon as any}
+                            size={16}
+                            color={resultColor}
+                          />
+                        </View>
+                      )}
+                    </View>
+                  </View>
+                );
+              })}
             </View>
           </View>
         )}
@@ -428,7 +622,9 @@ export default function MatchDetail() {
         {hasPredicted && (!allPredictions || allPredictions.length === 0) && (
           <View style={styles.emptyPredictions}>
             <Ionicons name="people-outline" size={40} color="#adb5bd" />
-            <Text style={styles.emptyPredictionsText}>Be the first to predict!</Text>
+            <Text style={styles.emptyPredictionsText}>
+              Be the first to predict!
+            </Text>
           </View>
         )}
       </ScrollView>
@@ -767,13 +963,8 @@ const styles = StyleSheet.create({
 
   // Prompt Card
   promptCard: {
-    backgroundColor: "#eef2ff",
-    borderRadius: 20,
-    padding: 24,
+    padding: 16,
     alignItems: "center",
-    borderWidth: 2,
-    borderColor: "#c7d2fe",
-    borderStyle: "dashed",
   },
   promptTitle: {
     fontSize: 16,
@@ -901,7 +1092,7 @@ const styles = StyleSheet.create({
   allPredictionsCard: {
     backgroundColor: "#fff",
     borderRadius: 20,
-    padding: 20,
+    paddingVertical: 20,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.08,
@@ -913,6 +1104,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 8,
     marginBottom: 16,
+    paddingHorizontal: 20,
   },
   predictionCountBadge: {
     backgroundColor: "#f8f9fa",
@@ -926,6 +1118,25 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#6c757d",
   },
+  statsRow: {
+    flexDirection: "row",
+    gap: 12,
+    marginBottom: 16,
+    paddingBottom: 16,
+    paddingHorizontal: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: "#f1f3f4",
+  },
+  statItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+  },
+  statLabel: {
+    fontSize: 12,
+    color: "#6c757d",
+    fontWeight: "500",
+  },
   predictionsList: {
     gap: 0,
   },
@@ -934,16 +1145,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingVertical: 12,
+    paddingHorizontal: 20,
     borderBottomWidth: 1,
     borderBottomColor: "#f1f3f4",
   },
   predictionListItemLast: {
     borderBottomWidth: 0,
   },
+  predictionListItemCorrect: {
+    backgroundColor: "#f0fdf4",
+  },
+  predictionListItemWrong: {
+    backgroundColor: "#fef2f2",
+  },
   predictionUserInfo: {
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
+    flex: 1,
+  },
+  userNameContainer: {
     flex: 1,
   },
   userAvatar: {
@@ -970,6 +1191,11 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     flex: 1,
   },
+  pointsBadgeSmall: {
+    fontSize: 11,
+    fontWeight: "600",
+    marginTop: 2,
+  },
   predictionValue: {
     flexDirection: "row",
     alignItems: "center",
@@ -992,6 +1218,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 8,
+  },
+  resultIconBadge: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  resultBadgeExact: {
+    backgroundColor: "#d1fae5",
+  },
+  resultBadgeCorrect: {
+    backgroundColor: "#e0e7ff",
+  },
+  resultBadgeWrong: {
+    backgroundColor: "#fee2e2",
   },
 
   // Empty State

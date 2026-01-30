@@ -37,26 +37,6 @@ services:
       db:
         condition: service_healthy
 
-  api:
-    build:
-      context: .
-      dockerfile: apps/api/Dockerfile
-    restart: always
-    ports:
-      - "3000:3000"
-    environment:
-      PG_HOST: db
-      PG_PORT: 5432
-      PG_USER: ${POSTGRES_USER:-user}
-      PG_PASSWORD: ${POSTGRES_PASSWORD:-password}
-      PG_DATABASE: ${POSTGRES_DB:-pronolol}
-      DATABASE_URL: postgresql://${POSTGRES_USER:-user}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-pronolol}?sslmode=disable
-      NODE_ENV: production
-      PORT: 3000
-    depends_on:
-      migrator:
-        condition: service_completed_successfully
-
   scraper:
     build:
       context: .
