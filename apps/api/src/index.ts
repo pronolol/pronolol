@@ -53,18 +53,34 @@ app.get("/", (req: Request, res: Response) => {
   res.json({ message: "Welcome to the Pronolol API!" })
 })
 
-// GET /matches - Get all matches with filters
+// GET /matches - Get all matches with filters and cursor-based pagination
 app.get("/matches", async (req: Request, res: Response) => {
   try {
     const query = GetMatchesQuerySchema.parse(req.query)
 
     const where: any = {}
+    const cursorDate = query.cursor ? new Date(query.cursor) : new Date()
+    const limit = query.limit || 20
 
     if (query.tournamentId) {
       where.tournamentId = query.tournamentId
     }
 
-    if (query.state) {
+    // Handle direction-based fetching (for bidirectional scrolling)
+    if (query.direction) {
+      switch (query.direction) {
+        case "before":
+          where.matchDate = { lt: cursorDate }
+          break
+        case "after":
+          where.matchDate = { gte: cursorDate }
+          break
+        case "around":
+          // For "around", we fetch both before and after in separate queries
+          break
+      }
+    } else if (query.state) {
+      // Legacy state-based filtering
       const now = new Date()
       switch (query.state) {
         case "upcoming":
@@ -81,55 +97,96 @@ app.get("/matches", async (req: Request, res: Response) => {
       }
     }
 
-    const matches = await prisma.match.findMany({
-      where,
-      include: {
-        teamA: {
-          select: {
-            id: true,
-            name: true,
-            tag: true,
-            logoUrl: true,
-          },
+    const includeOptions = {
+      teamA: {
+        select: {
+          id: true,
+          name: true,
+          tag: true,
+          logoUrl: true,
         },
-        teamB: {
-          select: {
-            id: true,
-            name: true,
-            tag: true,
-            logoUrl: true,
-          },
+      },
+      teamB: {
+        select: {
+          id: true,
+          name: true,
+          tag: true,
+          logoUrl: true,
         },
-        winner: {
-          select: {
-            id: true,
-            name: true,
-            tag: true,
-            logoUrl: true,
-          },
+      },
+      winner: {
+        select: {
+          id: true,
+          name: true,
+          tag: true,
+          logoUrl: true,
         },
-        tournament: {
-          select: {
-            id: true,
-            name: true,
-            league: {
-              select: {
-                id: true,
-                name: true,
-                imageUrl: true,
-              },
+      },
+      tournament: {
+        select: {
+          id: true,
+          name: true,
+          league: {
+            select: {
+              id: true,
+              name: true,
+              imageUrl: true,
             },
           },
         },
       },
+    }
+
+    // Handle "around" direction specially - fetch both before and after
+    if (query.direction === "around") {
+      const halfLimit = Math.floor(limit / 2)
+
+      const [beforeMatches, afterMatches] = await Promise.all([
+        prisma.match.findMany({
+          where: {
+            ...where,
+            matchDate: { lt: cursorDate },
+          },
+          include: includeOptions,
+          orderBy: { matchDate: "desc" },
+          take: halfLimit,
+        }),
+        prisma.match.findMany({
+          where: {
+            ...where,
+            matchDate: { gte: cursorDate },
+          },
+          include: includeOptions,
+          orderBy: { matchDate: "asc" },
+          take: halfLimit,
+        }),
+      ])
+
+      // Combine: reverse beforeMatches (to get ascending order) + afterMatches
+      const matches = [...beforeMatches.reverse(), ...afterMatches]
+      return res.json(matches)
+    }
+
+    // Standard query for other cases
+    const matches = await prisma.match.findMany({
+      where,
+      include: includeOptions,
       orderBy: {
-        matchDate: query.state === "completed" ? "desc" : "asc",
+        matchDate:
+          query.direction === "before"
+            ? "desc"
+            : query.state === "completed"
+              ? "desc"
+              : "asc",
       },
-      ...(query.limit && { take: query.limit }),
+      take: limit,
       ...(query.offset && { skip: query.offset }),
     })
 
-    res.json(matches)
+    // For "before" direction, reverse to maintain chronological order
+    const result = query.direction === "before" ? matches.reverse() : matches
+
+    res.json(result)
   } catch (error) {
     if (error instanceof ZodError) {
       return res.status(400).json({

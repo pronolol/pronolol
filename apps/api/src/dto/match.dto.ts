@@ -62,6 +62,16 @@ export const GetMatchesQuerySchema = z
       description: "Filter matches by state",
       example: "upcoming",
     }),
+    cursor: z.string().optional().openapi({
+      description:
+        "ISO date string to use as cursor for pagination. If not provided, current time is used.",
+      example: "2026-01-30T12:00:00.000Z",
+    }),
+    direction: z.enum(["before", "after", "around"]).optional().openapi({
+      description:
+        "Direction to fetch matches relative to cursor. 'around' returns matches both before and after.",
+      example: "around",
+    }),
     limit: z
       .string()
       .transform(Number)
