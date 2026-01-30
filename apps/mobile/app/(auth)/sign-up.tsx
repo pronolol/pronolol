@@ -21,15 +21,24 @@ export default function SignUpScreen() {
   const handleDiscordSignUp = async () => {
     setIsLoading(true)
     try {
-      const result = await signIn.social({
-        provider: "discord",
-        callbackURL: "/callback",
-      })
-
-      if (result.error) {
-        Alert.alert("Error", result.error.message || "Discord sign up failed")
-      }
+      await signIn.social(
+        {
+          provider: "discord",
+          callbackURL: "/callback",
+        },
+        {
+          onSuccess: async () => {
+            // Session will be handled by the callback page
+            console.log("Discord OAuth initiated successfully")
+          },
+          onError: (ctx) => {
+            console.error("Discord OAuth error:", ctx.error)
+            Alert.alert("Error", ctx.error.message || "Discord sign up failed")
+          },
+        }
+      )
     } catch (error: any) {
+      console.error("Discord OAuth error:", error)
       Alert.alert("Error", error.message || "Discord sign up failed")
     } finally {
       setIsLoading(false)
@@ -54,24 +63,43 @@ export default function SignUpScreen() {
 
     setIsLoading(true)
     try {
-      const result = await signUp.email({
-        email,
-        password,
-        name: username,
-        username: username,
-      })
+      const result = await signUp.email(
+        {
+          email,
+          password,
+          name: username,
+          username: username,
+        },
+        {
+          onSuccess: async () => {
+            // Session is automatically stored by better-auth expo plugin
+            Alert.alert("Success", "Account created successfully!", [
+              { text: "OK", onPress: () => router.replace("/") },
+            ])
+          },
+          onError: (ctx) => {
+            Alert.alert(
+              "Sign Up Failed",
+              ctx.error.message || "Could not create account"
+            )
+          },
+        }
+      )
 
-      if (result.error) {
+      // Handle result if callbacks aren't used
+      if (result?.error) {
         Alert.alert(
           "Sign Up Failed",
           result.error.message || "Could not create account"
         )
-      } else {
+      } else if (result?.data) {
+        // Successful sign up
         Alert.alert("Success", "Account created successfully!", [
           { text: "OK", onPress: () => router.replace("/") },
         ])
       }
     } catch (error: any) {
+      console.error("Sign up error:", error)
       Alert.alert("Error", error.message || "An error occurred during sign up")
     } finally {
       setIsLoading(false)

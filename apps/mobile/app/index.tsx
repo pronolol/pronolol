@@ -11,17 +11,18 @@ import { useRouter } from "expo-router"
 import { useEffect } from "react"
 import MatchCard from "@/components/MatchCard"
 import { useGetMatches } from "@/api"
-import { useSession, signOut } from "@/lib/auth-client"
+import { useAuth } from "@/lib/auth-context"
+import { signOut } from "@/lib/auth-client"
 
 export default function Index() {
   const router = useRouter()
-  const { data: session, isPending: isSessionLoading } = useSession()
+  const { user, isAuthenticated, isLoading: isSessionLoading } = useAuth()
 
   useEffect(() => {
-    if (!isSessionLoading && !session) {
+    if (!isSessionLoading && !isAuthenticated) {
       router.replace("/(auth)/sign-in")
     }
-  }, [session, isSessionLoading])
+  }, [isAuthenticated, isSessionLoading])
   const {
     data: matches,
     isLoading,
@@ -32,7 +33,18 @@ export default function Index() {
   })
 
   const handleSignOut = async () => {
-    await signOut()
+    try {
+      const result = await signOut()
+
+      if (result.success || result.error) {
+        // Redirect to sign in page after sign out (success or failure)
+        router.replace("/(auth)/sign-in")
+      }
+    } catch (error) {
+      console.error("Sign out error:", error)
+      // Still redirect to sign in even if there's an error
+      router.replace("/(auth)/sign-in")
+    }
   }
 
   if (isSessionLoading) {
@@ -79,10 +91,7 @@ export default function Index() {
         <View style={styles.userInfo}>
           <Text style={styles.welcomeText}>
             Welcome,{" "}
-            {session?.user?.displayUsername ||
-              session?.user?.username ||
-              session?.user?.name}
-            !
+            {user?.displayUsername || user?.username || user?.name || "User"}!
           </Text>
           <TouchableOpacity
             style={styles.signOutButton}
