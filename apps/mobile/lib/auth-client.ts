@@ -5,6 +5,7 @@ import { API_BASE_URL } from "@/config/env"
 
 export const authClient = createAuthClient({
   baseURL: API_BASE_URL,
+  basePath: "/auth",
   plugins: [
     expoClient({
       scheme: "pronolol",

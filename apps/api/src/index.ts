@@ -11,8 +11,8 @@ import { auth } from "./lib/auth"
 import cors from "cors"
 
 const app = express()
-const port = process.env.PORT || 3000
-const host = process.env.HOST || "0.0.0.0"
+const port = process.env.API_PORT || 3000
+const host = process.env.API_HOST || "0.0.0.0"
 
 app.use(
   cors({
@@ -57,6 +57,7 @@ app.get("/", (req: Request, res: Response) => {
 
 // GET /matches - Get all matches with filters and cursor-based pagination
 app.get("/matches", async (req: Request, res: Response) => {
+  console.log("[Matches GET] Fetching matches with query:", req.query)
   try {
     const query = GetMatchesQuerySchema.parse(req.query)
 
@@ -442,7 +443,7 @@ app.get("/matches/:id/predictions", async (req: Request, res: Response) => {
   }
 })
 
-app.listen(Number(port), host, () => {
+app.listen(port, host, () => {
   const baseUrl = process.env.BETTER_AUTH_URL || `http://${host}:${port}`
   const isBaseUrlConfigured = !!process.env.BETTER_AUTH_URL
 
@@ -460,7 +461,6 @@ app.listen(Number(port), host, () => {
     console.log(`\n💡 Tip: Configure BETTER_AUTH_URL in .env for mobile access`)
     console.log(`   Example: BETTER_AUTH_URL=http://YOUR_LOCAL_IP:${port}`)
   }
-  console.log("")
 })
 
 // Graceful shutdown
