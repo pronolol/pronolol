@@ -7,6 +7,7 @@ import { prisma } from "@pronolol/database"
 
 export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL || "http://192.168.1.116:3000",
+  basePath: "/auth",
   database: prismaAdapter(prisma, { provider: "postgresql" }),
   emailAndPassword: {
     enabled: true,
