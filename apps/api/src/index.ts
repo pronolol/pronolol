@@ -11,7 +11,6 @@ import { auth } from "./lib/auth"
 import cors from "cors"
 
 const app = express()
-app.use(express.json())
 const port = process.env.PORT || 3000
 const host = process.env.HOST || "0.0.0.0"
 
@@ -23,7 +22,10 @@ app.use(
   })
 )
 
-app.use("/auth", toNodeHandler(auth))
+app.all("/auth/*splat", toNodeHandler(auth))
+
+app.use(express.json())
+
 
 // Auth middleware helper
 const getSession = async (req: Request) => {
