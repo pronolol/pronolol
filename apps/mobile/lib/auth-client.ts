@@ -1,6 +1,6 @@
 import { createAuthClient } from "better-auth/react"
 import { expoClient } from "@better-auth/expo/client"
-import * as SecureStore from "expo-secure-store"
+import * as storage from "./storage"
 import { API_BASE_URL } from "@/config/env"
 
 export const authClient = createAuthClient({
@@ -10,7 +10,7 @@ export const authClient = createAuthClient({
     expoClient({
       scheme: "pronolol",
       storagePrefix: "pronolol",
-      storage: SecureStore,
+      storage,
     }),
   ],
   fetchOptions: {
@@ -30,14 +30,14 @@ export const signOut = async () => {
     await authClient.signOut()
 
     // Clear all stored authentication data
-    await SecureStore.deleteItemAsync("pronolol.session.token")
-    await SecureStore.deleteItemAsync("pronolol.session.userId")
+    await storage.deleteItem("pronolol.session.token")
+    await storage.deleteItem("pronolol.session.userId")
 
     // Clear any other stored keys that might exist
     const keys = ["pronolol.user", "pronolol.token", "pronolol.refreshToken"]
     await Promise.all(
       keys.map((key) =>
-        SecureStore.deleteItemAsync(key).catch(() => {
+        storage.deleteItem(key).catch(() => {
           // Ignore errors for keys that don't exist
         })
       )
@@ -48,8 +48,8 @@ export const signOut = async () => {
     console.error("Sign out error:", error)
     // Even if server call fails, clear local storage
     try {
-      await SecureStore.deleteItemAsync("pronolol.session.token")
-      await SecureStore.deleteItemAsync("pronolol.session.userId")
+      await storage.deleteItem("pronolol.session.token")
+      await storage.deleteItem("pronolol.session.userId")
     } catch (e) {
       console.error("Error clearing storage:", e)
     }
