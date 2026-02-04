@@ -22,7 +22,7 @@ app.use(
   })
 )
 
-app.all("/auth/*", toNodeHandler(auth))
+app.all("/auth/*splat", toNodeHandler(auth))
 
 app.use(express.json())
 
