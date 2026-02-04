@@ -16,7 +16,9 @@ const host = process.env.API_HOST || "0.0.0.0"
 
 app.use(
   cors({
-    origin: "*",
+    origin: process.env.NODE_ENV === "development"
+      ? true
+      : ["https://pronolol.fr", "https://www.pronolol.fr", "pronolol://"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })

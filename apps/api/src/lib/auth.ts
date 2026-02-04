@@ -21,7 +21,7 @@ export const auth = betterAuth({
   },
   trustedOrigins: [
     "pronolol://",
-    "http://192.168.1.116:3000",
+    "https://pronolol.fr",
     ...(process.env.NODE_ENV === "development"
       ? ["exp://", "exp://**", "exp://192.168.*.*:*/**"]
       : []),
