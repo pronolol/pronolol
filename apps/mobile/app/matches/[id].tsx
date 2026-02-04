@@ -2,7 +2,7 @@ import { ScrollView, StyleSheet } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useLocalSearchParams, useRouter } from "expo-router"
 import { useState, useMemo } from "react"
-import { useGetMatches, useGetPredictions, useCreatePrediction } from "@/api"
+import { useGetMatchesId, useGetPredictions, useCreatePrediction } from "@/api"
 import { colors, spacing } from "@/components/ui/theme"
 import {
   LoadingScreen,
@@ -24,9 +24,8 @@ export default function MatchDetail() {
   const { id } = useLocalSearchParams<{ id: string }>()
   const router = useRouter()
 
-  // Fetch match data
-  const { data: matches, isLoading: isLoadingMatch } = useGetMatches({})
-  const match = matches?.find((m) => m.id === id)
+  // Fetch match data by ID
+  const { data: match, isLoading: isLoadingMatch } = useGetMatchesId(id!)
 
   // Fetch predictions
   const { data: predictionsData, isLoading: isLoadingPredictions } =
