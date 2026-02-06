@@ -87,8 +87,8 @@ export class DatabaseService {
     if (matches.length === 0) return
 
     for (const match of matches) {
-      const winnerId = match.result?.winner || null
       const isFinished = match.state === "completed"
+      const winnerId = isFinished ? match.result?.winner : null
 
       await prisma.$transaction(async (tx) => {
         const updatedMatch = await tx.match.upsert({

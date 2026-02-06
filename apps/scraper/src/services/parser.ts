@@ -68,30 +68,51 @@ export class ParserService {
           event.matchTeams[1].code === "TBD"
         )
           continue
+
+        // Normalize team data with their results
+        const teams = [
+          {
+            id: event.matchTeams[0].id.split(":")[1],
+            name: event.matchTeams[0].name,
+            tag: event.matchTeams[0].code,
+            logo: event.matchTeams[0].image,
+            result: event.matchTeams[0].result,
+          },
+          {
+            id: event.matchTeams[1].id.split(":")[1],
+            name: event.matchTeams[1].name,
+            tag: event.matchTeams[1].code,
+            logo: event.matchTeams[1].image,
+            result: event.matchTeams[1].result,
+          },
+        ]
+
+        // Sort teams by ID to ensure consistent ordering across scrapes
+        // This prevents issues when the API changes team order based on pick side
+        teams.sort((a, b) => a.id.localeCompare(b.id))
+
         const match: NormalizedMatch = {
           id: event.match.id,
           date: event.startTime,
           bestOf: event.match.strategy.count,
           state: event.match.state as NormalizedMatch["state"],
           team1: {
-            id: event.matchTeams[0].id.split(":")[1],
-            name: event.matchTeams[0].name,
-            tag: event.matchTeams[0].code,
-            logo: event.matchTeams[0].image,
+            id: teams[0].id,
+            name: teams[0].name,
+            tag: teams[0].tag,
+            logo: teams[0].logo,
           },
           team2: {
-            id: event.matchTeams[1].id.split(":")[1],
-            name: event.matchTeams[1].name,
-            tag: event.matchTeams[1].code,
-            logo: event.matchTeams[1].image,
+            id: teams[1].id,
+            name: teams[1].name,
+            tag: teams[1].tag,
+            logo: teams[1].logo,
           },
           result: {
             winner:
-              event.matchTeams[0].result.outcome === "win"
-                ? event.matchTeams[0].id.split(":")[1]
-                : event.matchTeams[1].id.split(":")[1],
-            team1Score: event.matchTeams[0].result.gameWins,
-            team2Score: event.matchTeams[1].result.gameWins,
+              teams[0].result.outcome === "win" ? teams[0].id : teams[1].id,
+            team1Score: teams[0].result.gameWins,
+            team2Score: teams[1].result.gameWins,
           },
           league: {
             id: event.league.id,
