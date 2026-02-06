@@ -4,6 +4,7 @@ import swaggerUi from "swagger-ui-express"
 import { prisma } from "@pronolol/database"
 import { GetMatchesQuerySchema } from "./dto/match.dto"
 import { CreatePredictionSchema } from "./dto/prediction.dto"
+import { GetRankingQuerySchema } from "./dto/ranking.dto"
 import { ZodError } from "zod"
 import { openApiDocument } from "./openapi"
 import { toNodeHandler } from "better-auth/node"
@@ -16,9 +17,7 @@ const host = process.env.API_HOST || "0.0.0.0"
 
 app.use(
   cors({
-    origin: process.env.NODE_ENV === "development"
-      ? true
-      : ["https://pronolol.fr", "https://www.pronolol.fr", "pronolol://"],
+    origin: ["http://localhost:8081", "http://localhost:3000", "https://pronolol.fr"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
@@ -442,6 +441,136 @@ app.get("/matches/:id/predictions", async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Error fetching predictions:", error)
     res.status(500).json({ error: "Failed to fetch predictions" })
+  }
+})
+
+// GET /ranking - Get user rankings
+app.get("/ranking", async (req: Request, res: Response) => {
+  try {
+    const query = GetRankingQuerySchema.parse(req.query)
+
+    // Build where clause for filtering predictions
+    const whereClause: any = {
+      points: { not: null }, // Only include predictions that have been scored
+    }
+
+    // If filtering by tournament or league
+    if (query.tournamentId || query.leagueId) {
+      whereClause.match = {}
+      
+      if (query.tournamentId) {
+        whereClause.match.tournamentId = query.tournamentId
+      }
+      
+      if (query.leagueId) {
+        whereClause.match.tournament = {
+          leagueId: query.leagueId,
+        }
+      }
+    }
+
+    // Fetch all predictions with user and match data
+    const predictions = await prisma.prediction.findMany({
+      where: whereClause,
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            displayUsername: true,
+            username: true,
+            image: true,
+          },
+        },
+        match: {
+          include: {
+            tournament: {
+              include: {
+                league: true,
+              },
+            },
+          },
+        },
+      },
+    })
+
+    // Group predictions by user and calculate stats
+    const userStatsMap = new Map<
+      string,
+      {
+        userId: string
+        displayName: string
+        username: string | null
+        image: string | null
+        totalPoints: number
+        totalPredictions: number
+        correctPredictions: number
+        exactPredictions: number
+      }
+    >()
+
+    predictions.forEach((prediction) => {
+      const userId = prediction.user.id
+      const stats = userStatsMap.get(userId) || {
+        userId,
+        displayName:
+          prediction.user.displayUsername ||
+          prediction.user.username ||
+          prediction.user.name,
+        username: prediction.user.username,
+        image: prediction.user.image,
+        totalPoints: 0,
+        totalPredictions: 0,
+        correctPredictions: 0,
+        exactPredictions: 0,
+      }
+
+      stats.totalPoints += prediction.points || 0
+      stats.totalPredictions += 1
+      if (prediction.isCorrect) stats.correctPredictions += 1
+      if (prediction.isExact) stats.exactPredictions += 1
+
+      userStatsMap.set(userId, stats)
+    })
+
+    // Convert to array and calculate percentage
+    const rankings = Array.from(userStatsMap.values())
+      .map((stats) => ({
+        ...stats,
+        correctnessPercentage:
+          stats.totalPredictions > 0
+            ? Math.round((stats.correctPredictions / stats.totalPredictions) * 100)
+            : 0,
+      }))
+      .sort((a, b) => {
+        // Sort by total points first
+        if (b.totalPoints !== a.totalPoints) {
+          return b.totalPoints - a.totalPoints
+        }
+        // Then by correctness percentage
+        return b.correctnessPercentage - a.correctnessPercentage
+      })
+      .map((entry, index) => ({
+        rank: index + 1,
+        ...entry,
+      }))
+
+    res.json({
+      rankings,
+      filters: {
+        leagueId: query.leagueId || null,
+        tournamentId: query.tournamentId || null,
+      },
+    })
+  } catch (error) {
+    if (error instanceof ZodError) {
+      return res.status(400).json({
+        error: "Validation error",
+        details: error.issues,
+      })
+    }
+    console.error("Error fetching ranking:", error)
+    res.status(500).json({ error: "Failed to fetch ranking" })
   }
 })
 

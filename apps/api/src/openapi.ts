@@ -7,6 +7,10 @@ import {
   GetMatchesQuerySchema,
   ErrorResponseSchema,
 } from "./dto/match.dto"
+import {
+  GetRankingQuerySchema,
+  RankingResponseSchema,
+} from "./dto/ranking.dto"
 import { z } from "zod"
 
 const registry = new OpenAPIRegistry()
@@ -117,6 +121,44 @@ registry.registerPath({
   },
 })
 
+registry.registerPath({
+  method: "get",
+  path: "/ranking",
+  description:
+    "Retrieve user rankings based on prediction performance. Can be filtered by league or tournament. Rankings are sorted by total points (descending), then by correctness percentage.",
+  summary: "Get user rankings",
+  tags: ["Rankings"],
+  request: {
+    query: GetRankingQuerySchema,
+  },
+  responses: {
+    200: {
+      description: "User rankings with statistics",
+      content: {
+        "application/json": {
+          schema: RankingResponseSchema,
+        },
+      },
+    },
+    400: {
+      description: "Invalid query parameters",
+      content: {
+        "application/json": {
+          schema: ErrorResponseSchema,
+        },
+      },
+    },
+    500: {
+      description: "Internal server error",
+      content: {
+        "application/json": {
+          schema: ErrorResponseSchema,
+        },
+      },
+    },
+  },
+})
+
 const generator = new OpenApiGeneratorV3(registry.definitions)
 
 export const openApiDocument = generator.generateDocument({
@@ -139,6 +181,10 @@ export const openApiDocument = generator.generateDocument({
     {
       name: "Matches",
       description: "Match management endpoints",
+    },
+    {
+      name: "Rankings",
+      description: "User ranking and leaderboard endpoints",
     },
   ],
 })
