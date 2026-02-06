@@ -341,6 +341,7 @@ export default function Index() {
             user?.displayUsername || user?.username || user?.name || "User"
           }
           onSignOut={handleSignOut}
+          onRankingsPress={() => router.push("/ranking")}
         />
         <EmptyState icon="calendar-outline" title="No matches found" />
       </SafeAreaView>
@@ -354,6 +355,7 @@ export default function Index() {
           user?.displayUsername || user?.username || user?.name || "User"
         }
         onSignOut={handleSignOut}
+        onRankingsPress={() => router.push("/ranking")}
       />
 
       <FlatList
@@ -390,18 +392,29 @@ export default function Index() {
 type HeaderProps = {
   userName: string
   onSignOut: () => void
+  onRankingsPress: () => void
 }
 
-function Header({ userName, onSignOut }: HeaderProps) {
+function Header({ userName, onSignOut, onRankingsPress }: HeaderProps) {
   return (
     <View style={styles.header}>
       <View style={styles.userInfo}>
         <Typography variant="subtitle">Welcome, {userName}!</Typography>
-        <TouchableOpacity style={styles.signOutButton} onPress={onSignOut}>
-          <Typography variant="label" color="secondary">
-            Sign Out
-          </Typography>
-        </TouchableOpacity>
+        <View style={styles.headerButtons}>
+          <TouchableOpacity
+            style={styles.rankingsButton}
+            onPress={onRankingsPress}
+          >
+            <Typography variant="label" color="primary">
+              🏆 Rankings
+            </Typography>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.signOutButton} onPress={onSignOut}>
+            <Typography variant="label" color="secondary">
+              Sign Out
+            </Typography>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   )
@@ -421,6 +434,16 @@ const styles = StyleSheet.create({
   userInfo: {
     flexDirection: "row",
     justifyContent: "space-between",
+  headerButtons: {
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+  rankingsButton: {
+    backgroundColor: colors.primaryLight,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: borderRadius.sm,
+  },
     alignItems: "center",
   },
   signOutButton: {

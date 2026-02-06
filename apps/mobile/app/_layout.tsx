@@ -26,6 +26,7 @@ export default function RootLayout() {
               animation: "slide_from_bottom",
             }}
           />
+          <Stack.Screen name="ranking" />
           <Stack.Screen name="(auth)/sign-in" />
           <Stack.Screen name="(auth)/sign-up" />
           <Stack.Screen name="(auth)/callback" />

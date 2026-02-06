@@ -6,11 +6,7 @@
  * OpenAPI spec version: 1.0.0
  */
 
-/**
- * League information
- */
-export type TournamentLeague = {
-  id: string;
-  name: string;
-  imageUrl: string;
+export type GetRankingParams = {
+leagueId?: string;
+tournamentId?: string;
 };
