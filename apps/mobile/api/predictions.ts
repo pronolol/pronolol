@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { Platform } from "react-native"
 import { authClient } from "@/lib/auth-client"
 import { API_BASE_URL } from "@/config/env"
 
@@ -46,7 +47,14 @@ const authenticatedFetch = async <T>(
   path: string,
   options: RequestInit = {}
 ): Promise<T> => {
-  const cookies = authClient.getCookie()
+  // On web, use credentials: "include" to send cookies automatically
+  // On native, manually set the Cookie header
+  const isWeb = Platform.OS === "web"
+  const cookies = !isWeb ? authClient.getCookie() : null
+
+  console.log("[authenticatedFetch] Platform:", Platform.OS, "isWeb:", isWeb)
+  console.log("[authenticatedFetch] URL:", `${API_BASE_URL}${path}`)
+  console.log("[authenticatedFetch] credentials:", isWeb ? "include" : "omit")
 
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
@@ -55,7 +63,7 @@ const authenticatedFetch = async <T>(
       "Content-Type": "application/json",
       ...(cookies ? { Cookie: cookies } : {}),
     },
-    credentials: "omit", // We're manually setting cookies in headers
+    credentials: isWeb ? "include" : "omit",
   })
 
   if (!response.ok) {

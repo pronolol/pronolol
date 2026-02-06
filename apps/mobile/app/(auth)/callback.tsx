@@ -14,16 +14,22 @@ export default function AuthCallbackScreen() {
   useEffect(() => {
     const handleCallback = async () => {
       try {
+        console.log("Callback: Starting OAuth callback handling")
+        console.log("Callback: URL params", params)
+        
         // Wait a moment for the OAuth redirect to complete
         await new Promise((resolve) => setTimeout(resolve, 500))
 
+        console.log("Callback: Refetching session...")
         // Refetch the session to get the latest auth state
-        await refetch()
+        const result = await refetch()
+        console.log("Callback: Session refetch result", result)
 
         // Wait a bit more to ensure session is persisted
         await new Promise((resolve) => setTimeout(resolve, 300))
 
         // Navigate to home
+        console.log("Callback: Navigating to home")
         router.replace("/")
       } catch (error) {
         console.error("Callback error:", error)

@@ -1,5 +1,5 @@
 // Web fallback using localStorage
-export function getItem(key: string): string | null {
+export function getItem(key: string): string | null | Promise<string | null> {
   return localStorage.getItem(key)
 }
 

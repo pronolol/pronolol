@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react"
+import { Platform } from "react-native"
 import { useSession as useBetterAuthSession } from "./auth-client"
-import * as SecureStore from "expo-secure-store"
+import * as storage from "./storage"
 
 interface User {
   id: string
@@ -45,12 +46,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     const initializeAuth = async () => {
       try {
-        // Check if we have a stored session token
-        const token = await SecureStore.getItemAsync("pronolol.session.token")
-
-        if (token) {
-          // If we have a token, refetch the session to validate it
+        // On web, cookies are handled automatically - just refetch the session
+        // On native, check if we have a stored session token
+        if (Platform.OS === "web") {
+          // On web, always try to refetch - cookies will be sent automatically
           await refetch()
+        } else {
+          // On native, check storage first
+          const token = await storage.getItem("pronolol.session.token")
+          if (token) {
+            await refetch()
+          }
         }
       } catch (error) {
         console.error("Error initializing auth:", error)

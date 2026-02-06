@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Alert } from "react-native"
+import { Alert, Platform } from "react-native"
 import { useRouter } from "expo-router"
 import { signUp, signIn } from "@/lib/auth-client"
 import * as WebBrowser from "expo-web-browser"
@@ -8,7 +8,19 @@ import Input from "@/components/ui/Input"
 import Button from "@/components/ui/Button"
 import Divider from "@/components/ui/Divider"
 
-WebBrowser.maybeCompleteAuthSession()
+if (Platform.OS !== "web") {
+  WebBrowser.maybeCompleteAuthSession()
+}
+
+// Get the callback URL based on platform
+const getCallbackURL = () => {
+  if (Platform.OS === "web") {
+    // Use absolute URL for web
+    return "https://pronolol.fr/callback"
+  }
+  // For native, use the app scheme
+  return "pronolol://callback"
+}
 
 export default function SignUpScreen() {
   const [username, setUsername] = useState("")
@@ -24,7 +36,7 @@ export default function SignUpScreen() {
       await signIn.social(
         {
           provider: "discord",
-          callbackURL: "/callback",
+          callbackURL: getCallbackURL(),
         },
         {
           onSuccess: async () => {

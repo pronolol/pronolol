@@ -26,5 +26,16 @@ export const auth = betterAuth({
       ? ["exp://", "exp://**", "exp://192.168.*.*:*/**"]
       : []),
   ],
+  advanced: {
+    crossSubDomainCookies: {
+      enabled: true,
+      domain: ".pronolol.fr",
+    },
+    useSecureCookies: true,
+    defaultCookieAttributes: {
+      sameSite: "none",
+      secure: true,
+    },
+  },
   plugins: [expo(), username()],
 })
