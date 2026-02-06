@@ -170,7 +170,7 @@ export default function MatchDetail() {
         )}
 
         {/* Locked message */}
-        {!hasPredicted && isPredictionLocked && (
+        {!hasPredicted && isPredictionLocked && match.state !== "completed" && (
           <PromptCard
             icon="lock-closed"
             title="Predictions Locked"
@@ -188,7 +188,7 @@ export default function MatchDetail() {
         )}
 
         {/* Community predictions */}
-        {(hasPredicted || isMatchCompleted) &&
+        {(hasPredicted || isPredictionLocked || isMatchCompleted) &&
           allPredictions &&
           allPredictions.length > 0 && (
             <CommunityPredictionsCard
@@ -198,7 +198,7 @@ export default function MatchDetail() {
           )}
 
         {/* Empty predictions state */}
-        {(hasPredicted || isMatchCompleted) &&
+        {(hasPredicted || isPredictionLocked || isMatchCompleted) &&
           (!allPredictions || allPredictions.length === 0) && (
             <EmptyState
               icon="people-outline"

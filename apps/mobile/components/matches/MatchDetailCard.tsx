@@ -158,7 +158,7 @@ export function MatchDetailCard({
           isSelected={
             !hasPredicted && !isPredictionLocked && selectedTeamId === teamA.id
           }
-          isPredicted={hasPredicted && predictedTeamId === teamA.id}
+          isPredicted={false}
           disabled={hasPredicted || isPredictionLocked}
           onPress={() => onTeamSelect(teamA.id)}
         />
@@ -174,7 +174,7 @@ export function MatchDetailCard({
           isSelected={
             !hasPredicted && !isPredictionLocked && selectedTeamId === teamB.id
           }
-          isPredicted={hasPredicted && predictedTeamId === teamB.id}
+          isPredicted={false}
           disabled={hasPredicted || isPredictionLocked}
           onPress={() => onTeamSelect(teamB.id)}
         />
