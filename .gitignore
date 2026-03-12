@@ -6,7 +6,6 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 certs/
-package-lock.json
 node_modules/
 
 # Environment files
