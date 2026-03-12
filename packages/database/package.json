@@ -2,9 +2,19 @@
   "name": "@pronolol/database",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "dist/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
   "scripts": {
     "build": "tsup",
+    "generate": "prisma generate",
+    "prepublishOnly": "prisma generate && tsup",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -23,5 +33,11 @@
     "dotenv": "^16.6.1",
     "pg": "^8.17.1"
   },
-  "type": "module"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pronolol/pronolol.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
 }

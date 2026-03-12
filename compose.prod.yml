@@ -1,0 +1,24 @@
+# ===============================
+# Production Compose Override
+# ===============================
+#
+# Usage: docker compose -f compose.yml -f compose.prod.yml up -d
+#
+# Requires NPM_TOKEN env var set to a GitHub PAT with read:packages scope.
+# This is needed to pull @pronolol/database from GitHub Packages during
+# the Docker image build.
+
+secrets:
+  npm_token:
+    environment: "NPM_TOKEN"
+
+services:
+  api:
+    build:
+      secrets:
+        - npm_token
+
+  scraper:
+    build:
+      secrets:
+        - npm_token

@@ -51,10 +51,10 @@ setup:
 # Build
 # ===============================
 build:
-	docker compose build
+	docker compose -f compose.yml -f compose.prod.yml build
 
 build-no-cache:
-	docker compose build --no-cache
+	docker compose -f compose.yml -f compose.prod.yml build --no-cache
 
 # ===============================
 # Development
@@ -72,12 +72,12 @@ dev-build:
 # Production
 # ===============================
 prod:
-	docker compose up -d
+	docker compose -f compose.yml -f compose.prod.yml up -d
 
 up: prod
 
 prod-build:
-	docker compose up -d --build
+	docker compose -f compose.yml -f compose.prod.yml up -d --build
 
 # ===============================
 # Operations

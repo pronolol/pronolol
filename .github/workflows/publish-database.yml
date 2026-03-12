@@ -1,0 +1,33 @@
+name: Publish @pronolol/database
+
+on:
+  push:
+    tags:
+      - "database-v*"
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@pronolol"
+
+      - name: Install dependencies
+        working-directory: packages/database
+        run: npm install
+
+      - name: Publish
+        working-directory: packages/database
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
