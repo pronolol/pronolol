@@ -434,16 +434,16 @@ const styles = StyleSheet.create({
   userInfo: {
     flexDirection: "row",
     justifyContent: "space-between",
-  headerButtons: {
-    flexDirection: "row",
-    gap: spacing.sm,
-  },
-  rankingsButton: {
-    backgroundColor: colors.primaryLight,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    borderRadius: borderRadius.sm,
-  },
+    headerButtons: {
+      flexDirection: "row",
+      gap: spacing.sm,
+    },
+    rankingsButton: {
+      backgroundColor: colors.primaryLight,
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm,
+      borderRadius: borderRadius.sm,
+    },
     alignItems: "center",
   },
   signOutButton: {

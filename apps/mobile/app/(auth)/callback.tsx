@@ -16,7 +16,7 @@ export default function AuthCallbackScreen() {
       try {
         console.log("Callback: Starting OAuth callback handling")
         console.log("Callback: URL params", params)
-        
+
         // Wait a moment for the OAuth redirect to complete
         await new Promise((resolve) => setTimeout(resolve, 500))
 

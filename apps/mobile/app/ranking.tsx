@@ -44,7 +44,10 @@ function extractLeagues(matches: Match[]): FilterOption[] {
 }
 
 // Helper to extract unique tournaments from matches
-function extractTournaments(matches: Match[], leagueId?: string | null): FilterOption[] {
+function extractTournaments(
+  matches: Match[],
+  leagueId?: string | null
+): FilterOption[] {
   const tournamentsMap = new Map<string, string>()
   matches.forEach((match) => {
     const tournament = match.tournament
@@ -55,7 +58,9 @@ function extractTournaments(matches: Match[], leagueId?: string | null): FilterO
       }
     }
   })
-  const tournaments: FilterOption[] = [{ label: "All Tournaments", value: null }]
+  const tournaments: FilterOption[] = [
+    { label: "All Tournaments", value: null },
+  ]
   tournamentsMap.forEach((name, id) => {
     tournaments.push({ label: name, value: id })
   })
@@ -66,7 +71,9 @@ export default function RankingScreen() {
   const router = useRouter()
   const { user, isAuthenticated } = useAuth()
   const [selectedLeague, setSelectedLeague] = useState<string | null>(null)
-  const [selectedTournament, setSelectedTournament] = useState<string | null>(null)
+  const [selectedTournament, setSelectedTournament] = useState<string | null>(
+    null
+  )
   const [showLeagueFilter, setShowLeagueFilter] = useState(false)
   const [showTournamentFilter, setShowTournamentFilter] = useState(false)
 
@@ -110,7 +117,7 @@ export default function RankingScreen() {
     ...(selectedLeague && { leagueId: selectedLeague }),
     ...(selectedTournament && { tournamentId: selectedTournament }),
   }
-  
+
   const {
     data: rankingData,
     isLoading,
@@ -132,9 +139,11 @@ export default function RankingScreen() {
   const renderRankingItem = useCallback(
     ({ item }: { item: RankingEntry }) => {
       const isCurrentUser = item.userId === user?.id
-      
+
       return (
-        <Card style={[styles.rankingCard, isCurrentUser && styles.currentUserCard]}>
+        <Card
+          style={[styles.rankingCard, isCurrentUser && styles.currentUserCard]}
+        >
           <View style={styles.rankContainer}>
             {/* Rank Medal/Number */}
             <View
@@ -147,7 +156,10 @@ export default function RankingScreen() {
             >
               <Typography
                 variant="title"
-                style={[styles.rankText, item.rank <= 3 && styles.rankTextMedal]}
+                style={[
+                  styles.rankText,
+                  item.rank <= 3 && styles.rankTextMedal,
+                ]}
               >
                 {item.rank <= 3 ? ["🥇", "🥈", "🥉"][item.rank - 1] : item.rank}
               </Typography>
@@ -161,12 +173,14 @@ export default function RankingScreen() {
                   {item.displayName}
                   {isCurrentUser && (
                     <Typography variant="label" color="secondary">
-                      {" "}(You)
+                      {" "}
+                      (You)
                     </Typography>
                   )}
                 </Typography>
                 <Typography variant="label" color="secondary">
-                  {item.totalPredictions} prediction{item.totalPredictions !== 1 ? "s" : ""}
+                  {item.totalPredictions} prediction
+                  {item.totalPredictions !== 1 ? "s" : ""}
                 </Typography>
               </View>
             </View>
@@ -220,7 +234,11 @@ export default function RankingScreen() {
     const selectedOption = options.find((opt) => opt.value === selectedValue)
     return (
       <TouchableOpacity style={styles.filterButton} onPress={onPress}>
-        <Typography variant="body" numberOfLines={1} style={styles.filterButtonText}>
+        <Typography
+          variant="body"
+          numberOfLines={1}
+          style={styles.filterButtonText}
+        >
           {selectedOption?.label || label}
         </Typography>
         <Typography variant="body" color="secondary">
@@ -288,7 +306,10 @@ export default function RankingScreen() {
     <SafeAreaView style={styles.container} edges={["top"]}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+        <TouchableOpacity
+          onPress={() => router.back()}
+          style={styles.backButton}
+        >
           <Typography variant="title" color="primary">
             ←
           </Typography>
@@ -299,11 +320,8 @@ export default function RankingScreen() {
 
       {/* Filters */}
       <View style={styles.filtersContainer}>
-        {renderFilterButton(
-          "League",
-          selectedLeague,
-          leagueOptions,
-          () => setShowLeagueFilter(true)
+        {renderFilterButton("League", selectedLeague, leagueOptions, () =>
+          setShowLeagueFilter(true)
         )}
         {renderFilterButton(
           "Tournament",

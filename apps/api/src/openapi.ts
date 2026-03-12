@@ -7,10 +7,7 @@ import {
   GetMatchesQuerySchema,
   ErrorResponseSchema,
 } from "./dto/match.dto"
-import {
-  GetRankingQuerySchema,
-  RankingResponseSchema,
-} from "./dto/ranking.dto"
+import { GetRankingQuerySchema, RankingResponseSchema } from "./dto/ranking.dto"
 import { z } from "zod"
 
 const registry = new OpenAPIRegistry()

@@ -17,7 +17,11 @@ const host = process.env.API_HOST || "0.0.0.0"
 
 app.use(
   cors({
-    origin: ["http://localhost:8081", "http://localhost:3000", "https://pronolol.fr"],
+    origin: [
+      "http://localhost:8081",
+      "http://localhost:3000",
+      "https://pronolol.fr",
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
@@ -26,7 +30,6 @@ app.use(
 app.all("/auth/*splat", toNodeHandler(auth))
 
 app.use(express.json())
-
 
 // Auth middleware helper
 const getSession = async (req: Request) => {
@@ -457,11 +460,11 @@ app.get("/ranking", async (req: Request, res: Response) => {
     // If filtering by tournament or league
     if (query.tournamentId || query.leagueId) {
       whereClause.match = {}
-      
+
       if (query.tournamentId) {
         whereClause.match.tournamentId = query.tournamentId
       }
-      
+
       if (query.leagueId) {
         whereClause.match.tournament = {
           leagueId: query.leagueId,
@@ -539,7 +542,9 @@ app.get("/ranking", async (req: Request, res: Response) => {
         ...stats,
         correctnessPercentage:
           stats.totalPredictions > 0
-            ? Math.round((stats.correctPredictions / stats.totalPredictions) * 100)
+            ? Math.round(
+                (stats.correctPredictions / stats.totalPredictions) * 100
+              )
             : 0,
       }))
       .sort((a, b) => {

@@ -35,8 +35,8 @@ export const getApiUrl = (): string => {
   if (__DEV__) {
     console.warn(
       "⚠️  EXPO_PUBLIC_API_URL not configured!\n" +
-      "Please create a .env.local file with your API URL.\n" +
-      "See .env.example for instructions."
+        "Please create a .env.local file with your API URL.\n" +
+        "See .env.example for instructions."
     )
 
     // Default development fallback
@@ -49,7 +49,7 @@ export const getApiUrl = (): string => {
   // Production should always have this configured
   throw new Error(
     "EXPO_PUBLIC_API_URL must be configured in production. " +
-    "Set this environment variable before building."
+      "Set this environment variable before building."
   )
 }
 

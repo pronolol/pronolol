@@ -1,6 +1,7 @@
 {
   "name": "pronolol",
   "private": true,
+  "type": "module",
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -8,8 +9,8 @@
   "scripts": {
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
-    "lint": "eslint \"**/*.{ts,tsx,js,jsx}\" --max-warnings=0",
-    "lint:fix": "eslint \"**/*.{ts,tsx,js,jsx}\" --fix"
+    "lint": "eslint . --max-warnings=0 --debug",
+    "lint:fix": "eslint . --fix"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
