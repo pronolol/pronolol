@@ -155,7 +155,7 @@ describe("getMatchPredictions", () => {
     const result = await getMatchPredictions(userId, matchId, futureMatch)
 
     expect(result.myPrediction).toEqual(fakePrediction)
-    expect(result.allPredictions).toEqual(fakeAllPredictions)
+    expect(result.predictions).toEqual(fakeAllPredictions)
     expect(mockFindMany).toHaveBeenCalledOnce()
   })
 
@@ -166,7 +166,7 @@ describe("getMatchPredictions", () => {
     const result = await getMatchPredictions(userId, matchId, lockedMatch)
 
     expect(result.myPrediction).toBeNull()
-    expect(result.allPredictions).toEqual(fakeAllPredictions)
+    expect(result.predictions).toEqual(fakeAllPredictions)
     expect(mockFindMany).toHaveBeenCalledOnce()
   })
 
@@ -177,7 +177,7 @@ describe("getMatchPredictions", () => {
     const result = await getMatchPredictions(userId, matchId, completedMatch)
 
     expect(result.myPrediction).toBeNull()
-    expect(result.allPredictions).toEqual(fakeAllPredictions)
+    expect(result.predictions).toEqual(fakeAllPredictions)
     expect(mockFindMany).toHaveBeenCalledOnce()
   })
 
@@ -187,7 +187,7 @@ describe("getMatchPredictions", () => {
     const result = await getMatchPredictions(userId, matchId, futureMatch)
 
     expect(result.myPrediction).toBeNull()
-    expect(result.allPredictions).toBeNull()
+    expect(result.predictions).toBeNull()
     expect(mockFindMany).not.toHaveBeenCalled()
   })
 })

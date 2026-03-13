@@ -131,5 +131,5 @@ export const getMatchPredictions = async (
     })
   }
 
-  return { myPrediction, allPredictions }
+  return { myPrediction, predictions: allPredictions }
 }
