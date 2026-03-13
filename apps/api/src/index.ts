@@ -41,6 +41,14 @@ app.get("/openapi.json", (_req: Request, res: Response) => {
 app.get("/", (_req: Request, res: Response) => {
   res.json({ message: "Welcome to the Pronolol API!" })
 })
+app.get("/health", async (_req: Request, res: Response) => {
+  try {
+    await prisma.$queryRaw`SELECT 1`
+    res.json({ status: "ok", db: "ok" })
+  } catch {
+    res.status(503).json({ status: "error", db: "unreachable" })
+  }
+})
 
 app.use("/matches", matchRouter)
 app.use("/ranking", rankingRouter)
