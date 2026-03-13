@@ -118,7 +118,7 @@ jobs:
             echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
             cd /home/debian/pronolol
             git pull origin main
-            REGISTRY=$REGISTRY docker compose pull api migrator
+            REGISTRY=$REGISTRY docker compose pull api migrator scraper
             REGISTRY=$REGISTRY docker compose run --rm migrator
             docker compose stop api
             REGISTRY=$REGISTRY docker compose up -d --no-deps api
