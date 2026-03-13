@@ -74,6 +74,7 @@ AXIOS_INSTANCE.interceptors.response.use(
 )
 
 export const customInstance = <T>(config: AxiosRequestConfig): Promise<T> => {
+  // eslint-disable-next-line import/no-named-as-default-member
   const source = axios.CancelToken.source()
   const promise = AXIOS_INSTANCE({
     ...config,

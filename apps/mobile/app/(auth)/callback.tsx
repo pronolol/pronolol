@@ -4,7 +4,6 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import { useRouter, useLocalSearchParams } from "expo-router"
 import { useSession } from "@/lib/auth-client"
 
-
 export default function AuthCallbackScreen() {
   const router = useRouter()
   const params = useLocalSearchParams()
@@ -38,6 +37,7 @@ export default function AuthCallbackScreen() {
     }
 
     handleCallback()
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- intentionally run once on mount; re-running on param/router changes would cause redirect loops
   }, [])
 
   return (
