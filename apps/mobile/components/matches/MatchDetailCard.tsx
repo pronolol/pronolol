@@ -136,7 +136,7 @@ export function MatchDetailCard({
   isPredictionLocked,
   hasPredicted,
   selectedTeamId,
-  predictedTeamId,
+  predictedTeamId: _predictedTeamId,
   onTeamSelect,
 }: MatchDetailCardProps) {
   const isMatchCompleted = state === "completed"

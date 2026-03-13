@@ -58,8 +58,8 @@ export interface Match {
     id: string
     number: number
     state: MatchState
-    vods: any[]
-    recaps: any[]
+    vods: unknown[]
+    recaps: unknown[]
   }>
 }
 
@@ -183,7 +183,7 @@ export interface HomeEventMatch {
   matchTeams: EventMatchTeam[]
   startTime: string
   state: string
-  streams: any[]
+  streams: unknown[]
   tournament: EventTournament
   type: string
 }
@@ -219,7 +219,7 @@ export interface EventGame {
   number: number
   state: string
   vods: MainVod[]
-  recaps: any[]
+  recaps: unknown[]
 }
 
 export interface MainVod {

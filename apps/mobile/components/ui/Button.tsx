@@ -31,7 +31,8 @@ export default function Button({
     style,
   ]
 
-  const textColor = variant === "secondary" ? "primary" : "inverse"
+  const textColor: "primary" | "inverse" =
+    variant === "secondary" ? "primary" : "inverse"
 
   return (
     <TouchableOpacity
@@ -46,7 +47,7 @@ export default function Button({
           }
         />
       ) : (
-        <Typography variant="subtitle" color={textColor as any}>
+        <Typography variant="subtitle" color={textColor}>
           {title}
         </Typography>
       )}

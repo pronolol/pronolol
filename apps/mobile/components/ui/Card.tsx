@@ -1,3 +1,4 @@
+import type { ReactNode } from "react"
 import { View, StyleSheet, ViewStyle, StyleProp } from "react-native"
 import { colors, borderRadius, spacing, shadow } from "./theme"
 
@@ -10,7 +11,7 @@ type CardVariant =
   | "error"
 
 type CardProps = {
-  children: React.ReactNode
+  children: ReactNode
   variant?: CardVariant
   style?: StyleProp<ViewStyle>
   padding?: keyof typeof spacing | number

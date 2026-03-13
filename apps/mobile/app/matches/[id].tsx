@@ -153,7 +153,7 @@ export default function MatchDetail() {
             isSubmitting={createPrediction.isPending}
             error={
               createPrediction.isError
-                ? (createPrediction.error as any)?.message ||
+                ? (createPrediction.error as Error)?.message ||
                   "Failed to submit prediction"
                 : null
             }

@@ -167,7 +167,7 @@ function PredictionListItem({
               ]}
             >
               <Ionicons
-                name={resultStyle.icon as any}
+                name={resultStyle.icon}
                 size={16}
                 color={resultStyle.color}
               />

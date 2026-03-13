@@ -1,3 +1,4 @@
+import type { ReactNode } from "react"
 import {
   View,
   StyleSheet,
@@ -8,13 +9,14 @@ import {
 } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useRouter } from "expo-router"
+import type { Href } from "expo-router"
 import { colors, spacing, borderRadius, shadow } from "./theme"
 import { Typography } from "./Typography"
 
 type AuthContainerProps = {
   title: string
   subtitle: string
-  children: React.ReactNode
+  children: ReactNode
   footerText?: string
   footerLinkText?: string
   footerLinkTo?: string
@@ -58,7 +60,7 @@ export default function AuthContainer({
                   {footerText}{" "}
                 </Typography>
                 <TouchableOpacity
-                  onPress={() => router.push(footerLinkTo as any)}
+                  onPress={() => router.push(footerLinkTo as Href)}
                 >
                   <Typography
                     variant="body"

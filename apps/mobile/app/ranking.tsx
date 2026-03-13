@@ -4,7 +4,6 @@ import {
   FlatList,
   TouchableOpacity,
   ScrollView,
-  ActivityIndicator,
 } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useRouter } from "expo-router"
@@ -18,9 +17,16 @@ import {
   ErrorScreen,
   EmptyState,
 } from "@/components/ui/ScreenStates"
-import { useGetRanking, type RankingEntry, type GetRankingParams } from "@/api"
+import {
+  AXIOS_INSTANCE,
+  type Match,
+  useGetRanking,
+  type RankingEntry,
+  type GetRankingParams,
+} from "@/api"
 import { useInfiniteQuery } from "@tanstack/react-query"
-import { AXIOS_INSTANCE, type Match } from "@/api"
+
+type RankingPageParam = { direction: string | null; cursor: string }
 
 interface FilterOption {
   label: string
@@ -69,7 +75,7 @@ function extractTournaments(
 
 export default function RankingScreen() {
   const router = useRouter()
-  const { user, isAuthenticated } = useAuth()
+  const { user } = useAuth()
   const [selectedLeague, setSelectedLeague] = useState<string | null>(null)
   const [selectedTournament, setSelectedTournament] = useState<string | null>(
     null
@@ -78,15 +84,21 @@ export default function RankingScreen() {
   const [showTournamentFilter, setShowTournamentFilter] = useState(false)
 
   // Fetch matches to get leagues and tournaments for filters
-  const { data: matchesData } = useInfiniteQuery<Match[]>({
+  const { data: matchesData } = useInfiniteQuery<
+    Match[],
+    Error,
+    { pages: Match[][]; pageParams: RankingPageParam[] },
+    string[],
+    RankingPageParam
+  >({
     queryKey: ["matchesFeed"],
-    queryFn: async ({ pageParam = { direction: null, cursor: "" } }) => {
+    queryFn: async ({ pageParam }) => {
       const params = new URLSearchParams()
       params.set("limit", "100")
-      if ((pageParam as any).direction) {
-        params.set("direction", (pageParam as any).direction)
-        if ((pageParam as any).cursor) {
-          params.set("cursor", (pageParam as any).cursor)
+      if (pageParam.direction) {
+        params.set("direction", pageParam.direction)
+        if (pageParam.cursor) {
+          params.set("cursor", pageParam.cursor)
         }
       } else {
         params.set("direction", "around")

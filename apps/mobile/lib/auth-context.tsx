@@ -13,7 +13,7 @@ interface User {
 
 interface AuthContextType {
   user: User | null
-  session: any
+  session: unknown
   isLoading: boolean
   isAuthenticated: boolean
   refetchSession: () => Promise<void>

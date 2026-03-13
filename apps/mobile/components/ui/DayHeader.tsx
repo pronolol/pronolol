@@ -32,7 +32,10 @@ function formatDayHeader(date: Date, isToday: boolean): string {
   })
 }
 
-export default function DayHeader({ date, isToday = false }: DayHeaderProps) {
+export default function DayHeader({
+  date,
+  isToday: _isToday = false,
+}: DayHeaderProps) {
   const today = new Date()
   const isTodayActual = date.toDateString() === today.toDateString()
 

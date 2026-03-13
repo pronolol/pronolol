@@ -1,15 +1,14 @@
-import { useEffect, useState } from "react"
-import { View, ActivityIndicator, StyleSheet, Text } from "react-native"
+import { useEffect } from "react"
+import { ActivityIndicator, StyleSheet, Text } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useRouter, useLocalSearchParams } from "expo-router"
-import * as WebBrowser from "expo-web-browser"
 import { useSession } from "@/lib/auth-client"
+
 
 export default function AuthCallbackScreen() {
   const router = useRouter()
   const params = useLocalSearchParams()
-  const { data: session, refetch, isPending } = useSession()
-  const [isProcessing, setIsProcessing] = useState(true)
+  const { refetch } = useSession()
 
   useEffect(() => {
     const handleCallback = async () => {
@@ -35,8 +34,6 @@ export default function AuthCallbackScreen() {
         console.error("Callback error:", error)
         // On error, redirect to sign in
         router.replace("/(auth)/sign-in")
-      } finally {
-        setIsProcessing(false)
       }
     }
 

@@ -83,7 +83,7 @@ async function main() {
       console.error("📋 --no-save flag present, skipping database persistence.")
     }
 
-    let result: any
+    let result: unknown
     if (flags.leagues) {
       console.error("🏆 Outputting leagues...")
       result = processedData.leagues

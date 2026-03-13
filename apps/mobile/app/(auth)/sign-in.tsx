@@ -46,9 +46,12 @@ export default function SignInScreen() {
           },
         }
       )
-    } catch (error: any) {
+    } catch (error) {
       console.error("Discord OAuth error:", error)
-      Alert.alert("Error", error.message || "Discord sign in failed")
+      Alert.alert(
+        "Error",
+        error instanceof Error ? error.message : "Discord sign in failed"
+      )
     } finally {
       setIsLoading(false)
     }
@@ -91,9 +94,14 @@ export default function SignInScreen() {
         // Successful sign in
         router.replace("/")
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error("Sign in error:", error)
-      Alert.alert("Error", error.message || "An error occurred during sign in")
+      Alert.alert(
+        "Error",
+        error instanceof Error
+          ? error.message
+          : "An error occurred during sign in"
+      )
     } finally {
       setIsLoading(false)
     }

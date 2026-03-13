@@ -1,7 +1,7 @@
 import "dotenv/config"
-import express, { Request, Response, NextFunction } from "express"
+import express, { Request, Response } from "express"
 import swaggerUi from "swagger-ui-express"
-import { prisma } from "@pronolol/database"
+import { prisma, Prisma } from "@pronolol/database"
 import { GetMatchesQuerySchema } from "./dto/match.dto"
 import { CreatePredictionSchema } from "./dto/prediction.dto"
 import { GetRankingQuerySchema } from "./dto/ranking.dto"
@@ -34,17 +34,17 @@ app.use(express.json())
 // Auth middleware helper
 const getSession = async (req: Request) => {
   const session = await auth.api.getSession({
-    headers: req.headers as any,
+    headers: req.headers,
   })
   return session
 }
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openApiDocument))
-app.get("/openapi.json", (req: Request, res: Response) => {
+app.get("/openapi.json", (_req: Request, res: Response) => {
   res.json(openApiDocument)
 })
 
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+app.use((err: Error, _req: Request, res: Response) => {
   if (err instanceof ZodError) {
     return res.status(400).json({
       error: "Validation error",
@@ -65,7 +65,7 @@ app.get("/matches", async (req: Request, res: Response) => {
   try {
     const query = GetMatchesQuerySchema.parse(req.query)
 
-    const where: any = {}
+    const where: Prisma.MatchWhereInput = {}
     const cursorDate = query.cursor ? new Date(query.cursor) : new Date()
     const limit = query.limit || 20
 
@@ -453,7 +453,7 @@ app.get("/ranking", async (req: Request, res: Response) => {
     const query = GetRankingQuerySchema.parse(req.query)
 
     // Build where clause for filtering predictions
-    const whereClause: any = {
+    const whereClause: Prisma.PredictionWhereInput = {
       points: { not: null }, // Only include predictions that have been scored
     }
 

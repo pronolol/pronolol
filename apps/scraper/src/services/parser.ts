@@ -1,6 +1,5 @@
 import {
   ScraperOutput,
-  Event as ApiEvent,
   NormalizedMatch,
   NormalizedTeam,
   NormalizedLeague,
@@ -9,7 +8,7 @@ import {
   GetSeasonForNavigation,
 } from "../types"
 // Type definition for the raw data captured by the Fetcher
-export type RawApiData = { [key: string]: any[] }
+export type RawApiData = { [key: string]: unknown[] }
 
 /**
  * The Parser service is responsible for transforming the raw API data

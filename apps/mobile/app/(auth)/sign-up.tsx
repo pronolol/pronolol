@@ -49,9 +49,12 @@ export default function SignUpScreen() {
           },
         }
       )
-    } catch (error: any) {
+    } catch (error) {
       console.error("Discord OAuth error:", error)
-      Alert.alert("Error", error.message || "Discord sign up failed")
+      Alert.alert(
+        "Error",
+        error instanceof Error ? error.message : "Discord sign up failed"
+      )
     } finally {
       setIsLoading(false)
     }
@@ -110,9 +113,14 @@ export default function SignUpScreen() {
           { text: "OK", onPress: () => router.replace("/") },
         ])
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error("Sign up error:", error)
-      Alert.alert("Error", error.message || "An error occurred during sign up")
+      Alert.alert(
+        "Error",
+        error instanceof Error
+          ? error.message
+          : "An error occurred during sign up"
+      )
     } finally {
       setIsLoading(false)
     }

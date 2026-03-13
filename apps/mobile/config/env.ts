@@ -16,7 +16,6 @@
  * Set EXPO_PUBLIC_API_URL to your production domain (e.g., https://api.yourdomain.com)
  */
 
-import Constants from "expo-constants"
 import { Platform } from "react-native"
 
 /**

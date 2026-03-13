@@ -30,7 +30,7 @@ export class FetcherService {
     await this.init()
 
     const page = await this.browser!.newPage()
-    const allApiData: { [key: string]: any[] } = {}
+    const allApiData: { [key: string]: unknown[] } = {}
     const responsePromises: Promise<void>[] = []
 
     // Set up the response interceptor
@@ -63,7 +63,7 @@ export class FetcherService {
    */
   private setupResponseInterceptor(
     page: Page,
-    storage: { [key: string]: any[] },
+    storage: { [key: string]: unknown[] },
     responsePromises: Promise<void>[]
   ): void {
     page.on("response", async (response) => {
@@ -115,7 +115,7 @@ export class FetcherService {
           await page.waitForTimeout(config.playwright.loadMoreTimeout)
         }
       }
-    } catch (e) {
+    } catch {
       // It's okay if the button isn't found, just means no more pages.
       console.error("   (No 'Load more' button found, continuing...)")
     }

@@ -6,7 +6,7 @@ import {
   NormalizedMatch,
 } from "../types"
 
-import { prisma } from "@pronolol/database"
+import { prisma, Prisma } from "@pronolol/database"
 
 import "dotenv/config"
 
@@ -123,7 +123,15 @@ export class DatabaseService {
     console.error(`\tUpserted ${matches.length} matches.`)
   }
 
-  private async settlePredictions(tx: any, match: any): Promise<void> {
+  private async settlePredictions(
+    tx: Prisma.TransactionClient,
+    match: {
+      id: string
+      winnerId: string | null
+      teamAScore: number | null
+      teamBScore: number | null
+    }
+  ): Promise<void> {
     const predictions = await tx.prediction.findMany({
       where: { matchId: match.id, points: null },
     })

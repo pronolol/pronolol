@@ -1,9 +1,9 @@
-import Axios, { AxiosRequestConfig } from "axios"
+import axios, { AxiosRequestConfig } from "axios"
 import { Platform } from "react-native"
 import * as storage from "@/lib/storage"
 import { API_BASE_URL } from "@/config/env"
 
-export const AXIOS_INSTANCE = Axios.create({
+export const AXIOS_INSTANCE = axios.create({
   baseURL: API_BASE_URL,
   timeout: 10000,
   // On web, send cookies automatically for cross-origin requests
@@ -74,13 +74,13 @@ AXIOS_INSTANCE.interceptors.response.use(
 )
 
 export const customInstance = <T>(config: AxiosRequestConfig): Promise<T> => {
-  const source = Axios.CancelToken.source()
+  const source = axios.CancelToken.source()
   const promise = AXIOS_INSTANCE({
     ...config,
     cancelToken: source.token,
   }).then(({ data }) => data)
 
-  // @ts-ignore
+  // @ts-expect-error – cancel is not in the Promise type but is used by react-query
   promise.cancel = () => {
     source.cancel("Query was cancelled")
   }
