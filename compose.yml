@@ -45,6 +45,7 @@ services:
   # Database Migrator (one-shot)
   # ===============================
   migrator:
+    image: ${REGISTRY}/pronolol-migrator:${TAG:-latest}
     build:
       context: .
       dockerfile: packages/database/Dockerfile
@@ -62,6 +63,7 @@ services:
   # API Server
   # ===============================
   api:
+    image: ${REGISTRY}/pronolol-api:${TAG:-latest}
     build:
       context: .
       dockerfile: apps/api/Dockerfile
@@ -93,6 +95,7 @@ services:
   # Web Scraper
   # ===============================
   scraper:
+    image: ${REGISTRY}/pronolol-scraper:${TAG:-latest}
     build:
       context: .
       dockerfile: apps/scraper/Dockerfile
@@ -105,6 +108,19 @@ services:
       - pronolol-network
     # Scraper runs once and exits
     restart: "no"
+
+  # ===============================
+  # Uptime Kuma (Self-hosted monitoring)
+  # ===============================
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    volumes:
+      - uptime_kuma_data:/app/data
+    networks:
+      - pronolol-network
 
   # ===============================
   # pgAdmin (DB Management)
@@ -133,6 +149,8 @@ volumes:
   postgres_data:
     driver: local
   pgadmin_data:
+    driver: local
+  uptime_kuma_data:
     driver: local
 
 # ===============================
