@@ -39,3 +39,6 @@ jobs:
       - name: Lint mobile
         working-directory: apps/mobile
         run: npm run lint
+
+      - name: Run tests
+        run: npm test --workspaces --if-present

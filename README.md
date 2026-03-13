@@ -2,7 +2,7 @@
 
 A monorepo for the Pronolol esports prediction platform.
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 ├── apps/
@@ -11,78 +11,62 @@ A monorepo for the Pronolol esports prediction platform.
 │   └── scraper/    # Playwright web scraper
 ├── packages/
 │   └── database/   # Prisma schema & client
-├── docker/         # Shared Docker configurations
-├── compose.yml     # Production Docker Compose
-└── compose.dev.yml # Development overrides
+├── compose.yml         # Full Docker Compose (all services)
+└── compose.infra.yml   # Infrastructure-only (DB + migrations)
 ```
 
-## 🚀 Quick Start
+## Quick Start (Local Development)
 
 ### Prerequisites
 
+- [Node.js](https://nodejs.org/) 20+
 - [Docker](https://docs.docker.com/get-docker/) & Docker Compose
-- [Node.js](https://nodejs.org/) 20+ (for local development)
 
 ### Setup
 
 ```bash
-# 1. Clone and setup environment
+# 1. Clone and install
+npm install
+
+# 2. Configure environment
 cp .env.example .env
-
-# 2. Edit .env with your configuration
-# Required: BETTER_AUTH_SECRET (generate with: openssl rand -base64 32)
-
-# 3. Start all services
-docker compose up -d
-
-# Or use Make commands
-make setup   # Creates .env from template
-make prod    # Starts production stack
+# Edit .env — required: BETTER_AUTH_SECRET (openssl rand -base64 32)
 ```
 
-## 🐳 Docker Commands
-
-### Using Make (Recommended)
+### Running services
 
 ```bash
-make help          # Show all available commands
+# Terminal 1 — start Postgres and run migrations automatically
+npm run dev:db
 
-# Development
-make dev           # Start with hot reload
-make dev-tools     # Start with pgAdmin GUI
+# Terminal 2 — API with hot reload
+npm run dev:api
 
-# Production
-make prod          # Start production stack
-make down          # Stop all services
-
-# Logs
-make logs          # Follow all logs
-make logs-api      # Follow API logs only
-
-# Database
-make migrate       # Run migrations
-make shell-db      # Open psql shell
-make db-backup     # Create backup
+# Terminal 3 — mobile
+cd apps/mobile && npx expo start
 ```
 
-### Using Docker Compose Directly
+### Stopping
 
 ```bash
-# Production
-docker compose up -d              # Start all services (detached)
-docker compose up -d db api       # Start specific services
-docker compose logs -f api        # Follow API logs
-
-# Development (with hot reload)
-docker compose -f compose.yml -f compose.dev.yml up
-
-# Operations
-docker compose down               # Stop all
-docker compose down -v            # Stop and remove volumes
-docker compose build --no-cache   # Rebuild from scratch
+npm run dev:db:down
 ```
 
-## 🔧 Services
+## npm Scripts
+
+| Script | Description |
+|--------|-------------|
+| `npm run dev:db` | Start Postgres + run migrations (Docker) |
+| `npm run dev:db:down` | Stop infrastructure containers |
+| `npm run dev:api` | Start API locally with hot reload |
+| `npm run dev:scraper` | Start scraper locally with hot reload |
+| `npm run migrate` | Run Prisma migrations against local DB |
+| `npm run build` | Build all packages (topologically ordered via Turbo) |
+| `npm test` | Run all tests |
+| `npm run lint` | Lint all packages |
+| `npm run lint:fix` | Auto-fix lint issues |
+
+## Services
 
 | Service    | Port | Description                                |
 | ---------- | ---- | ------------------------------------------ |
@@ -90,9 +74,9 @@ docker compose build --no-cache   # Rebuild from scratch
 | `api`      | 3000 | Express REST API                           |
 | `migrator` | -    | Runs Prisma migrations (one-shot)          |
 | `scraper`  | -    | Scrapes match data (one-shot)              |
-| `pgadmin`  | 5050 | Database GUI (dev only, `--profile tools`) |
+| `pgadmin`  | 5050 | Database GUI (`--profile tools`)           |
 
-## ⚙️ Environment Variables
+## Environment Variables
 
 Copy `.env.example` to `.env` and configure:
 
@@ -101,43 +85,43 @@ Copy `.env.example` to `.env` and configure:
 | `POSTGRES_USER`         | No       | Database user (default: `user`)         |
 | `POSTGRES_PASSWORD`     | No       | Database password (default: `password`) |
 | `POSTGRES_DB`           | No       | Database name (default: `pronolol`)     |
+| `DATABASE_URL`          | No       | Full connection string (auto-set in Docker) |
 | `BETTER_AUTH_SECRET`    | **Yes**  | Auth token signing key                  |
 | `BETTER_AUTH_URL`       | No       | API base URL for auth callbacks         |
 | `DISCORD_CLIENT_ID`     | No       | Discord OAuth client ID                 |
 | `DISCORD_CLIENT_SECRET` | No       | Discord OAuth secret                    |
 
-## 📱 Mobile App
-
-The mobile app runs separately with Expo:
+## Production (Docker)
 
 ```bash
-cd apps/mobile
-npm install
-npm run start
+# Start all services
+docker compose -f compose.yml -f compose.prod.yml up -d
+
+# View logs
+docker compose logs -f api
+
+# Stop all
+docker compose down
 ```
 
-Configure `EXPO_PUBLIC_API_URL` in the mobile app's environment to point to your API.
-
-## 🧪 Local Development (Without Docker)
+## Database Operations
 
 ```bash
-# Install dependencies
-npm install
+# Run migrations (local dev)
+npm run migrate
 
-# Start PostgreSQL (via Docker)
-docker compose up -d db
+# Open psql shell
+docker compose exec db psql -U user -d pronolol
 
-# Run migrations
-cd packages/database && npx prisma migrate dev
+# Backup
+mkdir -p backups
+docker compose exec db pg_dump -U user pronolol > backups/backup_$(date +%Y%m%d_%H%M%S).sql
 
-# Start API (with hot reload)
-cd apps/api && npm run dev
-
-# Start Mobile
-cd apps/mobile && npm run start
+# Restore
+cat backups/your_backup.sql | docker compose exec -T db psql -U user -d pronolol
 ```
 
-## 📦 Building Images Individually
+## Building Docker Images
 
 ```bash
 # API
@@ -149,3 +133,11 @@ docker build -f apps/scraper/Dockerfile -t pronolol-scraper .
 # Migrator
 docker build -f packages/database/Dockerfile -t pronolol-migrator .
 ```
+
+## Publishing
+
+The publish workflow requires an `NPM_TOKEN` secret configured in GitHub repository settings (Settings > Secrets > Actions). This token must have write access to the GitHub Packages registry.
+
+## Mobile App
+
+Configure `EXPO_PUBLIC_API_URL` in `.env` to point to your API (use your machine's local network IP for device testing, e.g. `http://192.168.1.x:3000`).

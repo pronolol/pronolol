@@ -1,3 +1,9 @@
+# Compiled Expo web output (not source)
+apps/web/
+
+# Turborepo cache
+.turbo/
+
 # Logs
 logs
 *.log

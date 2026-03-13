@@ -2,23 +2,36 @@
   "name": "pronolol",
   "private": true,
   "type": "module",
+  "packageManager": "npm@11.6.2",
   "workspaces": [
     "apps/*",
     "packages/*"
   ],
   "scripts": {
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
-    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "dev:db": "docker compose -f compose.infra.yml up",
+    "dev:db:down": "docker compose -f compose.infra.yml down",
+    "dev:api": "npm run dev --workspace=apps/api",
+    "dev:scraper": "npm run dev --workspace=apps/scraper",
+    "migrate": "npm run migrate --workspace=packages/database",
+    "build": "turbo run build",
+    "test": "vitest run",
     "lint": "eslint . --max-warnings=0",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\""
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
+    "@types/node": "^22.19.7",
     "@typescript-eslint/eslint-plugin": "^8.54.0",
     "@typescript-eslint/parser": "^8.54.0",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
-    "prettier": "^3.8.1"
+    "prettier": "^3.8.1",
+    "tsup": "^8.5.1",
+    "turbo": "^2.5.4",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
   }
 }

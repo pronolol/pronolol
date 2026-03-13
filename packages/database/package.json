@@ -14,8 +14,9 @@
   "scripts": {
     "build": "tsup",
     "generate": "prisma generate",
+    "migrate": "prisma migrate deploy",
     "prepublishOnly": "prisma generate && tsup",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run"
   },
   "keywords": [],
   "author": "",
