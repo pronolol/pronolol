@@ -60,6 +60,7 @@ jobs:
           source: "apps/web/dist/"
           target: "/var/www/pronolol"
           strip_components: 3
+          overwrite: true
 
       - name: Health check — Web
         run: |
