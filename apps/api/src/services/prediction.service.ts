@@ -80,6 +80,22 @@ export const upsertPrediction = async (
   })
 }
 
+export const getUserPredictions = async (userId: string) => {
+  return prisma.prediction.findMany({
+    where: { userId },
+    select: {
+      matchId: true,
+      teamId: true,
+      predictedTeamAScore: true,
+      predictedTeamBScore: true,
+      isCorrect: true,
+      isExact: true,
+      points: true,
+      team: { select: { id: true, tag: true, logoUrl: true } },
+    },
+  })
+}
+
 export const getMatchPredictions = async (userId: string, matchId: string) => {
   const myPrediction = await prisma.prediction.findUnique({
     where: { userId_matchId: { userId, matchId } },

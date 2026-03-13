@@ -1,6 +1,7 @@
 import { useMemo, useCallback, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import { useMatchesFeed } from "@/hooks/useMatchesFeed"
+import { useGetUsersMePredictions } from "@/api/generated/users/users"
 import { MatchCard } from "@/components/match/MatchCard"
 import { DayHeader } from "@/components/match/DayHeader"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -65,6 +66,12 @@ export function HomePage() {
     refetch,
     isRefetching,
   } = useMatchesFeed()
+
+  const { data: myPredictions } = useGetUsersMePredictions()
+  const predictionsByMatchId = useMemo(() => {
+    if (!myPredictions) return new Map()
+    return new Map(myPredictions.map((p) => [p.matchId, p]))
+  }, [myPredictions])
 
   const allMatches = useMemo((): Match[] => {
     if (!data?.pages) return []
@@ -173,6 +180,8 @@ export function HomePage() {
         const matchDate = match.matchDate ? new Date(match.matchDate) : null
         const isCompleted = match.state === "completed"
 
+        const myPrediction = predictionsByMatchId.get(match.id)
+
         return (
           <div key={match.id} className="px-0 py-1.5">
             <MatchCard
@@ -185,6 +194,18 @@ export function HomePage() {
               score={
                 match.teamAScore !== null && match.teamBScore !== null
                   ? { teamA: match.teamAScore, teamB: match.teamBScore }
+                  : undefined
+              }
+              prediction={
+                myPrediction
+                  ? {
+                      teamTag: myPrediction.team.tag,
+                      teamLogoUrl: myPrediction.team.logoUrl,
+                      scoreA: myPrediction.predictedTeamAScore,
+                      scoreB: myPrediction.predictedTeamBScore,
+                      isCorrect: myPrediction.isCorrect,
+                      isExact: myPrediction.isExact,
+                    }
                   : undefined
               }
               onPress={() => navigate(`/matches/${match.id}`)}

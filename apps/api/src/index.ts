@@ -8,6 +8,7 @@ import { auth } from "./lib/auth"
 import cors from "cors"
 import { matchRouter } from "./routes/match.routes"
 import { rankingRouter } from "./routes/ranking.routes"
+import { usersRouter } from "./routes/users.routes"
 
 const app = express()
 const port = Number(process.env.API_PORT) || 3000
@@ -15,7 +16,11 @@ const host = process.env.API_HOST || "0.0.0.0"
 
 const allowedOrigins =
   process.env.NODE_ENV === "development"
-    ? ["http://localhost:5173", "http://localhost:8081", "http://localhost:3000"]
+    ? [
+        "http://localhost:5173",
+        "http://localhost:8081",
+        "http://localhost:3000",
+      ]
     : ["https://pronolol.fr"]
 
 app.use(
@@ -39,6 +44,7 @@ app.get("/", (_req: Request, res: Response) => {
 
 app.use("/matches", matchRouter)
 app.use("/ranking", rankingRouter)
+app.use("/users", usersRouter)
 
 app.listen(port, host, () => {
   const baseUrl = process.env.BETTER_AUTH_URL || `http://${host}:${port}`

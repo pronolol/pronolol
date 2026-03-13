@@ -8,6 +8,7 @@ import {
   ErrorResponseSchema,
 } from "./dto/match.dto"
 import { GetRankingQuerySchema, RankingResponseSchema } from "./dto/ranking.dto"
+import { MyPredictionSchema } from "./dto/prediction.dto"
 import { z } from "zod"
 
 const registry = new OpenAPIRegistry()
@@ -16,6 +17,7 @@ const registry = new OpenAPIRegistry()
 registry.register("Team", MatchSchema.shape.teamA)
 registry.register("Match", MatchSchema)
 registry.register("ErrorResponse", ErrorResponseSchema)
+registry.register("MyPrediction", MyPredictionSchema)
 
 // Register paths
 registry.registerPath({
@@ -156,6 +158,40 @@ registry.registerPath({
   },
 })
 
+registry.registerPath({
+  method: "get",
+  path: "/users/me/predictions",
+  description: "Retrieve all predictions made by the authenticated user",
+  summary: "Get my predictions",
+  tags: ["Users"],
+  responses: {
+    200: {
+      description: "List of the current user's predictions",
+      content: {
+        "application/json": {
+          schema: z.array(MyPredictionSchema),
+        },
+      },
+    },
+    401: {
+      description: "Unauthorized",
+      content: {
+        "application/json": {
+          schema: ErrorResponseSchema,
+        },
+      },
+    },
+    500: {
+      description: "Internal server error",
+      content: {
+        "application/json": {
+          schema: ErrorResponseSchema,
+        },
+      },
+    },
+  },
+})
+
 const generator = new OpenApiGeneratorV3(registry.definitions)
 
 export const openApiDocument = generator.generateDocument({
@@ -182,6 +218,10 @@ export const openApiDocument = generator.generateDocument({
     {
       name: "Rankings",
       description: "User ranking and leaderboard endpoints",
+    },
+    {
+      name: "Users",
+      description: "Authenticated user endpoints",
     },
   ],
 })

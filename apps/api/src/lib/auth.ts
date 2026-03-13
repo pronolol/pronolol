@@ -23,7 +23,12 @@ export const auth = betterAuth({
     "pronolol://",
     "https://pronolol.fr",
     ...(process.env.NODE_ENV === "development"
-      ? ["exp://", "exp://**", "exp://192.168.*.*:*/**", "http://localhost:5173"]
+      ? [
+          "exp://",
+          "exp://**",
+          "exp://192.168.*.*:*/**",
+          "http://localhost:5173",
+        ]
       : []),
   ],
   advanced: {

@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { getGetUsersMePredictionsQueryKey } from "@/api/generated/users/users"
 import { AXIOS_INSTANCE } from "./client"
 
 export interface Prediction {
@@ -74,6 +75,7 @@ export const useCreatePrediction = (matchId: string) => {
     mutationFn: (data: CreatePredictionDto) => createPrediction(matchId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["predictions", matchId] })
+      queryClient.invalidateQueries({ queryKey: getGetUsersMePredictionsQueryKey() })
     },
   })
 }

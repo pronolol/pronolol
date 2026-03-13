@@ -10,12 +10,22 @@ type MatchScore = {
   teamB: number
 }
 
+type PredictionBadge = {
+  teamTag: string
+  teamLogoUrl: string
+  scoreA: number
+  scoreB: number
+  isCorrect: boolean | null
+  isExact: boolean | null
+}
+
 type MatchCardProps = {
   teamA: Team
   teamB: Team
   matchTime?: string
   league?: string
   score?: MatchScore
+  prediction?: PredictionBadge
   onPress?: () => void
 }
 
@@ -42,6 +52,7 @@ export function MatchCard({
   matchTime,
   league,
   score,
+  prediction,
   onPress,
 }: MatchCardProps) {
   return (
@@ -53,10 +64,24 @@ export function MatchCard({
       onKeyDown={onPress ? (e) => e.key === "Enter" && onPress() : undefined}
     >
       {league && (
-        <div className="bg-surface-secondary px-4 py-2 border-b border-border">
+        <div className="bg-surface-secondary px-4 py-2 border-b border-border flex items-center justify-between">
           <span className="text-xs font-medium text-text-secondary uppercase tracking-wide">
             {league}
           </span>
+          {prediction && (
+            <div className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium ${
+              prediction.isExact
+                ? "bg-success-light text-success-dark"
+                : prediction.isCorrect
+                  ? "bg-primary-light text-primary"
+                  : prediction.isCorrect === false
+                    ? "bg-error-light text-error"
+                    : "bg-surface text-text-secondary border border-border"
+            }`}>
+              <img src={prediction.teamLogoUrl} alt={prediction.teamTag} className="w-3.5 h-3.5 object-contain" />
+              <span>{prediction.teamTag} {prediction.scoreA}-{prediction.scoreB}</span>
+            </div>
+          )}
         </div>
       )}
       <div className="flex items-center justify-between px-4 py-5">

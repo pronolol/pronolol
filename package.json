@@ -14,6 +14,7 @@
     "dev:web": "npm run dev --workspace=apps/web",
     "dev:scraper": "npm run dev --workspace=apps/scraper",
     "migrate": "npm run migrate --workspace=packages/database",
+    "generate:openapi": "npm run generate:openapi --workspace=apps/api",
     "build": "turbo run build",
     "test": "vitest run",
     "lint": "eslint . --max-warnings=0",

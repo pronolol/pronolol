@@ -193,10 +193,10 @@ export function MatchDetailPage() {
           />
         )}
 
-      {(hasPredicted || isPredictionLocked || isMatchCompleted) &&
+      {!hasPredicted && (isPredictionLocked || isMatchCompleted) &&
         (!allPredictions || allPredictions.length === 0) && (
           <div className="text-center py-8 text-text-secondary text-sm">
-            Be the first to predict!
+            No predictions for this match yet.
           </div>
         )}
     </div>
