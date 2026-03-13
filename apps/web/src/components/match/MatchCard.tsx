@@ -69,17 +69,25 @@ export function MatchCard({
             {league}
           </span>
           {prediction && (
-            <div className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium ${
-              prediction.isExact
-                ? "bg-success-light text-success-dark"
-                : prediction.isCorrect
-                  ? "bg-primary-light text-primary"
-                  : prediction.isCorrect === false
-                    ? "bg-error-light text-error"
-                    : "bg-surface text-text-secondary border border-border"
-            }`}>
-              <img src={prediction.teamLogoUrl} alt={prediction.teamTag} className="w-3.5 h-3.5 object-contain" />
-              <span>{prediction.teamTag} {prediction.scoreA}-{prediction.scoreB}</span>
+            <div
+              className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium ${
+                prediction.isExact
+                  ? "bg-success-light text-success-dark"
+                  : prediction.isCorrect
+                    ? "bg-primary-light text-primary"
+                    : prediction.isCorrect === false
+                      ? "bg-error-light text-error"
+                      : "bg-surface text-text-secondary border border-border"
+              }`}
+            >
+              <img
+                src={prediction.teamLogoUrl}
+                alt={prediction.teamTag}
+                className="w-3.5 h-3.5 object-contain"
+              />
+              <span>
+                {prediction.teamTag} {prediction.scoreA}-{prediction.scoreB}
+              </span>
             </div>
           )}
         </div>

@@ -75,7 +75,9 @@ export const useCreatePrediction = (matchId: string) => {
     mutationFn: (data: CreatePredictionDto) => createPrediction(matchId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["predictions", matchId] })
-      queryClient.invalidateQueries({ queryKey: getGetUsersMePredictionsQueryKey() })
+      queryClient.invalidateQueries({
+        queryKey: getGetUsersMePredictionsQueryKey(),
+      })
     },
   })
 }

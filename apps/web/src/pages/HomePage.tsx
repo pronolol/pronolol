@@ -95,7 +95,10 @@ export function HomePage() {
       const todayIndex = findTodayIndex(listData)
       if (todayIndex > 0) {
         setTimeout(() => {
-          todayRef.current?.scrollIntoView({ behavior: "instant", block: "start" })
+          todayRef.current?.scrollIntoView({
+            behavior: "instant",
+            block: "start",
+          })
         }, 50)
       }
     }
@@ -104,8 +107,7 @@ export function HomePage() {
   const handleScroll = useCallback(
     (e: React.UIEvent<HTMLDivElement>) => {
       const el = e.currentTarget
-      const nearBottom =
-        el.scrollHeight - el.scrollTop - el.clientHeight < 200
+      const nearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 200
       if (nearBottom && hasNextPage && !isFetchingNextPage) {
         fetchNextPage()
       }

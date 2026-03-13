@@ -50,7 +50,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     }
     initializeAuth()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const refetchSession = async () => {

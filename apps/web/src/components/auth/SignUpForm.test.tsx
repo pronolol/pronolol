@@ -74,7 +74,9 @@ describe("SignUpForm", () => {
       renderWithProviders(<SignUpForm />)
       await user.click(screen.getByRole("button", { name: /sign up/i }))
       await waitFor(() =>
-        expect(screen.getByText("Please fill in all fields")).toBeInTheDocument()
+        expect(
+          screen.getByText("Please fill in all fields")
+        ).toBeInTheDocument()
       )
     })
 

@@ -45,12 +45,14 @@ export function SignUpForm() {
     setError(null)
 
     try {
-      const result = await (signUp.email as (data: {
-        email: string
-        password: string
-        name: string
-        username: string
-      }) => Promise<{ data?: unknown; error?: { message?: string } }>)({
+      const result = await (
+        signUp.email as (data: {
+          email: string
+          password: string
+          name: string
+          username: string
+        }) => Promise<{ data?: unknown; error?: { message?: string } }>
+      )({
         email,
         password,
         name: username,
@@ -72,7 +74,9 @@ export function SignUpForm() {
     <div className="w-full max-w-sm mx-auto">
       <div className="mb-8 text-center">
         <h1 className="text-2xl font-bold text-text-primary">Create Account</h1>
-        <p className="text-sm text-text-secondary mt-1">Sign up to get started</p>
+        <p className="text-sm text-text-secondary mt-1">
+          Sign up to get started
+        </p>
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -145,7 +149,10 @@ export function SignUpForm() {
 
       <p className="mt-6 text-center text-sm text-text-secondary">
         Already have an account?{" "}
-        <Link to="/sign-in" className="text-primary font-medium hover:underline">
+        <Link
+          to="/sign-in"
+          className="text-primary font-medium hover:underline"
+        >
           Sign In
         </Link>
       </p>

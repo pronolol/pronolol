@@ -41,7 +41,9 @@ describe("SignInForm", () => {
 
     it("displays a sign in button", () => {
       renderWithProviders(<SignInForm />)
-      expect(screen.getByRole("button", { name: /sign in/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole("button", { name: /sign in/i })
+      ).toBeInTheDocument()
     })
 
     it("displays a Discord sign in button", () => {
@@ -63,7 +65,9 @@ describe("SignInForm", () => {
       renderWithProviders(<SignInForm />)
       await user.click(screen.getByRole("button", { name: /sign in/i }))
       await waitFor(() =>
-        expect(screen.getByText("Please fill in all fields")).toBeInTheDocument()
+        expect(
+          screen.getByText("Please fill in all fields")
+        ).toBeInTheDocument()
       )
     })
   })

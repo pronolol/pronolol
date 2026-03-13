@@ -44,7 +44,9 @@ function extractTournaments(
 export function RankingPage() {
   const { user } = useAuth()
   const [selectedLeague, setSelectedLeague] = useState<string | null>(null)
-  const [selectedTournament, setSelectedTournament] = useState<string | null>(null)
+  const [selectedTournament, setSelectedTournament] = useState<string | null>(
+    null
+  )
 
   const { data: matchesData } = useInfiniteQuery<
     Match[],
@@ -87,7 +89,12 @@ export function RankingPage() {
     ...(selectedTournament && { tournamentId: selectedTournament }),
   }
 
-  const { data: rankingData, isLoading, error, refetch } = useGetRanking(rankingParams)
+  const {
+    data: rankingData,
+    isLoading,
+    error,
+    refetch,
+  } = useGetRanking(rankingParams)
 
   if (isLoading) {
     return (
@@ -149,14 +156,13 @@ export function RankingPage() {
       </div>
 
       {rankingData?.rankings && rankingData.rankings.length > 0 ? (
-        <RankingTable
-          entries={rankingData.rankings}
-          currentUserId={user?.id}
-        />
+        <RankingTable entries={rankingData.rankings} currentUserId={user?.id} />
       ) : (
         <div className="text-center py-12 text-text-secondary">
           <p className="font-medium">No Rankings Yet</p>
-          <p className="text-sm mt-1">Make predictions to appear in the rankings!</p>
+          <p className="text-sm mt-1">
+            Make predictions to appear in the rankings!
+          </p>
         </div>
       )}
     </div>

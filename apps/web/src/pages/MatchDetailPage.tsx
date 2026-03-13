@@ -3,7 +3,10 @@ import { useParams, useNavigate } from "react-router-dom"
 import { useGetMatchesId } from "@/api/generated/matches/matches"
 import { useGetPredictions, useCreatePrediction } from "@/api/predictions"
 import { MatchDetailCard } from "@/components/match/MatchDetailCard"
-import { ScoreSelectionCard, PromptCard } from "@/components/match/ScoreSelectionCard"
+import {
+  ScoreSelectionCard,
+  PromptCard,
+} from "@/components/match/ScoreSelectionCard"
 import { MyPredictionCard } from "@/components/match/MyPredictionCard"
 import { CommunityPredictionsCard } from "@/components/match/CommunityPredictionsCard"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -125,7 +128,9 @@ export function MatchDetailPage() {
           Back
         </Button>
         <div>
-          <p className="font-semibold text-sm">{match.tournament.league.name}</p>
+          <p className="font-semibold text-sm">
+            {match.tournament.league.name}
+          </p>
           <p className="text-xs text-text-secondary">{match.tournament.name}</p>
         </div>
       </div>
@@ -193,7 +198,8 @@ export function MatchDetailPage() {
           />
         )}
 
-      {!hasPredicted && (isPredictionLocked || isMatchCompleted) &&
+      {!hasPredicted &&
+        (isPredictionLocked || isMatchCompleted) &&
         (!allPredictions || allPredictions.length === 0) && (
           <div className="text-center py-8 text-text-secondary text-sm">
             No predictions for this match yet.

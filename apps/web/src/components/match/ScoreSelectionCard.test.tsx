@@ -46,7 +46,9 @@ describe("ScoreSelectionCard", () => {
     })
 
     it("hides the submit button when no score is selected", () => {
-      renderWithProviders(<ScoreSelectionCard {...makeProps({ selectedScore: null })} />)
+      renderWithProviders(
+        <ScoreSelectionCard {...makeProps({ selectedScore: null })} />
+      )
       expect(
         screen.queryByRole("button", { name: /submit prediction/i })
       ).not.toBeInTheDocument()
@@ -54,7 +56,9 @@ describe("ScoreSelectionCard", () => {
 
     it("shows the submit button when a score is selected", () => {
       renderWithProviders(
-        <ScoreSelectionCard {...makeProps({ selectedScore: makeScore(2, 0) })} />
+        <ScoreSelectionCard
+          {...makeProps({ selectedScore: makeScore(2, 0) })}
+        />
       )
       expect(
         screen.getByRole("button", { name: /submit prediction/i })
@@ -67,7 +71,9 @@ describe("ScoreSelectionCard", () => {
           {...makeProps({ error: "Failed to submit prediction" })}
         />
       )
-      expect(screen.getByText("Failed to submit prediction")).toBeInTheDocument()
+      expect(
+        screen.getByText("Failed to submit prediction")
+      ).toBeInTheDocument()
     })
   })
 
@@ -91,7 +97,9 @@ describe("ScoreSelectionCard", () => {
           onSubmit={onSubmit}
         />
       )
-      await user.click(screen.getByRole("button", { name: /submit prediction/i }))
+      await user.click(
+        screen.getByRole("button", { name: /submit prediction/i })
+      )
       await waitFor(() => expect(onSubmit).toHaveBeenCalledOnce())
     })
 

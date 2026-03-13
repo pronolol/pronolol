@@ -6,7 +6,10 @@ import { MatchCard } from "./MatchCard"
 
 // ─── Factories ────────────────────────────────────────────────────────────────
 
-const makeTeam = (tag: string, overrides: Partial<{ logoUrl: string }> = {}) => ({
+const makeTeam = (
+  tag: string,
+  overrides: Partial<{ logoUrl: string }> = {}
+) => ({
   name: tag,
   logoUrl: overrides.logoUrl ?? `https://example.com/${tag.toLowerCase()}.png`,
 })
@@ -80,7 +83,9 @@ describe("MatchCard", () => {
   describe("prediction badge", () => {
     it("shows the predicted team tag and score when a prediction is provided", () => {
       renderWithProviders(
-        <MatchCard {...makeProps({ league: "LEC", prediction: makePrediction() })} />
+        <MatchCard
+          {...makeProps({ league: "LEC", prediction: makePrediction() })}
+        />
       )
       expect(screen.getByText("TLA 2-1")).toBeInTheDocument()
     })
@@ -99,7 +104,9 @@ describe("MatchCard", () => {
           })}
         />
       )
-      expect(screen.getByText("TLA 2-1").parentElement).toHaveClass("bg-success-light")
+      expect(screen.getByText("TLA 2-1").parentElement).toHaveClass(
+        "bg-success-light"
+      )
     })
 
     it("applies primary styles for a correct but non-exact prediction", () => {
@@ -111,7 +118,9 @@ describe("MatchCard", () => {
           })}
         />
       )
-      expect(screen.getByText("TLA 2-1").parentElement).toHaveClass("bg-primary-light")
+      expect(screen.getByText("TLA 2-1").parentElement).toHaveClass(
+        "bg-primary-light"
+      )
     })
 
     it("applies error styles for a wrong prediction", () => {
@@ -123,7 +132,9 @@ describe("MatchCard", () => {
           })}
         />
       )
-      expect(screen.getByText("TLA 2-1").parentElement).toHaveClass("bg-error-light")
+      expect(screen.getByText("TLA 2-1").parentElement).toHaveClass(
+        "bg-error-light"
+      )
     })
 
     it("applies neutral styles for a pending prediction", () => {
@@ -135,7 +146,9 @@ describe("MatchCard", () => {
           })}
         />
       )
-      expect(screen.getByText("TLA 2-1").parentElement).toHaveClass("bg-surface")
+      expect(screen.getByText("TLA 2-1").parentElement).toHaveClass(
+        "bg-surface"
+      )
     })
   })
 

@@ -25,10 +25,7 @@ type MatchDetailCardProps = {
 
 type MatchStatus = "completed" | "live" | "upcoming"
 
-function getStatus(
-  state: string,
-  isPredictionLocked: boolean
-): MatchStatus {
+function getStatus(state: string, isPredictionLocked: boolean): MatchStatus {
   if (state === "completed") return "completed"
   if (isPredictionLocked) return "live"
   return "upcoming"
@@ -40,10 +37,7 @@ const statusLabel: Record<MatchStatus, string> = {
   upcoming: "Upcoming",
 }
 
-const statusVariant: Record<
-  MatchStatus,
-  "completed" | "live" | "upcoming"
-> = {
+const statusVariant: Record<MatchStatus, "completed" | "live" | "upcoming"> = {
   completed: "completed",
   live: "live",
   upcoming: "upcoming",
@@ -125,7 +119,9 @@ export function MatchDetailCard({
           <TeamCard
             team={teamA}
             isSelected={
-              !hasPredicted && !isPredictionLocked && selectedTeamId === teamA.id
+              !hasPredicted &&
+              !isPredictionLocked &&
+              selectedTeamId === teamA.id
             }
             disabled={hasPredicted || isPredictionLocked}
             onPress={() => onTeamSelect(teamA.id)}
@@ -161,7 +157,9 @@ export function MatchDetailCard({
           <TeamCard
             team={teamB}
             isSelected={
-              !hasPredicted && !isPredictionLocked && selectedTeamId === teamB.id
+              !hasPredicted &&
+              !isPredictionLocked &&
+              selectedTeamId === teamB.id
             }
             disabled={hasPredicted || isPredictionLocked}
             onPress={() => onTeamSelect(teamB.id)}

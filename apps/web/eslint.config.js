@@ -28,6 +28,7 @@ export default [
       globals: {
         ...globals.browser,
         console: "readonly",
+        React: "readonly",
       },
     },
     plugins: {

@@ -84,14 +84,17 @@ export function MyPredictionCard({
           <div className="text-center">
             <p className="text-xs text-text-muted">Score</p>
             <p className="font-bold text-base">
-              {prediction.predictedTeamAScore} - {prediction.predictedTeamBScore}
+              {prediction.predictedTeamAScore} -{" "}
+              {prediction.predictedTeamBScore}
             </p>
           </div>
 
           {prediction.points !== null && (
             <div className="text-center">
               <p className="text-xs text-text-muted">Points</p>
-              <p className={`font-bold text-base ${style?.pointsClass || "text-primary"}`}>
+              <p
+                className={`font-bold text-base ${style?.pointsClass || "text-primary"}`}
+              >
                 +{prediction.points}
               </p>
             </div>

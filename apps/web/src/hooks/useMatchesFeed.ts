@@ -42,7 +42,11 @@ export function useMatchesFeed() {
       return { direction: "after", cursor: lastMatch.matchDate }
     },
     getPreviousPageParam: (firstPage): PageParam | undefined => {
-      if (!firstPage || firstPage.length === 0 || firstPage.length < PAGE_SIZE) {
+      if (
+        !firstPage ||
+        firstPage.length === 0 ||
+        firstPage.length < PAGE_SIZE
+      ) {
         return undefined
       }
       const firstMatch = firstPage[0]

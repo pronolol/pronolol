@@ -39,7 +39,9 @@ export function RankingTable({ entries, currentUserId }: RankingTableProps) {
                 }`}
               >
                 {isMedal ? (
-                  <span className="text-2xl">{MEDAL_EMOJI[entry.rank - 1]}</span>
+                  <span className="text-2xl">
+                    {MEDAL_EMOJI[entry.rank - 1]}
+                  </span>
                 ) : (
                   <span className="font-bold text-text-primary">
                     {entry.rank}

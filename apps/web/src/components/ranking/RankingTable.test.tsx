@@ -36,7 +36,12 @@ describe("RankingTable", () => {
     })
 
     it("shows points and correctness percentage for each entry", () => {
-      const entries = [makeEntry("u1", 1, "Alice", { totalPoints: 150, correctnessPercentage: 75 })]
+      const entries = [
+        makeEntry("u1", 1, "Alice", {
+          totalPoints: 150,
+          correctnessPercentage: 75,
+        }),
+      ]
       renderWithProviders(<RankingTable entries={entries} />)
       expect(screen.getByText("150")).toBeInTheDocument()
       expect(screen.getByText("75%")).toBeInTheDocument()

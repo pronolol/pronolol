@@ -71,32 +71,35 @@ export const handlers = [
     })
   }),
 
-  http.post(`${API_URL}/matches/:id/predictions`, async ({ request, params }) => {
-    const body = (await request.json()) as {
-      teamId: string
-      predictedTeamAScore: number
-      predictedTeamBScore: number
+  http.post(
+    `${API_URL}/matches/:id/predictions`,
+    async ({ request, params }) => {
+      const body = (await request.json()) as {
+        teamId: string
+        predictedTeamAScore: number
+        predictedTeamBScore: number
+      }
+      return HttpResponse.json({
+        id: "pred-1",
+        userId: "user-1",
+        matchId: params.id,
+        teamId: body.teamId,
+        predictedTeamAScore: body.predictedTeamAScore,
+        predictedTeamBScore: body.predictedTeamBScore,
+        isCorrect: null,
+        isExact: null,
+        points: null,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        team: {
+          id: body.teamId,
+          name: "Team Alpha",
+          tag: "TLA",
+          logoUrl: "https://example.com/tla.png",
+        },
+      })
     }
-    return HttpResponse.json({
-      id: "pred-1",
-      userId: "user-1",
-      matchId: params.id,
-      teamId: body.teamId,
-      predictedTeamAScore: body.predictedTeamAScore,
-      predictedTeamBScore: body.predictedTeamBScore,
-      isCorrect: null,
-      isExact: null,
-      points: null,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      team: {
-        id: body.teamId,
-        name: "Team Alpha",
-        tag: "TLA",
-        logoUrl: "https://example.com/tla.png",
-      },
-    })
-  }),
+  ),
 
   http.get(`${API_URL}/ranking`, () => {
     return HttpResponse.json({
