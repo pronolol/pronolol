@@ -147,7 +147,8 @@ services:
 # ===============================
 volumes:
   postgres_data:
-    driver: local
+    external: true
+    name: pronolol_backend_postgres_data
   pgadmin_data:
     driver: local
   uptime_kuma_data:
