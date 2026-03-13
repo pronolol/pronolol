@@ -30,7 +30,7 @@ RUN npm run build
 # -----------------------------------------------
 # Stage 2: Production Runtime (Playwright image has Node + browsers pre-installed)
 # -----------------------------------------------
-FROM mcr.microsoft.com/playwright:v1.50.0-jammy AS runtime
+FROM mcr.microsoft.com/playwright:v1.58.2-jammy AS runtime
 WORKDIR /app
 
 ENV NODE_ENV=production
