@@ -135,10 +135,8 @@ jobs:
             cd /home/debian/pronolol
             git pull origin main
             REGISTRY=$REGISTRY docker compose pull api migrator
-            REGISTRY=$REGISTRY docker compose up -d db
-            REGISTRY=$REGISTRY docker compose up migrator
-            docker compose stop api
-            REGISTRY=$REGISTRY docker compose up -d --no-deps api
+            REGISTRY=$REGISTRY docker compose run --rm --no-deps migrator
+            REGISTRY=$REGISTRY docker compose up -d --force-recreate --no-deps api
         env:
           REGISTRY: ${{ env.REGISTRY }}
           GITHUB_ACTOR: ${{ github.actor }}
