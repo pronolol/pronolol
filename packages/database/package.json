@@ -15,6 +15,7 @@
     "build": "tsup",
     "generate": "prisma generate",
     "migrate": "prisma migrate deploy",
+    "prepare": "prisma generate && tsup",
     "prepublishOnly": "prisma generate && tsup",
     "test": "vitest run --passWithNoTests"
   },

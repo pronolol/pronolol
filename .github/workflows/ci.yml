@@ -7,9 +7,89 @@ on:
     branches: [main]
 
 jobs:
-  lint-and-build:
+  api:
+    name: API
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        working-directory: apps/api
+        run: npm run build
+
+      - name: Test
+        working-directory: apps/api
+        run: npm test
+
+  web:
+    name: Web
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate OpenAPI spec
+        working-directory: apps/api
+        run: npm run generate:openapi
+
+      - name: Generate API types
+        working-directory: apps/web
+        run: npm run generate:api
+
+      - name: Lint
+        working-directory: apps/web
+        run: npm run lint
+
+      - name: Test
+        working-directory: apps/web
+        run: npm test
+
+      - name: Build
+        working-directory: apps/web
+        run: npm run build
+        env:
+          VITE_API_URL: https://api.pronolol.fr
+
+  scraper:
+    name: Scraper
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        working-directory: apps/scraper
+        run: npm run build
+
+      - name: Test
+        working-directory: apps/scraper
+        run: npm test
+
+  mobile:
+    name: Mobile
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -22,37 +102,5 @@ jobs:
         run: npm ci
 
       - name: Lint
-        run: npm run lint
-
-      - name: Build database package
-        working-directory: packages/database
-        run: npx prisma generate && npm run build
-
-      - name: Build API
-        working-directory: apps/api
-        run: npm run build
-
-      - name: Build scraper
-        working-directory: apps/scraper
-        run: npm run build
-
-      - name: Lint mobile
         working-directory: apps/mobile
         run: npm run lint
-
-      - name: Lint web
-        working-directory: apps/web
-        run: npm run lint
-
-      - name: Test web
-        working-directory: apps/web
-        run: npm test
-
-      - name: Build web
-        working-directory: apps/web
-        run: npm run build
-        env:
-          VITE_API_URL: https://api.pronolol.fr
-
-      - name: Run tests
-        run: npm test --workspaces --if-present

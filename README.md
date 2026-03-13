@@ -29,6 +29,10 @@ A monorepo for the Pronolol esports prediction platform.
 # 1. Clone and install
 npm install
 
+# 2. Generate API types (required before building the web app)
+npm run generate:openapi  # generates apps/api/openapi.json
+cd apps/web && npm run generate:api  # generates src/api/generated/
+
 # 2. Configure environment
 cp apps/api/.env.example apps/api/.env
 # Edit apps/api/.env — set BETTER_AUTH_SECRET: openssl rand -base64 32
