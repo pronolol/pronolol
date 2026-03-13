@@ -23,18 +23,18 @@ export const auth = betterAuth({
     "pronolol://",
     "https://pronolol.fr",
     ...(process.env.NODE_ENV === "development"
-      ? ["exp://", "exp://**", "exp://192.168.*.*:*/**"]
+      ? ["exp://", "exp://**", "exp://192.168.*.*:*/**", "http://localhost:5173"]
       : []),
   ],
   advanced: {
     crossSubDomainCookies: {
-      enabled: true,
+      enabled: process.env.NODE_ENV === "production",
       domain: ".pronolol.fr",
     },
-    useSecureCookies: true,
+    useSecureCookies: process.env.NODE_ENV === "production",
     defaultCookieAttributes: {
-      sameSite: "none",
-      secure: true,
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      secure: process.env.NODE_ENV === "production",
     },
   },
   plugins: [expo(), username()],

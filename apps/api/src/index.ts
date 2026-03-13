@@ -13,13 +13,14 @@ const app = express()
 const port = Number(process.env.API_PORT) || 3000
 const host = process.env.API_HOST || "0.0.0.0"
 
+const allowedOrigins =
+  process.env.NODE_ENV === "development"
+    ? ["http://localhost:5173", "http://localhost:8081", "http://localhost:3000"]
+    : ["https://pronolol.fr"]
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:8081",
-      "http://localhost:3000",
-      "https://pronolol.fr",
-    ],
+    origin: allowedOrigins,
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })

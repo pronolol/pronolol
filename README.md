@@ -7,6 +7,7 @@ A monorepo for the Pronolol esports prediction platform.
 ```
 ├── apps/
 │   ├── api/        # Express.js REST API
+│   ├── web/        # Vite + React SPA
 │   ├── mobile/     # Expo React Native app
 │   └── scraper/    # Playwright web scraper
 ├── packages/
@@ -29,8 +30,11 @@ A monorepo for the Pronolol esports prediction platform.
 npm install
 
 # 2. Configure environment
-cp .env.example .env
-# Edit .env — required: BETTER_AUTH_SECRET (openssl rand -base64 32)
+cp apps/api/.env.example apps/api/.env
+# Edit apps/api/.env — set BETTER_AUTH_SECRET: openssl rand -base64 32
+
+cp apps/web/.env.example apps/web/.env
+# VITE_API_URL defaults to http://localhost:3000 — no changes needed for local dev
 ```
 
 ### Running services
@@ -42,7 +46,10 @@ npm run dev:db
 # Terminal 2 — API with hot reload
 npm run dev:api
 
-# Terminal 3 — mobile
+# Terminal 3 — web — http://localhost:5173
+npm run dev:web
+
+# Terminal 4 — mobile
 cd apps/mobile && npx expo start
 ```
 
@@ -59,12 +66,20 @@ npm run dev:db:down
 | `npm run dev:db` | Start Postgres + run migrations (Docker) |
 | `npm run dev:db:down` | Stop infrastructure containers |
 | `npm run dev:api` | Start API locally with hot reload |
+| `npm run dev:web` | Start web app — http://localhost:5173 |
 | `npm run dev:scraper` | Start scraper locally with hot reload |
 | `npm run migrate` | Run Prisma migrations against local DB |
 | `npm run build` | Build all packages (topologically ordered via Turbo) |
 | `npm test` | Run all tests |
 | `npm run lint` | Lint all packages |
 | `npm run lint:fix` | Auto-fix lint issues |
+
+### Web-only scripts (run from `apps/web/`)
+
+| Script | Description |
+|--------|-------------|
+| `npm run test:watch` | Run tests in watch mode |
+| `npm run generate:api` | Regenerate typed API hooks from OpenAPI spec (run after API schema changes) |
 
 ## Services
 
@@ -78,7 +93,7 @@ npm run dev:db:down
 
 ## Environment Variables
 
-Copy `.env.example` to `.env` and configure:
+Copy the relevant `.env.example` files and configure:
 
 | Variable                | Required | Description                             |
 | ----------------------- | -------- | --------------------------------------- |
@@ -90,6 +105,12 @@ Copy `.env.example` to `.env` and configure:
 | `BETTER_AUTH_URL`       | No       | API base URL for auth callbacks         |
 | `DISCORD_CLIENT_ID`     | No       | Discord OAuth client ID                 |
 | `DISCORD_CLIENT_SECRET` | No       | Discord OAuth secret                    |
+
+**Web** (`apps/web/.env`):
+
+| Variable        | Required | Description                          |
+| --------------- | -------- | ------------------------------------ |
+| `VITE_API_URL`  | No       | API base URL (default: `http://localhost:3000`) |
 
 ## Production (Docker)
 

@@ -11,6 +11,7 @@
     "dev:db": "docker compose -f compose.infra.yml up",
     "dev:db:down": "docker compose -f compose.infra.yml down",
     "dev:api": "npm run dev --workspace=apps/api",
+    "dev:web": "npm run dev --workspace=apps/web",
     "dev:scraper": "npm run dev --workspace=apps/scraper",
     "migrate": "npm run migrate --workspace=packages/database",
     "build": "turbo run build",
