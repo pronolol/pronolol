@@ -12,6 +12,10 @@ on:
           - all
           - web
           - backend
+  workflow_run:
+    workflows: ["Build"]
+    types: [completed]
+    branches: [main]
 
 permissions:
   contents: read
@@ -24,7 +28,7 @@ jobs:
   deploy-web:
     name: Deploy Web
     runs-on: ubuntu-latest
-    if: inputs.target == 'all' || inputs.target == 'web'
+    if: github.event_name == 'workflow_dispatch' && (inputs.target == 'all' || inputs.target == 'web')
     steps:
       - uses: actions/checkout@v5
 
@@ -95,33 +99,17 @@ jobs:
             }"
 
   # -----------------------------------------------
-  # Deploy Backend (Docker images via GHCR)
+  # Deploy Backend (pull from GHCR, no build)
   # -----------------------------------------------
   deploy-backend:
     name: Deploy Backend
     runs-on: ubuntu-latest
-    if: inputs.target == 'all' || inputs.target == 'backend'
+    if: |
+      (github.event_name == 'workflow_dispatch' && (inputs.target == 'all' || inputs.target == 'backend')) ||
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
     steps:
-      - uses: actions/checkout@v5
-
       - name: Set registry (lowercase)
         run: echo "REGISTRY=ghcr.io/$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
-
-      - name: Login to GHCR
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and push images
-        run: |
-          docker compose -f compose.yml -f compose.prod.yml build api scraper
-          docker compose build migrator
-          docker compose push api scraper migrator
-        env:
-          REGISTRY: ${{ env.REGISTRY }}
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v1
@@ -148,7 +136,7 @@ jobs:
       - name: Health check — API
         run: |
           sleep 10
-          curl --fail --silent --max-time 10 https://api.pronolol.fr \
+          curl --fail --silent --max-time 10 https://api.pronolol.fr/health \
             && echo "✓ api.pronolol.fr is up" \
             || (echo "✗ api.pronolol.fr is not responding" && exit 1)
 
