@@ -1,0 +1,169 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: What to deploy
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - web
+          - backend
+
+jobs:
+  # -----------------------------------------------
+  # Deploy Web (static files via SCP)
+  # -----------------------------------------------
+  deploy-web:
+    name: Deploy Web
+    runs-on: ubuntu-latest
+    if: inputs.target == 'all' || inputs.target == 'web'
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate OpenAPI spec
+        working-directory: apps/api
+        run: npm run generate:openapi
+
+      - name: Generate API types
+        working-directory: apps/web
+        run: npm run generate:api
+
+      - name: Build
+        working-directory: apps/web
+        run: npm run build
+        env:
+          VITE_API_URL: https://api.pronolol.fr
+
+      - name: Upload to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          source: "apps/web/dist/"
+          target: "/var/www/pronolol"
+          strip_components: 3
+
+      - name: Health check — Web
+        run: |
+          sleep 5
+          curl --fail --silent --max-time 10 https://pronolol.fr \
+            && echo "✓ pronolol.fr is up" \
+            || (echo "✗ pronolol.fr is not responding" && exit 1)
+
+      - name: Notify Discord
+        if: always()
+        run: |
+          STATUS="${{ job.status }}"
+          if [ "$STATUS" = "success" ]; then
+            COLOR=3066993
+            TITLE="✅ Web deployed successfully"
+          else
+            COLOR=15158332
+            TITLE="❌ Web deployment failed"
+          fi
+          curl -s -X POST "${{ secrets.DISCORD_WEBHOOK_URL }}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"embeds\": [{
+                \"title\": \"$TITLE\",
+                \"color\": $COLOR,
+                \"fields\": [
+                  { \"name\": \"Commit\", \"value\": \"[\`${{ github.sha }}\`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})\", \"inline\": true },
+                  { \"name\": \"Author\", \"value\": \"${{ github.actor }}\", \"inline\": true },
+                  { \"name\": \"Run\", \"value\": \"[View logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})\", \"inline\": true }
+                ]
+              }]
+            }"
+
+  # -----------------------------------------------
+  # Deploy Backend (Docker images via GHCR)
+  # -----------------------------------------------
+  deploy-backend:
+    name: Deploy Backend
+    runs-on: ubuntu-latest
+    if: inputs.target == 'all' || inputs.target == 'backend'
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set registry (lowercase)
+        run: echo "REGISTRY=ghcr.io/$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push images
+        run: |
+          docker compose -f compose.yml -f compose.prod.yml build api scraper
+          docker compose build migrator
+          docker compose push api scraper migrator
+        env:
+          REGISTRY: ${{ env.REGISTRY }}
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          envs: REGISTRY,GITHUB_ACTOR,GHCR_TOKEN
+          script: |
+            echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+            cd /opt/pronolol
+            git pull origin main
+            REGISTRY=$REGISTRY docker compose pull api migrator
+            REGISTRY=$REGISTRY docker compose run --rm migrator
+            REGISTRY=$REGISTRY docker compose up -d --no-deps --force-recreate api
+        env:
+          REGISTRY: ${{ env.REGISTRY }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          GHCR_TOKEN: ${{ secrets.GHCR_READ_TOKEN }}
+
+      - name: Health check — API
+        run: |
+          sleep 10
+          curl --fail --silent --max-time 10 https://api.pronolol.fr \
+            && echo "✓ api.pronolol.fr is up" \
+            || (echo "✗ api.pronolol.fr is not responding" && exit 1)
+
+      - name: Notify Discord
+        if: always()
+        run: |
+          STATUS="${{ job.status }}"
+          if [ "$STATUS" = "success" ]; then
+            COLOR=3066993
+            TITLE="✅ API deployed successfully"
+          else
+            COLOR=15158332
+            TITLE="❌ API deployment failed"
+          fi
+          curl -s -X POST "${{ secrets.DISCORD_WEBHOOK_URL }}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"embeds\": [{
+                \"title\": \"$TITLE\",
+                \"color\": $COLOR,
+                \"fields\": [
+                  { \"name\": \"Commit\", \"value\": \"[\`${{ github.sha }}\`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})\", \"inline\": true },
+                  { \"name\": \"Author\", \"value\": \"${{ github.actor }}\", \"inline\": true },
+                  { \"name\": \"Run\", \"value\": \"[View logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})\", \"inline\": true }
+                ]
+              }]
+            }"
