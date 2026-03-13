@@ -12,10 +12,6 @@ on:
           - all
           - web
           - backend
-  workflow_run:
-    workflows: ["Build"]
-    types: [completed]
-    branches: [main]
 
 permissions:
   contents: read
@@ -104,9 +100,7 @@ jobs:
   deploy-backend:
     name: Deploy Backend
     runs-on: ubuntu-latest
-    if: |
-      (github.event_name == 'workflow_dispatch' && (inputs.target == 'all' || inputs.target == 'backend')) ||
-      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
+    if: inputs.target == 'all' || inputs.target == 'backend'
     steps:
       - name: Set registry (lowercase)
         run: echo "REGISTRY=ghcr.io/$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
