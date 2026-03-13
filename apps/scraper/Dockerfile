@@ -12,6 +12,7 @@ FROM node:20-bookworm AS builder
 WORKDIR /app
 
 COPY package*.json ./
+COPY tsconfig.base.json ./
 COPY apps/scraper/package*.json ./apps/scraper/
 COPY packages/database ./packages/database
 
@@ -44,4 +45,4 @@ RUN --mount=type=secret,id=npm_token \
 
 COPY --from=builder /app/apps/scraper/dist ./dist
 
-CMD ["node", "dist/index.mjs"]
+CMD ["node", "dist/index.js"]
