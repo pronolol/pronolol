@@ -13,11 +13,9 @@ WORKDIR /app
 
 COPY package*.json ./
 COPY apps/scraper/package*.json ./apps/scraper/
-COPY packages/database/package*.json ./packages/database/
+COPY packages/database ./packages/database
 
 RUN --mount=type=cache,target=/root/.npm npm install
-
-COPY packages/database ./packages/database
 COPY apps/scraper ./apps/scraper
 
 RUN npx prisma generate --schema=./packages/database/prisma/schema.prisma

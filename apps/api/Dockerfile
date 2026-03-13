@@ -13,11 +13,10 @@ WORKDIR /app
 
 COPY package*.json ./
 COPY apps/api/package*.json ./apps/api/
-COPY packages/database/package*.json ./packages/database/
+COPY packages/database ./packages/database
 
 RUN --mount=type=cache,target=/root/.npm npm install
 
-COPY packages/database ./packages/database
 COPY apps/api ./apps/api
 
 RUN npx prisma generate --schema=./packages/database/prisma/schema.prisma

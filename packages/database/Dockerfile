@@ -17,8 +17,8 @@ COPY packages/database/package*.json ./
 COPY packages/database/prisma ./prisma
 COPY packages/database/prisma.config.ts ./
 
-# Install dependencies including Prisma CLI
-RUN npm install
+# Install dependencies including Prisma CLI (skip prepare script, we only need migrations)
+RUN npm install --ignore-scripts
 
 # Run migrations on startup
 CMD ["npx", "prisma", "migrate", "deploy", "--schema=./prisma/schema.prisma"]
