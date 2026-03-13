@@ -69,7 +69,7 @@ predictionRouter.get("/", async (req: Request, res: Response) => {
       return res.status(404).json({ error: "Match not found" })
     }
 
-    const result = await getMatchPredictions(session.user.id, matchId)
+    const result = await getMatchPredictions(session.user.id, matchId, match)
     res.json(result)
   } catch (error) {
     console.error("Error fetching predictions:", error)

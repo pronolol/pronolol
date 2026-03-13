@@ -96,14 +96,21 @@ export const getUserPredictions = async (userId: string) => {
   })
 }
 
-export const getMatchPredictions = async (userId: string, matchId: string) => {
+export const getMatchPredictions = async (
+  userId: string,
+  matchId: string,
+  match: { matchDate: Date; state: string }
+) => {
   const myPrediction = await prisma.prediction.findUnique({
     where: { userId_matchId: { userId, matchId } },
     include: { team: true },
   })
 
+  const canSeeOtherPredictions =
+    !!myPrediction || isPredictionLocked(match.matchDate) || match.state === "completed"
+
   let allPredictions = null
-  if (myPrediction) {
+  if (canSeeOtherPredictions) {
     allPredictions = await prisma.prediction.findMany({
       where: { matchId },
       include: {
