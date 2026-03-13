@@ -12,6 +12,7 @@ on:
           - all
           - web
           - backend
+          - scraper
 
 permissions:
   contents: read
@@ -24,7 +25,7 @@ jobs:
   deploy-web:
     name: Deploy Web
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' && (inputs.target == 'all' || inputs.target == 'web')
+    if: inputs.target == 'all' || inputs.target == 'web'
     steps:
       - uses: actions/checkout@v5
 
@@ -118,7 +119,7 @@ jobs:
             echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
             cd /home/debian/pronolol
             git pull origin main
-            REGISTRY=$REGISTRY docker compose pull api migrator scraper
+            REGISTRY=$REGISTRY docker compose pull api migrator
             REGISTRY=$REGISTRY docker compose run --rm migrator
             docker compose stop api
             REGISTRY=$REGISTRY docker compose up -d --no-deps api
@@ -144,6 +145,62 @@ jobs:
           else
             COLOR=15158332
             TITLE="❌ API deployment failed"
+          fi
+          curl -s -X POST "${{ secrets.DISCORD_WEBHOOK_URL }}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"embeds\": [{
+                \"title\": \"$TITLE\",
+                \"color\": $COLOR,
+                \"fields\": [
+                  { \"name\": \"Commit\", \"value\": \"[\`${{ github.sha }}\`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})\", \"inline\": true },
+                  { \"name\": \"Author\", \"value\": \"${{ github.actor }}\", \"inline\": true },
+                  { \"name\": \"Run\", \"value\": \"[View logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})\", \"inline\": true }
+                ]
+              }]
+            }"
+
+  # -----------------------------------------------
+  # Deploy Scraper (pull image + run)
+  # -----------------------------------------------
+  deploy-scraper:
+    name: Deploy Scraper
+    runs-on: ubuntu-latest
+    if: inputs.target == 'all' || inputs.target == 'scraper'
+    steps:
+      - name: Set registry (lowercase)
+        run: echo "REGISTRY=ghcr.io/$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
+      - name: Run scraper on VPS
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_SSH_PORT }}
+          envs: REGISTRY,GITHUB_ACTOR,GHCR_TOKEN
+          script: |
+            set -e
+            echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+            cd /home/debian/pronolol
+            git pull origin main
+            REGISTRY=$REGISTRY docker compose pull scraper
+            REGISTRY=$REGISTRY docker compose run --rm scraper
+        env:
+          REGISTRY: ${{ env.REGISTRY }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          GHCR_TOKEN: ${{ secrets.GHCR_READ_TOKEN }}
+
+      - name: Notify Discord
+        if: always()
+        run: |
+          STATUS="${{ job.status }}"
+          if [ "$STATUS" = "success" ]; then
+            COLOR=3066993
+            TITLE="✅ Scraper ran successfully"
+          else
+            COLOR=15158332
+            TITLE="❌ Scraper run failed"
           fi
           curl -s -X POST "${{ secrets.DISCORD_WEBHOOK_URL }}" \
             -H "Content-Type: application/json" \

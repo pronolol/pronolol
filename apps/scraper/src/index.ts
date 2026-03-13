@@ -109,6 +109,14 @@ async function main() {
 
     console.log(output)
 
+    if (process.env.UPTIME_KUMA_PUSH_URL) {
+      try {
+        await fetch(process.env.UPTIME_KUMA_PUSH_URL)
+      } catch {
+        console.error("⚠️ Failed to ping Uptime Kuma")
+      }
+    }
+
     console.error("✨ Done!")
   } catch (error) {
     console.error("❌ An unexpected error occurred during scraping:", error)
