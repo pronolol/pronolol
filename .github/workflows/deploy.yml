@@ -13,6 +13,10 @@ on:
           - web
           - backend
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   # -----------------------------------------------
   # Deploy Web (static files via SCP)
