@@ -18,6 +18,7 @@ export default [
       "**/android/**",
       "**/ios/**",
       "apps/web/**",
+      "apps/mobile/**",
     ],
   },
   js.configs.recommended,
