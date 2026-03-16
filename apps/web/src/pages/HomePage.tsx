@@ -107,27 +107,43 @@ export function HomePage() {
     }
   }, [isLoading, listData])
 
-  const handleScroll = useCallback(
-    (e: React.UIEvent<HTMLDivElement>) => {
-      const el = e.currentTarget
-      const nearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 200
-      const nearTop = el.scrollTop < 200
-      if (nearBottom && hasNextPage && !isFetchingNextPage) {
-        fetchNextPage()
-      }
-      if (nearTop && hasPreviousPage && !isFetchingPreviousPage) {
-        fetchPreviousPage()
-      }
-    },
-    [
-      hasNextPage,
-      isFetchingNextPage,
-      fetchNextPage,
-      hasPreviousPage,
-      isFetchingPreviousPage,
-      fetchPreviousPage,
-    ]
-  )
+  // Preserve scroll position when fetchPreviousPage prepends items above the
+  // current viewport (without this the page jumps back to the top).
+  const scrollHeightBeforeFetch = useRef(0)
+
+  const triggerFetchPreviousPage = useCallback(() => {
+    if (hasPreviousPage && !isFetchingPreviousPage) {
+      scrollHeightBeforeFetch.current = document.documentElement.scrollHeight
+      fetchPreviousPage()
+    }
+  }, [hasPreviousPage, isFetchingPreviousPage, fetchPreviousPage])
+
+  useEffect(() => {
+    if (!isFetchingPreviousPage && scrollHeightBeforeFetch.current > 0) {
+      const delta =
+        document.documentElement.scrollHeight - scrollHeightBeforeFetch.current
+      window.scrollBy({ top: delta, behavior: "instant" })
+      scrollHeightBeforeFetch.current = 0
+    }
+  }, [isFetchingPreviousPage])
+
+  // The page scrolls on window, not on the feed div (the div has no fixed
+  // height so it never overflows). Listen to window scroll instead.
+  useEffect(() => {
+    const onScroll = () => {
+      const scrollTop = window.scrollY
+      const scrollHeight = document.documentElement.scrollHeight
+      const clientHeight = window.innerHeight
+      const nearBottom = scrollHeight - scrollTop - clientHeight < 200
+      const nearTop = scrollTop < 200
+
+      if (nearBottom && hasNextPage && !isFetchingNextPage) fetchNextPage()
+      if (nearTop) triggerFetchPreviousPage()
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage, triggerFetchPreviousPage])
 
   if (isLoading) {
     return (
@@ -164,10 +180,7 @@ export function HomePage() {
   let todayRefSet = false
 
   return (
-    <div
-      className="flex flex-col gap-0 overflow-y-auto"
-      onScroll={handleScroll}
-    >
+    <div className="flex flex-col gap-0">
       {isFetchingPreviousPage && (
         <div className="flex justify-center py-4">
           <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
