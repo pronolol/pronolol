@@ -1,5 +1,9 @@
 import { vi, describe, it, expect, beforeEach } from "vitest"
-import { isPredictionLocked, validatePrediction, getMatchPredictions } from "./prediction.service"
+import {
+  isPredictionLocked,
+  validatePrediction,
+  getMatchPredictions,
+} from "./prediction.service"
 
 const mockFindUnique = vi.fn()
 const mockFindMany = vi.fn()
@@ -136,12 +140,37 @@ describe("validatePrediction", () => {
 describe("getMatchPredictions", () => {
   const userId = "user-1"
   const matchId = "match-1"
-  const fakePrediction = { id: "pred-1", userId, matchId, teamId: "team-a", team: {} }
-  const fakeAllPredictions = [fakePrediction, { id: "pred-2", userId: "user-2", matchId, teamId: "team-b", team: {}, user: {} }]
+  const fakePrediction = {
+    id: "pred-1",
+    userId,
+    matchId,
+    teamId: "team-a",
+    team: {},
+  }
+  const fakeAllPredictions = [
+    fakePrediction,
+    {
+      id: "pred-2",
+      userId: "user-2",
+      matchId,
+      teamId: "team-b",
+      team: {},
+      user: {},
+    },
+  ]
 
-  const futureMatch = { matchDate: new Date(Date.now() + 60 * 60 * 1000), state: "upcoming" }
-  const lockedMatch = { matchDate: new Date(Date.now() - 6 * 60 * 1000), state: "ongoing" }
-  const completedMatch = { matchDate: new Date(Date.now() - 2 * 60 * 60 * 1000), state: "completed" }
+  const futureMatch = {
+    matchDate: new Date(Date.now() + 60 * 60 * 1000),
+    state: "upcoming",
+  }
+  const lockedMatch = {
+    matchDate: new Date(Date.now() - 6 * 60 * 1000),
+    state: "ongoing",
+  }
+  const completedMatch = {
+    matchDate: new Date(Date.now() - 2 * 60 * 60 * 1000),
+    state: "completed",
+  }
 
   beforeEach(() => {
     mockFindUnique.mockReset()

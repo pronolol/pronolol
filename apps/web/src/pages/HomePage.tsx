@@ -63,6 +63,9 @@ export function HomePage() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    fetchPreviousPage,
+    hasPreviousPage,
+    isFetchingPreviousPage,
     refetch,
     isRefetching,
   } = useMatchesFeed()
@@ -108,11 +111,22 @@ export function HomePage() {
     (e: React.UIEvent<HTMLDivElement>) => {
       const el = e.currentTarget
       const nearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 200
+      const nearTop = el.scrollTop < 200
       if (nearBottom && hasNextPage && !isFetchingNextPage) {
         fetchNextPage()
       }
+      if (nearTop && hasPreviousPage && !isFetchingPreviousPage) {
+        fetchPreviousPage()
+      }
     },
-    [hasNextPage, isFetchingNextPage, fetchNextPage]
+    [
+      hasNextPage,
+      isFetchingNextPage,
+      fetchNextPage,
+      hasPreviousPage,
+      isFetchingPreviousPage,
+      fetchPreviousPage,
+    ]
   )
 
   if (isLoading) {
@@ -154,6 +168,11 @@ export function HomePage() {
       className="flex flex-col gap-0 overflow-y-auto"
       onScroll={handleScroll}
     >
+      {isFetchingPreviousPage && (
+        <div className="flex justify-center py-4">
+          <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+        </div>
+      )}
       {isRefetching && (
         <div className="text-center py-2 text-xs text-text-muted">
           Refreshing...

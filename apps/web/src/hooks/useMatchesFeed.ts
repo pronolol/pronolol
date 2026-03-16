@@ -33,20 +33,30 @@ export function useMatchesFeed() {
       return response.data
     },
     initialPageParam: { direction: null, cursor: "" },
-    getNextPageParam: (lastPage): PageParam | undefined => {
-      if (!lastPage || lastPage.length === 0 || lastPage.length < PAGE_SIZE) {
+    getNextPageParam: (
+      lastPage,
+      _allPages,
+      lastPageParam
+    ): PageParam | undefined => {
+      if (!lastPage || lastPage.length === 0) return undefined
+      // The initial "around" page may return fewer than PAGE_SIZE items even
+      // when more data exists (asymmetric past/future distribution). Skip the
+      // size guard for that page; rely on the server returning empty to stop.
+      if (lastPageParam.direction !== null && lastPage.length < PAGE_SIZE) {
         return undefined
       }
       const lastMatch = lastPage[lastPage.length - 1]
       if (!lastMatch.matchDate) return undefined
       return { direction: "after", cursor: lastMatch.matchDate }
     },
-    getPreviousPageParam: (firstPage): PageParam | undefined => {
-      if (
-        !firstPage ||
-        firstPage.length === 0 ||
-        firstPage.length < PAGE_SIZE
-      ) {
+    getPreviousPageParam: (
+      firstPage,
+      _allPages,
+      firstPageParam
+    ): PageParam | undefined => {
+      if (!firstPage || firstPage.length === 0) return undefined
+      // Same reasoning: skip size guard for the initial "around" page.
+      if (firstPageParam.direction !== null && firstPage.length < PAGE_SIZE) {
         return undefined
       }
       const firstMatch = firstPage[0]

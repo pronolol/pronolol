@@ -107,7 +107,9 @@ export const getMatchPredictions = async (
   })
 
   const canSeeOtherPredictions =
-    !!myPrediction || isPredictionLocked(match.matchDate) || match.state === "completed"
+    !!myPrediction ||
+    isPredictionLocked(match.matchDate) ||
+    match.state === "completed"
 
   let allPredictions = null
   if (canSeeOtherPredictions) {
