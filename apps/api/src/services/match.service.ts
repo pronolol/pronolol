@@ -48,10 +48,16 @@ export const getMatches = async (query: GetMatchesQuery) => {
 
     // Fill up to `limit` total, prioritising "after" up to halfLimit then
     // compensating from "before" if "after" is short (and vice-versa).
-    const afterCount = Math.min(after.length, halfLimit + Math.max(0, halfLimit - before.length))
+    const afterCount = Math.min(
+      after.length,
+      halfLimit + Math.max(0, halfLimit - before.length)
+    )
     const beforeCount = Math.min(before.length, limit - afterCount)
 
-    return [...before.slice(0, beforeCount).reverse(), ...after.slice(0, afterCount)]
+    return [
+      ...before.slice(0, beforeCount).reverse(),
+      ...after.slice(0, afterCount),
+    ]
   }
 
   const where: Prisma.MatchWhereInput = {}

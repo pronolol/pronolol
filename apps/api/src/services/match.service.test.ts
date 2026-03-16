@@ -136,7 +136,9 @@ describe("getMatches", () => {
 
       await getMatches({ direction: "after", cursor: cursor.toISOString() })
 
-      const [query] = mockFindMany.mock.calls[0] as [{ where: { matchDate: unknown } }][]
+      const [query] = mockFindMany.mock.calls[0] as [
+        { where: { matchDate: unknown } },
+      ][]
       expect(query.where.matchDate).toEqual({ gt: cursor })
     })
 
@@ -162,7 +164,9 @@ describe("getMatches", () => {
 
       await getMatches({ direction: "before", cursor: cursor.toISOString() })
 
-      const [query] = mockFindMany.mock.calls[0] as [{ where: { matchDate: unknown } }][]
+      const [query] = mockFindMany.mock.calls[0] as [
+        { where: { matchDate: unknown } },
+      ][]
       expect(query.where.matchDate).toEqual({ lt: cursor })
     })
 
