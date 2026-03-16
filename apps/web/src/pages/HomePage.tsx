@@ -1,4 +1,4 @@
-import { useMemo, useCallback, useEffect, useRef } from "react"
+import { useMemo, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import { useMatchesFeed } from "@/hooks/useMatchesFeed"
 import { useGetUsersMePredictions } from "@/api/generated/users/users"
@@ -107,43 +107,48 @@ export function HomePage() {
     }
   }, [isLoading, listData])
 
-  // Preserve scroll position when fetchPreviousPage prepends items above the
-  // current viewport (without this the page jumps back to the top).
-  const scrollHeightBeforeFetch = useRef(0)
-
-  const triggerFetchPreviousPage = useCallback(() => {
-    if (hasPreviousPage && !isFetchingPreviousPage) {
-      scrollHeightBeforeFetch.current = document.documentElement.scrollHeight
-      fetchPreviousPage()
-    }
-  }, [hasPreviousPage, isFetchingPreviousPage, fetchPreviousPage])
+  // Sentinel refs — IntersectionObserver triggers fetches when these enter
+  // the viewport. This avoids scroll event listeners entirely and lets the
+  // browser handle scroll anchoring natively when items are prepended.
+  const topSentinelRef = useRef<HTMLDivElement>(null)
+  const bottomSentinelRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (!isFetchingPreviousPage && scrollHeightBeforeFetch.current > 0) {
-      const delta =
-        document.documentElement.scrollHeight - scrollHeightBeforeFetch.current
-      window.scrollBy({ top: delta, behavior: "instant" })
-      scrollHeightBeforeFetch.current = 0
-    }
-  }, [isFetchingPreviousPage])
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue
+          if (
+            entry.target === topSentinelRef.current &&
+            hasPreviousPage &&
+            !isFetchingPreviousPage
+          ) {
+            fetchPreviousPage()
+          }
+          if (
+            entry.target === bottomSentinelRef.current &&
+            hasNextPage &&
+            !isFetchingNextPage
+          ) {
+            fetchNextPage()
+          }
+        }
+      },
+      { rootMargin: "200px" }
+    )
 
-  // The page scrolls on window, not on the feed div (the div has no fixed
-  // height so it never overflows). Listen to window scroll instead.
-  useEffect(() => {
-    const onScroll = () => {
-      const scrollTop = window.scrollY
-      const scrollHeight = document.documentElement.scrollHeight
-      const clientHeight = window.innerHeight
-      const nearBottom = scrollHeight - scrollTop - clientHeight < 200
-      const nearTop = scrollTop < 200
+    if (topSentinelRef.current) observer.observe(topSentinelRef.current)
+    if (bottomSentinelRef.current) observer.observe(bottomSentinelRef.current)
 
-      if (nearBottom && hasNextPage && !isFetchingNextPage) fetchNextPage()
-      if (nearTop) triggerFetchPreviousPage()
-    }
-
-    window.addEventListener("scroll", onScroll, { passive: true })
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage, triggerFetchPreviousPage])
+    return () => observer.disconnect()
+  }, [
+    hasPreviousPage,
+    isFetchingPreviousPage,
+    fetchPreviousPage,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  ])
 
   if (isLoading) {
     return (
@@ -181,6 +186,7 @@ export function HomePage() {
 
   return (
     <div className="flex flex-col gap-0">
+      <div ref={topSentinelRef} />
       {isFetchingPreviousPage && (
         <div className="flex justify-center py-4">
           <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
@@ -252,6 +258,7 @@ export function HomePage() {
           <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
         </div>
       )}
+      <div ref={bottomSentinelRef} />
     </div>
   )
 }
