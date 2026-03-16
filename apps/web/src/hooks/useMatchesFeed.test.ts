@@ -40,6 +40,7 @@ const makeMatch = (id: string, matchDate: string) => ({
     name: "Spring",
     league: { id: "l1", name: "LEC", imageUrl: "" },
   },
+  myPrediction: null,
 })
 
 const makeMatches = (count: number) =>
