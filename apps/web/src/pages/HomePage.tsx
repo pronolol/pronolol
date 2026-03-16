@@ -119,7 +119,14 @@ export function HomePage() {
         fetchPreviousPage()
       }
     },
-    [hasNextPage, isFetchingNextPage, fetchNextPage, hasPreviousPage, isFetchingPreviousPage, fetchPreviousPage]
+    [
+      hasNextPage,
+      isFetchingNextPage,
+      fetchNextPage,
+      hasPreviousPage,
+      isFetchingPreviousPage,
+      fetchPreviousPage,
+    ]
   )
 
   if (isLoading) {

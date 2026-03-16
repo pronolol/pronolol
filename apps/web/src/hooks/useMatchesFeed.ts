@@ -33,7 +33,11 @@ export function useMatchesFeed() {
       return response.data
     },
     initialPageParam: { direction: null, cursor: "" },
-    getNextPageParam: (lastPage, _allPages, lastPageParam): PageParam | undefined => {
+    getNextPageParam: (
+      lastPage,
+      _allPages,
+      lastPageParam
+    ): PageParam | undefined => {
       if (!lastPage || lastPage.length === 0) return undefined
       // The initial "around" page may return fewer than PAGE_SIZE items even
       // when more data exists (asymmetric past/future distribution). Skip the
@@ -45,7 +49,11 @@ export function useMatchesFeed() {
       if (!lastMatch.matchDate) return undefined
       return { direction: "after", cursor: lastMatch.matchDate }
     },
-    getPreviousPageParam: (firstPage, _allPages, firstPageParam): PageParam | undefined => {
+    getPreviousPageParam: (
+      firstPage,
+      _allPages,
+      firstPageParam
+    ): PageParam | undefined => {
       if (!firstPage || firstPage.length === 0) return undefined
       // Same reasoning: skip size guard for the initial "around" page.
       if (firstPageParam.direction !== null && firstPage.length < PAGE_SIZE) {

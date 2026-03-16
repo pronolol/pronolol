@@ -16,7 +16,11 @@ function createWrapper() {
     },
   })
   return function Wrapper({ children }: { children: React.ReactNode }) {
-    return React.createElement(QueryClientProvider, { client: queryClient }, children)
+    return React.createElement(
+      QueryClientProvider,
+      { client: queryClient },
+      children
+    )
   }
 }
 
@@ -137,7 +141,9 @@ describe("useMatchesFeed", () => {
       expect(result.current.hasPreviousPage).toBe(true)
 
       await result.current.fetchPreviousPage()
-      await waitFor(() => expect(result.current.isFetchingPreviousPage).toBe(false))
+      await waitFor(() =>
+        expect(result.current.isFetchingPreviousPage).toBe(false)
+      )
 
       expect(result.current.hasPreviousPage).toBe(false)
     })
