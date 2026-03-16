@@ -30,16 +30,19 @@ const predictionSelect = {
   },
 } as const
 
-async function attachMyPredictions<T extends { id: string }>(
+const attachMyPredictions = async <T extends { id: string }>(
   matches: T[],
   userId: string
-): Promise<(T & { myPrediction: MyPrediction | null })[]> {
+): Promise<(T & { myPrediction: MyPrediction | null })[]> => {
   const predictions = await prisma.prediction.findMany({
     where: { userId, matchId: { in: matches.map((m) => m.id) } },
     ...predictionSelect,
   })
   const byMatchId = new Map(predictions.map((p) => [p.matchId, p]))
-  return matches.map((m) => ({ ...m, myPrediction: byMatchId.get(m.id) ?? null }))
+  return matches.map((m) => ({
+    ...m,
+    myPrediction: byMatchId.get(m.id) ?? null,
+  }))
 }
 
 export const getMatches = async (query: GetMatchesQuery, userId?: string) => {
@@ -52,7 +55,9 @@ export const getMatches = async (query: GetMatchesQuery, userId?: string) => {
     tournament: tournamentSelect,
   }
 
-  let matches: Awaited<ReturnType<typeof prisma.match.findMany<{ include: typeof include }>>>
+  let matches: Awaited<
+    ReturnType<typeof prisma.match.findMany<{ include: typeof include }>>
+  >
 
   if (query.direction === "around") {
     const halfLimit = Math.floor(limit / 2)
