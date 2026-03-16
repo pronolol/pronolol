@@ -102,6 +102,9 @@ jobs:
     name: Deploy Backend
     runs-on: ubuntu-latest
     if: inputs.target == 'all' || inputs.target == 'backend'
+    concurrency:
+      group: vps-deploy
+      cancel-in-progress: false
     steps:
       - name: Set registry (lowercase)
         run: echo "REGISTRY=ghcr.io/$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
@@ -167,6 +170,9 @@ jobs:
     name: Deploy Scraper
     runs-on: ubuntu-latest
     if: inputs.target == 'all' || inputs.target == 'scraper'
+    concurrency:
+      group: vps-deploy
+      cancel-in-progress: false
     steps:
       - name: Set registry (lowercase)
         run: echo "REGISTRY=ghcr.io/$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
