@@ -3,6 +3,7 @@ import { ZodError } from "zod"
 import { GetMatchesQuerySchema } from "../dto/match.dto"
 import { getMatches, getMatchById } from "../services/match.service"
 import { predictionRouter } from "./prediction.routes"
+import { auth } from "../lib/auth"
 
 export const matchRouter = Router()
 
@@ -12,7 +13,8 @@ matchRouter.get("/", async (req: Request, res: Response) => {
   console.log("[Matches GET] Fetching matches with query:", req.query)
   try {
     const query = GetMatchesQuerySchema.parse(req.query)
-    const matches = await getMatches(query)
+    const session = await auth.api.getSession({ headers: req.headers })
+    const matches = await getMatches(query, session?.user?.id)
     res.json(matches)
   } catch (error) {
     if (error instanceof ZodError) {

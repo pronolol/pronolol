@@ -100,6 +100,12 @@
           },
           "tournament": {
             "$ref": "#/components/schemas/Tournament"
+          },
+          "myPrediction": {
+            "allOf": [
+              { "$ref": "#/components/schemas/MyPrediction" },
+              { "nullable": true }
+            ]
           }
         },
         "required": [
@@ -113,7 +119,8 @@
           "winner",
           "teamAScore",
           "teamBScore",
-          "tournament"
+          "tournament",
+          "myPrediction"
         ],
         "description": "Match details with teams and tournament information"
       },
