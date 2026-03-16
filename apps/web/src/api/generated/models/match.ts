@@ -5,7 +5,7 @@
  * API for managing esports match predictions and rankings
  * OpenAPI spec version: 1.0.0
  */
-import type { MyPrediction } from './myPrediction';
+import type { MatchMyPrediction } from './matchMyPrediction';
 import type { Team } from './team';
 import type { Tournament } from './tournament';
 
@@ -28,5 +28,5 @@ export interface Match {
   teamAScore: number | null;
   teamBScore: number | null;
   tournament: Tournament;
-  myPrediction: MyPrediction & (unknown | null);
+  myPrediction: MatchMyPrediction;
 }

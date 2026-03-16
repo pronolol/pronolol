@@ -102,9 +102,62 @@
             "$ref": "#/components/schemas/Tournament"
           },
           "myPrediction": {
-            "allOf": [
-              { "$ref": "#/components/schemas/MyPrediction" },
-              { "nullable": true }
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "matchId": {
+                "type": "string"
+              },
+              "teamId": {
+                "type": "string"
+              },
+              "predictedTeamAScore": {
+                "type": "integer"
+              },
+              "predictedTeamBScore": {
+                "type": "integer"
+              },
+              "isCorrect": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "isExact": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "points": {
+                "type": "number",
+                "nullable": true
+              },
+              "team": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "tag": {
+                    "type": "string"
+                  },
+                  "logoUrl": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "tag",
+                  "logoUrl"
+                ]
+              }
+            },
+            "required": [
+              "matchId",
+              "teamId",
+              "predictedTeamAScore",
+              "predictedTeamBScore",
+              "isCorrect",
+              "isExact",
+              "points",
+              "team"
             ]
           }
         },

@@ -1,5 +1,6 @@
 import { z } from "zod"
 import { extendZodWithOpenApi } from "@asteasolutions/zod-to-openapi"
+import { MyPredictionSchema } from "./prediction.dto"
 
 extendZodWithOpenApi(z)
 
@@ -45,6 +46,7 @@ export const MatchSchema = z
     teamAScore: z.number().int().nullable(),
     teamBScore: z.number().int().nullable(),
     tournament: TournamentSchema,
+    myPrediction: MyPredictionSchema.nullable(),
   })
   .openapi("Match", {
     description: "Match details with teams and tournament information",

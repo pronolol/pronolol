@@ -15,6 +15,8 @@ export * from './getRankingParams';
 export * from './getUsersMePredictions200Item';
 export * from './getUsersMePredictions200ItemTeam';
 export * from './match';
+export * from './matchMyPrediction';
+export * from './matchMyPredictionTeam';
 export * from './myPrediction';
 export * from './myPredictionTeam';
 export * from './rankingEntry';
