@@ -29,22 +29,29 @@ export const getMatches = async (query: GetMatchesQuery) => {
       ? { tournamentId: query.tournamentId }
       : {}
 
+    // Fetch up to `limit` from each side so we can compensate when one side
+    // has fewer items than halfLimit (e.g. few future matches → take more past).
     const [before, after] = await Promise.all([
       prisma.match.findMany({
         where: { ...baseWhere, matchDate: { lt: cursorDate } },
         include,
         orderBy: { matchDate: "desc" },
-        take: halfLimit,
+        take: limit,
       }),
       prisma.match.findMany({
         where: { ...baseWhere, matchDate: { gte: cursorDate } },
         include,
         orderBy: { matchDate: "asc" },
-        take: halfLimit,
+        take: limit,
       }),
     ])
 
-    return [...before.reverse(), ...after]
+    // Fill up to `limit` total, prioritising "after" up to halfLimit then
+    // compensating from "before" if "after" is short (and vice-versa).
+    const afterCount = Math.min(after.length, halfLimit + Math.max(0, halfLimit - before.length))
+    const beforeCount = Math.min(before.length, limit - afterCount)
+
+    return [...before.slice(0, beforeCount).reverse(), ...after.slice(0, afterCount)]
   }
 
   const where: Prisma.MatchWhereInput = {}
@@ -53,7 +60,7 @@ export const getMatches = async (query: GetMatchesQuery) => {
   if (query.direction === "before") {
     where.matchDate = { lt: cursorDate }
   } else if (query.direction === "after") {
-    where.matchDate = { gte: cursorDate }
+    where.matchDate = { gt: cursorDate }
   } else if (query.state) {
     const now = new Date()
     if (query.state === "upcoming") {
