@@ -32,6 +32,7 @@ export const handlers = [
             name: "LEC",
           },
         },
+        myPrediction: null,
       },
     ])
   }),
@@ -61,6 +62,7 @@ export const handlers = [
         name: "Spring Split",
         league: { id: "league-1", name: "LEC" },
       },
+      myPrediction: null,
     })
   }),
 

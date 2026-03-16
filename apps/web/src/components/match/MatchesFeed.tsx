@@ -2,7 +2,6 @@ import { useMemo, useEffect, useRef, useCallback } from "react"
 import { useNavigate } from "react-router-dom"
 import { useMatchesFeed } from "@/hooks/useMatchesFeed"
 import { useInfiniteScrollSentinels } from "@/hooks/useInfiniteScrollSentinels"
-import { useGetUsersMePredictions } from "@/api/generated/users/users"
 import { MatchCard } from "@/components/match/MatchCard"
 import { DayHeader } from "@/components/match/DayHeader"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -70,12 +69,6 @@ export function MatchesFeed() {
     refetch,
     isRefetching,
   } = useMatchesFeed()
-
-  const { data: myPredictions } = useGetUsersMePredictions()
-  const predictionsByMatchId = useMemo(() => {
-    if (!myPredictions) return new Map()
-    return new Map(myPredictions.map((p) => [p.matchId, p]))
-  }, [myPredictions])
 
   const allMatches = useMemo((): Match[] => {
     if (!data?.pages) return []
@@ -190,7 +183,7 @@ export function MatchesFeed() {
         const match = item.match
         const matchDate = match.matchDate ? new Date(match.matchDate) : null
         const isCompleted = match.state === "completed"
-        const myPrediction = predictionsByMatchId.get(match.id)
+        const myPrediction = match.myPrediction
 
         return (
           <div key={match.id} className="px-0 py-1.5">

@@ -51,124 +51,6 @@
         ],
         "description": "Team information"
       },
-      "Match": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "matchDate": {
-            "type": "string",
-            "nullable": true,
-            "format": "date-time"
-          },
-          "state": {
-            "type": "string"
-          },
-          "bestOf": {
-            "type": "integer",
-            "minimum": 0,
-            "exclusiveMinimum": true
-          },
-          "stage": {
-            "type": "string",
-            "nullable": true
-          },
-          "teamA": {
-            "$ref": "#/components/schemas/Team"
-          },
-          "teamB": {
-            "$ref": "#/components/schemas/Team"
-          },
-          "winner": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Team"
-              },
-              {
-                "nullable": true
-              }
-            ]
-          },
-          "teamAScore": {
-            "type": "integer",
-            "nullable": true
-          },
-          "teamBScore": {
-            "type": "integer",
-            "nullable": true
-          },
-          "tournament": {
-            "$ref": "#/components/schemas/Tournament"
-          }
-        },
-        "required": [
-          "id",
-          "matchDate",
-          "state",
-          "bestOf",
-          "stage",
-          "teamA",
-          "teamB",
-          "winner",
-          "teamAScore",
-          "teamBScore",
-          "tournament"
-        ],
-        "description": "Match details with teams and tournament information"
-      },
-      "Tournament": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "league": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "name": {
-                "type": "string"
-              },
-              "imageUrl": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "id",
-              "name",
-              "imageUrl"
-            ],
-            "description": "League information"
-          }
-        },
-        "required": [
-          "id",
-          "name",
-          "league"
-        ],
-        "description": "Tournament information"
-      },
-      "ErrorResponse": {
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "string"
-          },
-          "details": {
-            "nullable": true
-          }
-        },
-        "required": [
-          "error"
-        ],
-        "description": "Error response"
-      },
       "MyPrediction": {
         "type": "object",
         "properties": {
@@ -225,7 +107,137 @@
           "isExact",
           "points",
           "team"
-        ]
+        ],
+        "description": "User prediction for a match"
+      },
+      "Match": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "matchDate": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time"
+          },
+          "state": {
+            "type": "string"
+          },
+          "bestOf": {
+            "type": "integer",
+            "minimum": 0,
+            "exclusiveMinimum": true
+          },
+          "stage": {
+            "type": "string",
+            "nullable": true
+          },
+          "teamA": {
+            "$ref": "#/components/schemas/Team"
+          },
+          "teamB": {
+            "$ref": "#/components/schemas/Team"
+          },
+          "winner": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Team"
+              },
+              {
+                "nullable": true
+              }
+            ]
+          },
+          "teamAScore": {
+            "type": "integer",
+            "nullable": true
+          },
+          "teamBScore": {
+            "type": "integer",
+            "nullable": true
+          },
+          "tournament": {
+            "$ref": "#/components/schemas/Tournament"
+          },
+          "myPrediction": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MyPrediction"
+              },
+              {
+                "nullable": true
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "matchDate",
+          "state",
+          "bestOf",
+          "stage",
+          "teamA",
+          "teamB",
+          "winner",
+          "teamAScore",
+          "teamBScore",
+          "tournament",
+          "myPrediction"
+        ],
+        "description": "Match details with teams and tournament information"
+      },
+      "Tournament": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "league": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "imageUrl": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "imageUrl"
+            ],
+            "description": "League information"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "league"
+        ],
+        "description": "Tournament information"
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "details": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "error"
+        ],
+        "description": "Error response"
       },
       "RankingResponse": {
         "type": "object",
@@ -594,62 +606,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "matchId": {
-                        "type": "string"
-                      },
-                      "teamId": {
-                        "type": "string"
-                      },
-                      "predictedTeamAScore": {
-                        "type": "integer"
-                      },
-                      "predictedTeamBScore": {
-                        "type": "integer"
-                      },
-                      "isCorrect": {
-                        "type": "boolean",
-                        "nullable": true
-                      },
-                      "isExact": {
-                        "type": "boolean",
-                        "nullable": true
-                      },
-                      "points": {
-                        "type": "number",
-                        "nullable": true
-                      },
-                      "team": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "string"
-                          },
-                          "tag": {
-                            "type": "string"
-                          },
-                          "logoUrl": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "id",
-                          "tag",
-                          "logoUrl"
-                        ]
-                      }
-                    },
-                    "required": [
-                      "matchId",
-                      "teamId",
-                      "predictedTeamAScore",
-                      "predictedTeamBScore",
-                      "isCorrect",
-                      "isExact",
-                      "points",
-                      "team"
-                    ]
+                    "$ref": "#/components/schemas/MyPrediction"
                   }
                 }
               }

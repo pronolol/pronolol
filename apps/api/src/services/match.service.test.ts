@@ -2,11 +2,15 @@ import { vi, describe, it, expect, beforeEach } from "vitest"
 import { getMatches } from "./match.service"
 
 const mockFindMany = vi.fn()
+const mockPredictionFindMany = vi.fn()
 
 vi.mock("@pronolol/database", () => ({
   prisma: {
     match: {
       findMany: (...args: unknown[]) => mockFindMany(...args),
+    },
+    prediction: {
+      findMany: (...args: unknown[]) => mockPredictionFindMany(...args),
     },
   },
   Prisma: {},
@@ -40,7 +44,10 @@ const makeMatches = (count: number, baseDate = new Date(), offsetMs = 60_000) =>
   )
 
 describe("getMatches", () => {
-  beforeEach(() => mockFindMany.mockReset())
+  beforeEach(() => {
+    mockFindMany.mockReset()
+    mockPredictionFindMany.mockReset()
+  })
 
   // ─── direction: around ────────────────────────────────────────────────────
 
@@ -185,6 +192,78 @@ describe("getMatches", () => {
       })
 
       expect(result.map((m) => m.id)).toEqual(["oldest", "older", "newest"])
+    })
+  })
+
+  // ─── myPrediction embedding ───────────────────────────────────────────────
+
+  describe("myPrediction embedding", () => {
+    const makePrediction = (matchId: string) => ({
+      matchId,
+      teamId: "team-a",
+      predictedTeamAScore: 2,
+      predictedTeamBScore: 0,
+      isCorrect: null,
+      isExact: null,
+      points: null,
+      team: { id: "team-a", tag: "TLA", logoUrl: "" },
+    })
+
+    it("attaches null myPrediction to all matches when no userId is given", async () => {
+      const matches = makeMatches(3)
+      mockFindMany.mockResolvedValue(matches)
+
+      const result = await getMatches({ direction: "after", cursor: new Date().toISOString() })
+
+      expect(mockPredictionFindMany).not.toHaveBeenCalled()
+      result.forEach((m) => expect(m.myPrediction).toBeNull())
+    })
+
+    it("attaches the user prediction to the matching match when userId is given", async () => {
+      const matches = makeMatches(3)
+      mockFindMany.mockResolvedValue(matches)
+      mockPredictionFindMany.mockResolvedValue([makePrediction(matches[1].id)])
+
+      const result = await getMatches(
+        { direction: "after", cursor: new Date().toISOString() },
+        "user-1"
+      )
+
+      expect(result[0].myPrediction).toBeNull()
+      expect(result[1].myPrediction).toMatchObject({ matchId: matches[1].id, teamId: "team-a" })
+      expect(result[2].myPrediction).toBeNull()
+    })
+
+    it("fetches predictions scoped to the userId and match ids", async () => {
+      const matches = makeMatches(2)
+      mockFindMany.mockResolvedValue(matches)
+      mockPredictionFindMany.mockResolvedValue([])
+
+      await getMatches({ direction: "after", cursor: new Date().toISOString() }, "user-42")
+
+      expect(mockPredictionFindMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: {
+            userId: "user-42",
+            matchId: { in: matches.map((m) => m.id) },
+          },
+        })
+      )
+    })
+
+    it("attaches myPrediction for matches returned by direction: around", async () => {
+      const past = [makeMatch("p1", new Date("2025-05-31T10:00:00Z"))]
+      const future = [makeMatch("f1", new Date("2025-06-01T13:00:00Z"))]
+      mockFindMany.mockResolvedValueOnce(past).mockResolvedValueOnce(future)
+      mockPredictionFindMany.mockResolvedValue([makePrediction("f1")])
+
+      const result = await getMatches(
+        { direction: "around", cursor: new Date("2025-06-01").toISOString(), limit: 4 },
+        "user-1"
+      )
+
+      expect(result.find((m) => m.id === "p1")?.myPrediction).toBeNull()
+      expect(result.find((m) => m.id === "f1")?.myPrediction).toMatchObject({ matchId: "f1" })
     })
   })
 })

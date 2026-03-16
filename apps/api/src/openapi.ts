@@ -15,9 +15,9 @@ const registry = new OpenAPIRegistry()
 
 // Register schemas
 registry.register("Team", MatchSchema.shape.teamA)
+registry.register("MyPrediction", MyPredictionSchema)
 registry.register("Match", MatchSchema)
 registry.register("ErrorResponse", ErrorResponseSchema)
-registry.register("MyPrediction", MyPredictionSchema)
 
 // Register paths
 registry.registerPath({
