@@ -80,7 +80,7 @@ export function MatchCard({
                       : "bg-surface text-text-secondary border border-border"
               }`}
             >
-              <div className="w-5 h-5 bg-text-primary rounded-xl p-0.5 flex items-center justify-center">
+              <div className="w-5 h-5 bg-text-primary rounded p-1 flex items-center justify-center">
                 <img
                   src={prediction.teamLogoUrl}
                   alt={prediction.teamTag}
