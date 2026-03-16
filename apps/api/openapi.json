@@ -51,6 +51,65 @@
         ],
         "description": "Team information"
       },
+      "MyPrediction": {
+        "type": "object",
+        "properties": {
+          "matchId": {
+            "type": "string"
+          },
+          "teamId": {
+            "type": "string"
+          },
+          "predictedTeamAScore": {
+            "type": "integer"
+          },
+          "predictedTeamBScore": {
+            "type": "integer"
+          },
+          "isCorrect": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isExact": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "points": {
+            "type": "number",
+            "nullable": true
+          },
+          "team": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "tag": {
+                "type": "string"
+              },
+              "logoUrl": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "tag",
+              "logoUrl"
+            ]
+          }
+        },
+        "required": [
+          "matchId",
+          "teamId",
+          "predictedTeamAScore",
+          "predictedTeamBScore",
+          "isCorrect",
+          "isExact",
+          "points",
+          "team"
+        ],
+        "description": "User prediction for a match"
+      },
       "Match": {
         "type": "object",
         "properties": {
@@ -102,62 +161,13 @@
             "$ref": "#/components/schemas/Tournament"
           },
           "myPrediction": {
-            "type": "object",
-            "nullable": true,
-            "properties": {
-              "matchId": {
-                "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MyPrediction"
               },
-              "teamId": {
-                "type": "string"
-              },
-              "predictedTeamAScore": {
-                "type": "integer"
-              },
-              "predictedTeamBScore": {
-                "type": "integer"
-              },
-              "isCorrect": {
-                "type": "boolean",
+              {
                 "nullable": true
-              },
-              "isExact": {
-                "type": "boolean",
-                "nullable": true
-              },
-              "points": {
-                "type": "number",
-                "nullable": true
-              },
-              "team": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string"
-                  },
-                  "tag": {
-                    "type": "string"
-                  },
-                  "logoUrl": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "id",
-                  "tag",
-                  "logoUrl"
-                ]
               }
-            },
-            "required": [
-              "matchId",
-              "teamId",
-              "predictedTeamAScore",
-              "predictedTeamBScore",
-              "isCorrect",
-              "isExact",
-              "points",
-              "team"
             ]
           }
         },
@@ -228,64 +238,6 @@
           "error"
         ],
         "description": "Error response"
-      },
-      "MyPrediction": {
-        "type": "object",
-        "properties": {
-          "matchId": {
-            "type": "string"
-          },
-          "teamId": {
-            "type": "string"
-          },
-          "predictedTeamAScore": {
-            "type": "integer"
-          },
-          "predictedTeamBScore": {
-            "type": "integer"
-          },
-          "isCorrect": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "isExact": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "points": {
-            "type": "number",
-            "nullable": true
-          },
-          "team": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "tag": {
-                "type": "string"
-              },
-              "logoUrl": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "id",
-              "tag",
-              "logoUrl"
-            ]
-          }
-        },
-        "required": [
-          "matchId",
-          "teamId",
-          "predictedTeamAScore",
-          "predictedTeamBScore",
-          "isCorrect",
-          "isExact",
-          "points",
-          "team"
-        ]
       },
       "RankingResponse": {
         "type": "object",
@@ -654,62 +606,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "matchId": {
-                        "type": "string"
-                      },
-                      "teamId": {
-                        "type": "string"
-                      },
-                      "predictedTeamAScore": {
-                        "type": "integer"
-                      },
-                      "predictedTeamBScore": {
-                        "type": "integer"
-                      },
-                      "isCorrect": {
-                        "type": "boolean",
-                        "nullable": true
-                      },
-                      "isExact": {
-                        "type": "boolean",
-                        "nullable": true
-                      },
-                      "points": {
-                        "type": "number",
-                        "nullable": true
-                      },
-                      "team": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "string"
-                          },
-                          "tag": {
-                            "type": "string"
-                          },
-                          "logoUrl": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "id",
-                          "tag",
-                          "logoUrl"
-                        ]
-                      }
-                    },
-                    "required": [
-                      "matchId",
-                      "teamId",
-                      "predictedTeamAScore",
-                      "predictedTeamBScore",
-                      "isCorrect",
-                      "isExact",
-                      "points",
-                      "team"
-                    ]
+                    "$ref": "#/components/schemas/MyPrediction"
                   }
                 }
               }

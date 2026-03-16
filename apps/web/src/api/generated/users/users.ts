@@ -22,7 +22,7 @@ import type {
 
 import type {
   ErrorResponse,
-  GetUsersMePredictions200Item
+  MyPrediction
 } from '../models';
 
 import { customInstance } from '../../client';
@@ -40,7 +40,7 @@ export const getUsersMePredictions = (
 ) => {
       
       
-      return customInstance<GetUsersMePredictions200Item[]>(
+      return customInstance<MyPrediction[]>(
       {url: `/users/me/predictions`, method: 'GET', signal
     },
       );

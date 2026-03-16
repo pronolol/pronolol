@@ -7,6 +7,9 @@
  */
 import type { MyPredictionTeam } from './myPredictionTeam';
 
+/**
+ * User prediction for a match
+ */
 export interface MyPrediction {
   matchId: string;
   teamId: string;
