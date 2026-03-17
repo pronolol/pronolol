@@ -103,6 +103,41 @@ export const handlers = [
     }
   ),
 
+  http.get(`${API_URL}/leagues`, () => {
+    return HttpResponse.json([
+      {
+        id: "league-1",
+        name: "LEC",
+        imageUrl: "https://example.com/lec.png",
+        tournaments: [
+          { id: "tournament-1", name: "Spring Split" },
+          { id: "tournament-2", name: "Summer Split" },
+        ],
+      },
+      {
+        id: "league-2",
+        name: "LCK",
+        imageUrl: "https://example.com/lck.png",
+        tournaments: [{ id: "tournament-3", name: "Spring Split" }],
+      },
+    ])
+  }),
+
+  http.get(`${API_URL}/users/me/preferences`, () => {
+    return HttpResponse.json({ leagueId: null, tournamentId: null })
+  }),
+
+  http.put(`${API_URL}/users/me/preferences`, async ({ request }) => {
+    const body = (await request.json()) as {
+      leagueId?: string | null
+      tournamentId?: string | null
+    }
+    return HttpResponse.json({
+      leagueId: body.leagueId ?? null,
+      tournamentId: body.tournamentId ?? null,
+    })
+  }),
+
   http.get(`${API_URL}/ranking`, () => {
     return HttpResponse.json({
       rankings: [

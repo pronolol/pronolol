@@ -41,3 +41,26 @@ function MyComponent() { return <div />; }
 ```
 
 This applies everywhere in the codebase — components, utilities, handlers, etc.
+
+### Testing
+
+Every new feature or service must include tests. Use **Vitest** across the whole monorepo.
+
+**Backend** (`apps/api`): test service-layer logic by mocking `@pronolol/database` with `vi.mock()`. Cover the main happy path plus key edge cases (empty input, null values, partial updates).
+
+**Frontend** (`apps/web`): test components with `@testing-library/react` + `renderWithProviders` (see `src/test/utils.tsx`), and hooks with `renderHook`. Mock HTTP at the network level with **MSW** — add handlers to `src/test/mocks/handlers.ts` for any new endpoints.
+
+```ts
+// Backend — mock Prisma and test the pure logic
+vi.mock("@pronolol/database", () => ({ prisma: { myModel: { findUnique: vi.fn() } } }))
+
+// Frontend hook — use renderHook + MSW
+const { result } = renderHook(() => useMyHook(), { wrapper: createWrapper() })
+await waitFor(() => expect(result.current.isLoading).toBe(false))
+
+// Frontend component — use renderWithProviders
+renderWithProviders(<MyComponent />)
+expect(screen.getByText("Hello")).toBeInTheDocument()
+```
+
+Factory helpers (`makeMatch()`, `makeProps()`, etc.) are preferred over inline object literals to keep tests readable and DRY.
