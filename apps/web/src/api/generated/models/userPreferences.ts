@@ -10,6 +10,5 @@
  * User's saved filter preferences for the match feed
  */
 export interface UserPreferences {
-  leagueId: string | null;
-  tournamentId: string | null;
+  leagueIds: string[];
 }

@@ -10,9 +10,9 @@ import type { GetMatchesState } from './getMatchesState';
 
 export type GetMatchesParams = {
 /**
- * Filter matches by tournament ID
+ * Filter matches by league ID (repeatable)
  */
-tournamentId?: string;
+leagueId?: string | string[];
 /**
  * Filter matches by state
  */

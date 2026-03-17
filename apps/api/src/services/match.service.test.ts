@@ -195,6 +195,59 @@ describe("getMatches", () => {
     })
   })
 
+  // ─── leagueId filtering ───────────────────────────────────────────────────
+
+  describe("leagueId filtering", () => {
+    it("passes leagueId IN filter to the where clause for direction: after", async () => {
+      mockFindMany.mockResolvedValue([])
+
+      await getMatches({
+        direction: "after",
+        cursor: new Date().toISOString(),
+        leagueId: ["lec", "lck"],
+      })
+
+      const [query] = mockFindMany.mock.calls[0] as [
+        { where: Record<string, unknown> },
+      ][]
+      expect(query.where.tournament).toEqual({
+        leagueId: { in: ["lec", "lck"] },
+      })
+    })
+
+    it("passes leagueId IN filter to the where clause for direction: around", async () => {
+      mockFindMany.mockResolvedValueOnce([]).mockResolvedValueOnce([])
+
+      await getMatches({
+        direction: "around",
+        cursor: new Date().toISOString(),
+        leagueId: ["lec"],
+      })
+
+      const [beforeQuery] = mockFindMany.mock.calls[0] as [
+        { where: Record<string, unknown> },
+      ][]
+      expect(beforeQuery.where.tournament).toEqual({
+        leagueId: { in: ["lec"] },
+      })
+    })
+
+    it("does not add a tournament filter when leagueId is empty", async () => {
+      mockFindMany.mockResolvedValue([])
+
+      await getMatches({
+        direction: "after",
+        cursor: new Date().toISOString(),
+        leagueId: [],
+      })
+
+      const [query] = mockFindMany.mock.calls[0] as [
+        { where: Record<string, unknown> },
+      ][]
+      expect(query.where.tournament).toBeUndefined()
+    })
+  })
+
   // ─── myPrediction embedding ───────────────────────────────────────────────
 
   describe("myPrediction embedding", () => {

@@ -20,19 +20,15 @@ const makeLeague = (id: string, name: string): LeagueOption => ({
 const makeProps = (
   overrides: Partial<{
     leagues: LeagueOption[]
-    tournaments: { id: string; name: string }[]
-    selectedLeagueId: string | null
-    selectedTournamentId: string | null
-    onLeagueChange: (id: string | null) => void
-    onTournamentChange: (id: string | null) => void
+    selectedLeagueIds: string[]
+    onLeagueToggle: (id: string) => void
+    onClearLeagues: () => void
   }> = {}
 ) => ({
   leagues: [makeLeague("lec", "LEC"), makeLeague("lck", "LCK")],
-  tournaments: [],
-  selectedLeagueId: null,
-  selectedTournamentId: null,
-  onLeagueChange: vi.fn(),
-  onTournamentChange: vi.fn(),
+  selectedLeagueIds: [],
+  onLeagueToggle: vi.fn(),
+  onClearLeagues: vi.fn(),
   ...overrides,
 })
 
@@ -58,111 +54,77 @@ describe("MatchFeedFilters", () => {
       expect(screen.getByText("LCK")).toBeInTheDocument()
     })
 
-    it("does not show the tournament dropdown when no league is selected", () => {
-      renderWithProviders(<MatchFeedFilters {...makeProps()} />)
-      expect(screen.queryByRole("combobox")).not.toBeInTheDocument()
-    })
-
-    it("shows the tournament dropdown when a league is selected and tournaments exist", () => {
+    it("does not show a tournament dropdown", () => {
       renderWithProviders(
-        <MatchFeedFilters
-          {...makeProps({
-            selectedLeagueId: "lec",
-            tournaments: [
-              { id: "t1", name: "Spring Split" },
-              { id: "t2", name: "Summer Split" },
-            ],
-          })}
-        />
-      )
-      expect(screen.getByRole("combobox")).toBeInTheDocument()
-      expect(screen.getByText("Spring Split")).toBeInTheDocument()
-      expect(screen.getByText("Summer Split")).toBeInTheDocument()
-    })
-
-    it("does not show tournament dropdown when a league is selected but has no tournaments", () => {
-      renderWithProviders(
-        <MatchFeedFilters
-          {...makeProps({
-            selectedLeagueId: "lec",
-            tournaments: [],
-          })}
-        />
+        <MatchFeedFilters {...makeProps({ selectedLeagueIds: ["lec"] })} />
       )
       expect(screen.queryByRole("combobox")).not.toBeInTheDocument()
     })
   })
 
   describe("active state", () => {
-    it("applies primary style to the All leagues pill when no league is selected", () => {
+    it("applies primary style to All leagues pill when no league is selected", () => {
       renderWithProviders(<MatchFeedFilters {...makeProps()} />)
       expect(screen.getByText("All leagues")).toHaveClass("bg-primary")
     })
 
-    it("applies primary style to the selected league pill", () => {
+    it("does not apply primary style to All leagues when a league is selected", () => {
       renderWithProviders(
-        <MatchFeedFilters {...makeProps({ selectedLeagueId: "lec" })} />
+        <MatchFeedFilters {...makeProps({ selectedLeagueIds: ["lec"] })} />
+      )
+      expect(screen.getByText("All leagues")).not.toHaveClass("bg-primary")
+    })
+
+    it("applies primary style to each selected league pill", () => {
+      renderWithProviders(
+        <MatchFeedFilters
+          {...makeProps({ selectedLeagueIds: ["lec", "lck"] })}
+        />
       )
       expect(screen.getByText("LEC")).toHaveClass("bg-primary")
-      expect(screen.getByText("All leagues")).not.toHaveClass("bg-primary")
+      expect(screen.getByText("LCK")).toHaveClass("bg-primary")
+    })
+
+    it("only applies primary style to the selected league, not unselected ones", () => {
+      renderWithProviders(
+        <MatchFeedFilters {...makeProps({ selectedLeagueIds: ["lec"] })} />
+      )
+      expect(screen.getByText("LEC")).toHaveClass("bg-primary")
+      expect(screen.getByText("LCK")).not.toHaveClass("bg-primary")
     })
   })
 
   describe("interactions", () => {
-    it("calls onLeagueChange(null) when All leagues is clicked", async () => {
-      const onLeagueChange = vi.fn()
+    it("calls onClearLeagues when All leagues is clicked", async () => {
+      const onClearLeagues = vi.fn()
       const user = userEvent.setup()
       renderWithProviders(
-        <MatchFeedFilters {...makeProps({ onLeagueChange })} />
+        <MatchFeedFilters {...makeProps({ onClearLeagues })} />
       )
       await user.click(screen.getByText("All leagues"))
-      expect(onLeagueChange).toHaveBeenCalledWith(null)
+      expect(onClearLeagues).toHaveBeenCalledOnce()
     })
 
-    it("calls onLeagueChange with the league id when a league pill is clicked", async () => {
-      const onLeagueChange = vi.fn()
+    it("calls onLeagueToggle with the league id when a league pill is clicked", async () => {
+      const onLeagueToggle = vi.fn()
       const user = userEvent.setup()
       renderWithProviders(
-        <MatchFeedFilters {...makeProps({ onLeagueChange })} />
+        <MatchFeedFilters {...makeProps({ onLeagueToggle })} />
       )
       await user.click(screen.getByText("LEC"))
-      expect(onLeagueChange).toHaveBeenCalledWith("lec")
+      expect(onLeagueToggle).toHaveBeenCalledWith("lec")
     })
 
-    it("calls onTournamentChange with the tournament id when one is selected", async () => {
-      const onTournamentChange = vi.fn()
+    it("calls onLeagueToggle again to deselect an already-selected league", async () => {
+      const onLeagueToggle = vi.fn()
       const user = userEvent.setup()
       renderWithProviders(
         <MatchFeedFilters
-          {...makeProps({
-            selectedLeagueId: "lec",
-            tournaments: [
-              { id: "t1", name: "Spring Split" },
-              { id: "t2", name: "Summer Split" },
-            ],
-            onTournamentChange,
-          })}
+          {...makeProps({ selectedLeagueIds: ["lec"], onLeagueToggle })}
         />
       )
-      await user.selectOptions(screen.getByRole("combobox"), "t2")
-      expect(onTournamentChange).toHaveBeenCalledWith("t2")
-    })
-
-    it("calls onTournamentChange(null) when All tournaments is selected", async () => {
-      const onTournamentChange = vi.fn()
-      const user = userEvent.setup()
-      renderWithProviders(
-        <MatchFeedFilters
-          {...makeProps({
-            selectedLeagueId: "lec",
-            selectedTournamentId: "t1",
-            tournaments: [{ id: "t1", name: "Spring Split" }],
-            onTournamentChange,
-          })}
-        />
-      )
-      await user.selectOptions(screen.getByRole("combobox"), "")
-      expect(onTournamentChange).toHaveBeenCalledWith(null)
+      await user.click(screen.getByText("LEC"))
+      expect(onLeagueToggle).toHaveBeenCalledWith("lec")
     })
   })
 })

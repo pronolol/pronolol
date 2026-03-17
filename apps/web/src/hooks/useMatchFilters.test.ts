@@ -21,24 +21,20 @@ const createWrapper = () => {
 
 describe("useMatchFilters", () => {
   describe("initial state", () => {
-    it("starts with no league or tournament selected when preferences are null", async () => {
+    it("starts with no leagues selected when preferences are empty", async () => {
       const { result } = renderHook(() => useMatchFilters(), {
         wrapper: createWrapper(),
       })
       await waitFor(() =>
         expect(result.current.leagues.length).toBeGreaterThan(0)
       )
-      expect(result.current.selectedLeagueId).toBeNull()
-      expect(result.current.selectedTournamentId).toBeNull()
+      expect(result.current.selectedLeagueIds).toEqual([])
     })
 
-    it("restores saved league and tournament from server preferences", async () => {
+    it("restores saved leagueIds from server preferences", async () => {
       server.use(
         http.get(`${API_URL}/users/me/preferences`, () =>
-          HttpResponse.json({
-            leagueId: "league-1",
-            tournamentId: "tournament-1",
-          })
+          HttpResponse.json({ leagueIds: ["league-1", "league-2"] })
         )
       )
 
@@ -46,9 +42,11 @@ describe("useMatchFilters", () => {
         wrapper: createWrapper(),
       })
       await waitFor(() =>
-        expect(result.current.selectedLeagueId).toBe("league-1")
+        expect(result.current.selectedLeagueIds).toEqual([
+          "league-1",
+          "league-2",
+        ])
       )
-      expect(result.current.selectedTournamentId).toBe("tournament-1")
     })
 
     it("loads leagues from the API", async () => {
@@ -65,33 +63,23 @@ describe("useMatchFilters", () => {
     })
   })
 
-  describe("setLeague", () => {
-    it("updates selectedLeagueId and clears selectedTournamentId", async () => {
-      server.use(
-        http.get(`${API_URL}/users/me/preferences`, () =>
-          HttpResponse.json({
-            leagueId: "league-1",
-            tournamentId: "tournament-1",
-          })
-        )
-      )
-
+  describe("toggleLeague", () => {
+    it("adds a league id when it is not selected", async () => {
       const { result } = renderHook(() => useMatchFilters(), {
         wrapper: createWrapper(),
       })
       await waitFor(() =>
-        expect(result.current.selectedTournamentId).toBe("tournament-1")
+        expect(result.current.leagues.length).toBeGreaterThan(0)
       )
 
-      act(() => result.current.setLeague("league-2"))
-      expect(result.current.selectedLeagueId).toBe("league-2")
-      expect(result.current.selectedTournamentId).toBeNull()
+      act(() => result.current.toggleLeague("league-1"))
+      expect(result.current.selectedLeagueIds).toEqual(["league-1"])
     })
 
-    it("clears selectedLeagueId when called with null", async () => {
+    it("removes a league id when it is already selected", async () => {
       server.use(
         http.get(`${API_URL}/users/me/preferences`, () =>
-          HttpResponse.json({ leagueId: "league-1", tournamentId: null })
+          HttpResponse.json({ leagueIds: ["league-1", "league-2"] })
         )
       )
 
@@ -99,34 +87,35 @@ describe("useMatchFilters", () => {
         wrapper: createWrapper(),
       })
       await waitFor(() =>
-        expect(result.current.selectedLeagueId).toBe("league-1")
+        expect(result.current.selectedLeagueIds).toEqual([
+          "league-1",
+          "league-2",
+        ])
       )
 
-      act(() => result.current.setLeague(null))
-      expect(result.current.selectedLeagueId).toBeNull()
+      act(() => result.current.toggleLeague("league-1"))
+      expect(result.current.selectedLeagueIds).toEqual(["league-2"])
+    })
+
+    it("allows multiple leagues to be selected simultaneously", async () => {
+      const { result } = renderHook(() => useMatchFilters(), {
+        wrapper: createWrapper(),
+      })
+      await waitFor(() =>
+        expect(result.current.leagues.length).toBeGreaterThan(0)
+      )
+
+      act(() => result.current.toggleLeague("league-1"))
+      act(() => result.current.toggleLeague("league-2"))
+      expect(result.current.selectedLeagueIds).toEqual(["league-1", "league-2"])
     })
   })
 
-  describe("setTournament", () => {
-    it("updates selectedTournamentId", async () => {
-      const { result } = renderHook(() => useMatchFilters(), {
-        wrapper: createWrapper(),
-      })
-      await waitFor(() =>
-        expect(result.current.leagues.length).toBeGreaterThan(0)
-      )
-
-      act(() => result.current.setTournament("tournament-2"))
-      expect(result.current.selectedTournamentId).toBe("tournament-2")
-    })
-
-    it("clears selectedTournamentId when called with null", async () => {
+  describe("clearLeagues", () => {
+    it("resets selectedLeagueIds to empty", async () => {
       server.use(
         http.get(`${API_URL}/users/me/preferences`, () =>
-          HttpResponse.json({
-            leagueId: "league-1",
-            tournamentId: "tournament-1",
-          })
+          HttpResponse.json({ leagueIds: ["league-1"] })
         )
       )
 
@@ -134,46 +123,11 @@ describe("useMatchFilters", () => {
         wrapper: createWrapper(),
       })
       await waitFor(() =>
-        expect(result.current.selectedTournamentId).toBe("tournament-1")
+        expect(result.current.selectedLeagueIds).toEqual(["league-1"])
       )
 
-      act(() => result.current.setTournament(null))
-      expect(result.current.selectedTournamentId).toBeNull()
-    })
-  })
-
-  describe("tournaments", () => {
-    it("returns tournaments for the selected league", async () => {
-      server.use(
-        http.get(`${API_URL}/users/me/preferences`, () =>
-          HttpResponse.json({ leagueId: "league-1", tournamentId: null })
-        )
-      )
-
-      const { result } = renderHook(() => useMatchFilters(), {
-        wrapper: createWrapper(),
-      })
-      await waitFor(() =>
-        expect(result.current.selectedLeagueId).toBe("league-1")
-      )
-      await waitFor(() =>
-        expect(result.current.leagues.length).toBeGreaterThan(0)
-      )
-
-      expect(result.current.tournaments).toEqual([
-        { id: "tournament-1", name: "Spring Split" },
-        { id: "tournament-2", name: "Summer Split" },
-      ])
-    })
-
-    it("returns an empty array when no league is selected", async () => {
-      const { result } = renderHook(() => useMatchFilters(), {
-        wrapper: createWrapper(),
-      })
-      await waitFor(() =>
-        expect(result.current.leagues.length).toBeGreaterThan(0)
-      )
-      expect(result.current.tournaments).toEqual([])
+      act(() => result.current.clearLeagues())
+      expect(result.current.selectedLeagueIds).toEqual([])
     })
   })
 })

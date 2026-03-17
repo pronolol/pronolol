@@ -23,7 +23,7 @@ export const AppShell = () => {
   ]
 
   return (
-    <div className="min-h-screen bg-background-secondary">
+    <div className="min-h-screen bg-background-secondary overflow-x-hidden">
       <header className="bg-surface border-b border-border sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 h-14 flex items-center justify-between gap-4">
           {/* Logo */}

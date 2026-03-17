@@ -4,11 +4,10 @@ import { UpdateUserPreferencesDTO } from "../dto/preferences.dto"
 export const getUserPreferences = async (userId: string) => {
   const prefs = await prisma.userPreferences.findUnique({
     where: { userId },
-    select: { leagueId: true, tournamentId: true },
+    select: { leagueIds: true },
   })
   return {
-    leagueId: prefs?.leagueId ?? null,
-    tournamentId: prefs?.tournamentId ?? null,
+    leagueIds: prefs?.leagueIds ?? [],
   }
 }
 
@@ -20,19 +19,14 @@ export const upsertUserPreferences = async (
     where: { userId },
     create: {
       userId,
-      leagueId: data.leagueId ?? null,
-      tournamentId: data.tournamentId ?? null,
+      leagueIds: data.leagueIds ?? [],
     },
     update: {
-      ...(data.leagueId !== undefined && { leagueId: data.leagueId }),
-      ...(data.tournamentId !== undefined && {
-        tournamentId: data.tournamentId,
-      }),
+      ...(data.leagueIds !== undefined && { leagueIds: data.leagueIds }),
     },
-    select: { leagueId: true, tournamentId: true },
+    select: { leagueIds: true },
   })
   return {
-    leagueId: prefs.leagueId,
-    tournamentId: prefs.tournamentId,
+    leagueIds: prefs.leagueIds,
   }
 }

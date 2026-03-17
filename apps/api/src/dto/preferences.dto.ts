@@ -5,8 +5,7 @@ extendZodWithOpenApi(z)
 
 export const UserPreferencesSchema = z
   .object({
-    leagueId: z.string().nullable(),
-    tournamentId: z.string().nullable(),
+    leagueIds: z.array(z.string()),
   })
   .openapi("UserPreferences", {
     description: "User's saved filter preferences for the match feed",
@@ -16,8 +15,7 @@ export type UserPreferencesDTO = z.infer<typeof UserPreferencesSchema>
 
 export const UpdateUserPreferencesSchema = z
   .object({
-    leagueId: z.string().nullable().optional(),
-    tournamentId: z.string().nullable().optional(),
+    leagueIds: z.array(z.string()).optional(),
   })
   .openapi("UpdateUserPreferences", {
     description: "Body for updating user feed filter preferences",

@@ -61,9 +61,10 @@ export const getMatches = async (query: GetMatchesQuery, userId?: string) => {
 
   if (query.direction === "around") {
     const halfLimit = Math.floor(limit / 2)
-    const baseWhere: Prisma.MatchWhereInput = query.tournamentId
-      ? { tournamentId: query.tournamentId }
-      : {}
+    const baseWhere: Prisma.MatchWhereInput =
+      query.leagueId && query.leagueId.length > 0
+        ? { tournament: { leagueId: { in: query.leagueId } } }
+        : {}
 
     // Fetch up to `limit` from each side so we can compensate when one side
     // has fewer items than halfLimit (e.g. few future matches → take more past).
@@ -96,7 +97,9 @@ export const getMatches = async (query: GetMatchesQuery, userId?: string) => {
     ]
   } else {
     const where: Prisma.MatchWhereInput = {}
-    if (query.tournamentId) where.tournamentId = query.tournamentId
+    if (query.leagueId && query.leagueId.length > 0) {
+      where.tournament = { leagueId: { in: query.leagueId } }
+    }
 
     if (query.direction === "before") {
       where.matchDate = { lt: cursorDate }
