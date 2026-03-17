@@ -9,6 +9,11 @@ import {
 } from "./dto/match.dto"
 import { GetRankingQuerySchema, RankingResponseSchema } from "./dto/ranking.dto"
 import { MyPredictionSchema } from "./dto/prediction.dto"
+import {
+  UserPreferencesSchema,
+  UpdateUserPreferencesSchema,
+} from "./dto/preferences.dto"
+import { LeagueWithTournamentsSchema } from "./dto/league.dto"
 import { z } from "zod"
 
 const registry = new OpenAPIRegistry()
@@ -18,6 +23,9 @@ registry.register("Team", MatchSchema.shape.teamA)
 registry.register("MyPrediction", MyPredictionSchema)
 registry.register("Match", MatchSchema)
 registry.register("ErrorResponse", ErrorResponseSchema)
+registry.register("UserPreferences", UserPreferencesSchema)
+registry.register("UpdateUserPreferences", UpdateUserPreferencesSchema)
+registry.register("LeagueWithTournaments", LeagueWithTournamentsSchema)
 
 // Register paths
 registry.registerPath({
@@ -192,6 +200,117 @@ registry.registerPath({
   },
 })
 
+registry.registerPath({
+  method: "get",
+  path: "/users/me/preferences",
+  description: "Retrieve the authenticated user's saved match feed filter preferences",
+  summary: "Get my preferences",
+  tags: ["Users"],
+  responses: {
+    200: {
+      description: "User's filter preferences",
+      content: {
+        "application/json": {
+          schema: UserPreferencesSchema,
+        },
+      },
+    },
+    401: {
+      description: "Unauthorized",
+      content: {
+        "application/json": {
+          schema: ErrorResponseSchema,
+        },
+      },
+    },
+    500: {
+      description: "Internal server error",
+      content: {
+        "application/json": {
+          schema: ErrorResponseSchema,
+        },
+      },
+    },
+  },
+})
+
+registry.registerPath({
+  method: "put",
+  path: "/users/me/preferences",
+  description: "Save the authenticated user's match feed filter preferences",
+  summary: "Update my preferences",
+  tags: ["Users"],
+  request: {
+    body: {
+      content: {
+        "application/json": {
+          schema: UpdateUserPreferencesSchema,
+        },
+      },
+    },
+  },
+  responses: {
+    200: {
+      description: "Updated preferences",
+      content: {
+        "application/json": {
+          schema: UserPreferencesSchema,
+        },
+      },
+    },
+    400: {
+      description: "Invalid body",
+      content: {
+        "application/json": {
+          schema: ErrorResponseSchema,
+        },
+      },
+    },
+    401: {
+      description: "Unauthorized",
+      content: {
+        "application/json": {
+          schema: ErrorResponseSchema,
+        },
+      },
+    },
+    500: {
+      description: "Internal server error",
+      content: {
+        "application/json": {
+          schema: ErrorResponseSchema,
+        },
+      },
+    },
+  },
+})
+
+registry.registerPath({
+  method: "get",
+  path: "/leagues",
+  description: "Retrieve all leagues with their tournaments",
+  summary: "Get all leagues",
+  tags: ["Leagues"],
+  responses: {
+    200: {
+      description: "List of leagues with tournaments",
+      content: {
+        "application/json": {
+          schema: z.array(LeagueWithTournamentsSchema),
+        },
+      },
+    },
+    500: {
+      description: "Internal server error",
+      content: {
+        "application/json": {
+          schema: ErrorResponseSchema,
+        },
+      },
+    },
+  },
+})
+
 const generator = new OpenApiGeneratorV3(registry.definitions)
 
 export const openApiDocument = generator.generateDocument({
@@ -222,6 +341,10 @@ export const openApiDocument = generator.generateDocument({
     {
       name: "Users",
       description: "Authenticated user endpoints",
+    },
+    {
+      name: "Leagues",
+      description: "League and tournament reference endpoints",
     },
   ],
 })

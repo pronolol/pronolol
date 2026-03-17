@@ -1,8 +1,10 @@
 import { useMemo, useEffect, useRef, useCallback } from "react"
 import { useNavigate } from "react-router-dom"
 import { useMatchesFeed } from "@/hooks/useMatchesFeed"
+import { useMatchFilters } from "@/hooks/useMatchFilters"
 import { useInfiniteScrollSentinels } from "@/hooks/useInfiniteScrollSentinels"
 import { MatchCard } from "@/components/match/MatchCard"
+import { MatchFeedFilters } from "@/components/match/MatchFeedFilters"
 import { DayHeader } from "@/components/match/DayHeader"
 import { Skeleton } from "@/components/ui/skeleton"
 import type { Match } from "@/api/generated/models"
@@ -57,6 +59,15 @@ const findTodayIndex = (items: ListItem[]): number => {
 export const MatchesFeed = () => {
   const navigate = useNavigate()
   const {
+    leagues,
+    tournaments,
+    selectedLeagueId,
+    selectedTournamentId,
+    setLeague,
+    setTournament,
+  } = useMatchFilters()
+
+  const {
     data,
     isLoading,
     error,
@@ -68,7 +79,7 @@ export const MatchesFeed = () => {
     isFetchingPreviousPage,
     refetch,
     isRefetching,
-  } = useMatchesFeed()
+  } = useMatchesFeed(selectedTournamentId)
 
   const allMatches = useMemo((): Match[] => {
     if (!data?.pages) return []
@@ -101,6 +112,15 @@ export const MatchesFeed = () => {
     }
   }, [isLoading, listData])
 
+  // Reset scroll position when filter changes
+  const prevTournamentId = useRef(selectedTournamentId)
+  useEffect(() => {
+    if (prevTournamentId.current !== selectedTournamentId) {
+      prevTournamentId.current = selectedTournamentId
+      hasScrolled.current = false
+    }
+  }, [selectedTournamentId])
+
   const onTopReached = useCallback(() => {
     if (hasPreviousPage && !isFetchingPreviousPage) fetchPreviousPage()
   }, [hasPreviousPage, isFetchingPreviousPage, fetchPreviousPage])
@@ -114,114 +134,113 @@ export const MatchesFeed = () => {
     onBottomReached,
   })
 
-  if (isLoading) {
-    return (
-      <div className="flex flex-col gap-3">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <Skeleton key={i} className="h-44 w-full rounded-xl" />
-        ))}
-      </div>
-    )
-  }
-
-  if (error) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[40vh] gap-4">
-        <p className="text-text-secondary">Failed to load matches</p>
-        <button
-          onClick={() => refetch()}
-          className="text-primary text-sm font-medium hover:underline"
-        >
-          Try again
-        </button>
-      </div>
-    )
-  }
-
-  if (listData.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[40vh]">
-        <p className="text-text-secondary">No matches found</p>
-      </div>
-    )
-  }
-
-  let todayRefSet = false
-
   return (
     <div className="flex flex-col gap-0">
-      <div ref={topRef} />
-      {isFetchingPreviousPage && (
-        <div className="flex justify-center py-4">
-          <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+      <MatchFeedFilters
+        leagues={leagues}
+        tournaments={tournaments}
+        selectedLeagueId={selectedLeagueId}
+        selectedTournamentId={selectedTournamentId}
+        onLeagueChange={setLeague}
+        onTournamentChange={setTournament}
+      />
+
+      {isLoading ? (
+        <div className="flex flex-col gap-3">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <Skeleton key={i} className="h-44 w-full rounded-xl" />
+          ))}
         </div>
-      )}
-      {isRefetching && (
-        <div className="text-center py-2 text-xs text-text-muted">
-          Refreshing...
+      ) : error ? (
+        <div className="flex flex-col items-center justify-center min-h-[40vh] gap-4">
+          <p className="text-text-secondary">Failed to load matches</p>
+          <button
+            onClick={() => refetch()}
+            className="text-primary text-sm font-medium hover:underline"
+          >
+            Try again
+          </button>
         </div>
-      )}
-      {listData.map((item) => {
-        if (item.type === "header") {
-          const isToday = item.date.toDateString() === new Date().toDateString()
-          const refProps =
-            isToday && !todayRefSet
-              ? {
+      ) : listData.length === 0 ? (
+        <div className="flex flex-col items-center justify-center min-h-[40vh]">
+          <p className="text-text-secondary">No matches found</p>
+        </div>
+      ) : (
+        <>
+          <div ref={topRef} />
+          {isFetchingPreviousPage && (
+            <div className="flex justify-center py-4">
+              <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+            </div>
+          )}
+          {isRefetching && (
+            <div className="text-center py-2 text-xs text-text-muted">
+              Refreshing...
+            </div>
+          )}
+          {listData.map((item) => {
+            if (item.type === "header") {
+              const isToday =
+                item.date.toDateString() === new Date().toDateString()
+              let refProps = {}
+              if (isToday) {
+                refProps = {
                   ref: (el: HTMLDivElement | null) => {
-                    todayRef.current = el
-                    todayRefSet = true
+                    if (!hasScrolled.current) todayRef.current = el
                   },
                 }
-              : {}
-          return (
-            <div key={item.id} {...refProps}>
-              <DayHeader date={item.date} />
+              }
+              return (
+                <div key={item.id} {...refProps}>
+                  <DayHeader date={item.date} />
+                </div>
+              )
+            }
+
+            const match = item.match
+            const matchDate = match.matchDate ? new Date(match.matchDate) : null
+            const isCompleted = match.state === "completed"
+            const myPrediction = match.myPrediction
+
+            return (
+              <div key={match.id} className="px-0 py-1.5">
+                <MatchCard
+                  teamA={{ name: match.teamA.tag, logoUrl: match.teamA.logoUrl }}
+                  teamB={{ name: match.teamB.tag, logoUrl: match.teamB.logoUrl }}
+                  matchTime={
+                    matchDate ? formatMatchTime(matchDate, isCompleted) : "TBD"
+                  }
+                  league={`${match.tournament.league.name} - ${match.tournament.name}`}
+                  score={
+                    match.teamAScore !== null && match.teamBScore !== null
+                      ? { teamA: match.teamAScore, teamB: match.teamBScore }
+                      : undefined
+                  }
+                  prediction={
+                    myPrediction
+                      ? {
+                          teamTag: myPrediction.team.tag,
+                          teamLogoUrl: myPrediction.team.logoUrl,
+                          scoreA: myPrediction.predictedTeamAScore,
+                          scoreB: myPrediction.predictedTeamBScore,
+                          isCorrect: myPrediction.isCorrect,
+                          isExact: myPrediction.isExact,
+                        }
+                      : undefined
+                  }
+                  onPress={() => navigate(`/matches/${match.id}`)}
+                />
+              </div>
+            )
+          })}
+          {isFetchingNextPage && (
+            <div className="flex justify-center py-4">
+              <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
             </div>
-          )
-        }
-
-        const match = item.match
-        const matchDate = match.matchDate ? new Date(match.matchDate) : null
-        const isCompleted = match.state === "completed"
-        const myPrediction = match.myPrediction
-
-        return (
-          <div key={match.id} className="px-0 py-1.5">
-            <MatchCard
-              teamA={{ name: match.teamA.tag, logoUrl: match.teamA.logoUrl }}
-              teamB={{ name: match.teamB.tag, logoUrl: match.teamB.logoUrl }}
-              matchTime={
-                matchDate ? formatMatchTime(matchDate, isCompleted) : "TBD"
-              }
-              league={`${match.tournament.league.name} - ${match.tournament.name}`}
-              score={
-                match.teamAScore !== null && match.teamBScore !== null
-                  ? { teamA: match.teamAScore, teamB: match.teamBScore }
-                  : undefined
-              }
-              prediction={
-                myPrediction
-                  ? {
-                      teamTag: myPrediction.team.tag,
-                      teamLogoUrl: myPrediction.team.logoUrl,
-                      scoreA: myPrediction.predictedTeamAScore,
-                      scoreB: myPrediction.predictedTeamBScore,
-                      isCorrect: myPrediction.isCorrect,
-                      isExact: myPrediction.isExact,
-                    }
-                  : undefined
-              }
-              onPress={() => navigate(`/matches/${match.id}`)}
-            />
-          </div>
-        )
-      })}
-      {isFetchingNextPage && (
-        <div className="flex justify-center py-4">
-          <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-        </div>
+          )}
+          <div ref={bottomRef} />
+        </>
       )}
-      <div ref={bottomRef} />
     </div>
   )
 }
