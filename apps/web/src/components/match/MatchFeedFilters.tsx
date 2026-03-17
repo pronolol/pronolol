@@ -18,7 +18,7 @@ export const MatchFeedFilters = ({
   const allSelected = selectedLeagueIds.length === 0
 
   return (
-    <div className="flex gap-2 overflow-x-auto pb-3 scrollbar-none">
+    <div className="flex flex-wrap gap-2 px-4 py-3">
       <button
         onClick={onClearLeagues}
         className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
@@ -42,11 +42,13 @@ export const MatchFeedFilters = ({
             }`}
           >
             {league.imageUrl && (
-              <img
-                src={league.imageUrl}
-                alt={league.name}
-                className="w-3.5 h-3.5 rounded-full object-cover"
-              />
+              <div className="w-3.5 h-3.5 bg-text-primary rounded-sm p-px flex items-center justify-center shrink-0">
+                <img
+                  src={league.imageUrl}
+                  alt={league.name}
+                  className="w-full h-full object-contain"
+                />
+              </div>
             )}
             {league.name}
           </button>
