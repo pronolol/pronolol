@@ -205,8 +205,14 @@ export const MatchesFeed = () => {
             return (
               <div key={match.id} className="px-0 py-1.5">
                 <MatchCard
-                  teamA={{ name: match.teamA.tag, logoUrl: match.teamA.logoUrl }}
-                  teamB={{ name: match.teamB.tag, logoUrl: match.teamB.logoUrl }}
+                  teamA={{
+                    name: match.teamA.tag,
+                    logoUrl: match.teamA.logoUrl,
+                  }}
+                  teamB={{
+                    name: match.teamB.tag,
+                    logoUrl: match.teamB.logoUrl,
+                  }}
                   matchTime={
                     matchDate ? formatMatchTime(matchDate, isCompleted) : "TBD"
                   }

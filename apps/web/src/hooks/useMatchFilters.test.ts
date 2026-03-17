@@ -58,7 +58,10 @@ describe("useMatchFilters", () => {
       await waitFor(() =>
         expect(result.current.leagues.length).toBeGreaterThan(0)
       )
-      expect(result.current.leagues[0]).toMatchObject({ id: "league-1", name: "LEC" })
+      expect(result.current.leagues[0]).toMatchObject({
+        id: "league-1",
+        name: "LEC",
+      })
     })
   })
 
@@ -120,7 +123,10 @@ describe("useMatchFilters", () => {
     it("clears selectedTournamentId when called with null", async () => {
       server.use(
         http.get(`${API_URL}/users/me/preferences`, () =>
-          HttpResponse.json({ leagueId: "league-1", tournamentId: "tournament-1" })
+          HttpResponse.json({
+            leagueId: "league-1",
+            tournamentId: "tournament-1",
+          })
         )
       )
 

@@ -151,8 +151,9 @@ describe("useMatchesFeed", () => {
 
       server.use(
         http.get(`${API_URL}/matches`, ({ request }) => {
-          capturedTournamentId =
-            new URL(request.url).searchParams.get("tournamentId")
+          capturedTournamentId = new URL(request.url).searchParams.get(
+            "tournamentId"
+          )
           return HttpResponse.json(makeMatches(1))
         })
       )
@@ -170,8 +171,9 @@ describe("useMatchesFeed", () => {
 
       server.use(
         http.get(`${API_URL}/matches`, ({ request }) => {
-          capturedTournamentId =
-            new URL(request.url).searchParams.get("tournamentId")
+          capturedTournamentId = new URL(request.url).searchParams.get(
+            "tournamentId"
+          )
           return HttpResponse.json(makeMatches(1))
         })
       )
