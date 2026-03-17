@@ -6,7 +6,7 @@ type PageParam = { direction: string | null; cursor: string }
 
 const PAGE_SIZE = 20
 
-export function useMatchesFeed() {
+export const useMatchesFeed = () => {
   return useInfiniteQuery<
     Match[],
     Error,

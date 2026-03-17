@@ -25,7 +25,7 @@ type MatchDetailCardProps = {
 
 type MatchStatus = "completed" | "live" | "upcoming"
 
-function getStatus(state: string, isPredictionLocked: boolean): MatchStatus {
+const getStatus = (state: string, isPredictionLocked: boolean): MatchStatus => {
   if (state === "completed") return "completed"
   if (isPredictionLocked) return "live"
   return "upcoming"
@@ -50,7 +50,7 @@ type TeamCardProps = {
   onPress: () => void
 }
 
-function TeamCard({ team, isSelected, disabled, onPress }: TeamCardProps) {
+const TeamCard = ({ team, isSelected, disabled, onPress }: TeamCardProps) => {
   return (
     <button
       onClick={onPress}
@@ -93,7 +93,7 @@ function TeamCard({ team, isSelected, disabled, onPress }: TeamCardProps) {
   )
 }
 
-export function MatchDetailCard({
+export const MatchDetailCard = ({
   teamA,
   teamB,
   teamAScore,
@@ -105,7 +105,7 @@ export function MatchDetailCard({
   hasPredicted,
   selectedTeamId,
   onTeamSelect,
-}: MatchDetailCardProps) {
+}: MatchDetailCardProps) => {
   const status = getStatus(state, isPredictionLocked)
   const hasScore = teamAScore !== null && teamBScore !== null
 

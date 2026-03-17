@@ -11,7 +11,7 @@ type DayHeaderItem = { type: "header"; id: string; date: Date }
 type MatchItem = { type: "match"; match: Match }
 type ListItem = DayHeaderItem | MatchItem
 
-function formatMatchTime(date: Date, isCompleted: boolean): string {
+const formatMatchTime = (date: Date, isCompleted: boolean): string => {
   if (isCompleted) return "Completed"
   return date.toLocaleTimeString("en-US", {
     hour: "2-digit",
@@ -20,7 +20,7 @@ function formatMatchTime(date: Date, isCompleted: boolean): string {
   })
 }
 
-function createListData(matches: Match[]): ListItem[] {
+const createListData = (matches: Match[]): ListItem[] => {
   const items: ListItem[] = []
   let currentDay: string | null = null
 
@@ -39,7 +39,7 @@ function createListData(matches: Match[]): ListItem[] {
   return items
 }
 
-function findTodayIndex(items: ListItem[]): number {
+const findTodayIndex = (items: ListItem[]): number => {
   const todayStr = new Date().toDateString()
   const idx = items.findIndex(
     (item) => item.type === "header" && item.date.toDateString() === todayStr
@@ -54,7 +54,7 @@ function findTodayIndex(items: ListItem[]): number {
   return futureIdx !== -1 ? futureIdx : 0
 }
 
-export function MatchesFeed() {
+export const MatchesFeed = () => {
   const navigate = useNavigate()
   const {
     data,

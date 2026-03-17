@@ -12,11 +12,11 @@ interface Options {
  * Re-registers the observer whenever the callbacks change so stale closures
  * never prevent a fetch.
  */
-export function useInfiniteScrollSentinels({
+export const useInfiniteScrollSentinels = ({
   onTopReached,
   onBottomReached,
   rootMargin = "200px",
-}: Options) {
+}: Options) => {
   const topRef = useRef<HTMLDivElement>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
 

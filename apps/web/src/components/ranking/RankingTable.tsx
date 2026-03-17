@@ -17,7 +17,7 @@ const rankBadgeClass: Record<number, string> = {
   3: "bg-amber-600 border-amber-600",
 }
 
-export function RankingTable({ entries, currentUserId }: RankingTableProps) {
+export const RankingTable = ({ entries, currentUserId }: RankingTableProps) => {
   return (
     <div className="flex flex-col gap-2">
       {entries.map((entry) => {

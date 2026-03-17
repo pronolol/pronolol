@@ -2,7 +2,7 @@ interface DayHeaderProps {
   date: Date
 }
 
-function formatDayHeader(date: Date): string {
+const formatDayHeader = (date: Date): string => {
   const today = new Date()
   const yesterday = new Date(today)
   yesterday.setDate(yesterday.getDate() - 1)
@@ -20,7 +20,7 @@ function formatDayHeader(date: Date): string {
   })
 }
 
-export function DayHeader({ date }: DayHeaderProps) {
+export const DayHeader = ({ date }: DayHeaderProps) => {
   const isToday = date.toDateString() === new Date().toDateString()
 
   return (

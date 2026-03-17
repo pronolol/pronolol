@@ -29,7 +29,7 @@ type MatchCardProps = {
   onPress?: () => void
 }
 
-function TeamDisplay({ team }: { team: Team }) {
+const TeamDisplay = ({ team }: { team: Team }) => {
   return (
     <div className="flex flex-col items-center gap-2 flex-1">
       <div className="w-14 h-14 bg-text-primary rounded-xl p-2 flex items-center justify-center">
@@ -46,7 +46,7 @@ function TeamDisplay({ team }: { team: Team }) {
   )
 }
 
-export function MatchCard({
+export const MatchCard = ({
   teamA,
   teamB,
   matchTime,
@@ -54,7 +54,7 @@ export function MatchCard({
   score,
   prediction,
   onPress,
-}: MatchCardProps) {
+}: MatchCardProps) => {
   return (
     <Card
       className={`overflow-hidden ${onPress ? "cursor-pointer hover:shadow-md transition-shadow" : ""}`}

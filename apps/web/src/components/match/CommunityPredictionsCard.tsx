@@ -7,7 +7,7 @@ type CommunityPredictionsCardProps = {
   isMatchCompleted: boolean
 }
 
-function getResultStyle(prediction: Prediction, isMatchCompleted: boolean) {
+const getResultStyle = (prediction: Prediction, isMatchCompleted: boolean) => {
   if (!isMatchCompleted || prediction.points === null) return null
   if (prediction.isExact)
     return {
@@ -28,10 +28,10 @@ function getResultStyle(prediction: Prediction, isMatchCompleted: boolean) {
   }
 }
 
-export function CommunityPredictionsCard({
+export const CommunityPredictionsCard = ({
   predictions,
   isMatchCompleted,
-}: CommunityPredictionsCardProps) {
+}: CommunityPredictionsCardProps) => {
   const exactCount = predictions.filter((p) => p.isExact === true).length
   const correctCount = predictions.filter(
     (p) => p.isCorrect === true && p.isExact !== true
