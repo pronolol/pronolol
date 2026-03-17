@@ -23,9 +23,9 @@ export const AppShell = () => {
   ]
 
   return (
-    <div className="min-h-screen bg-background-secondary overflow-x-hidden">
+    <div className="min-h-screen bg-background-secondary overflow-x-clip">
       <header className="bg-surface border-b border-border sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto px-4 h-14 flex items-center justify-between gap-4">
+        <div className="max-w-4xl mx-auto px-3 sm:px-4 h-11 sm:h-14 flex items-center justify-between gap-2 sm:gap-4">
           {/* Logo */}
           <Link
             to="/"
@@ -70,8 +70,27 @@ export const AppShell = () => {
             <span className="text-sm text-text-secondary hidden sm:block max-w-[120px] truncate">
               {displayName}
             </span>
-            <Button variant="outline" size="sm" onClick={handleSignOut}>
-              Sign out
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleSignOut}
+              className="shrink-0 px-2 sm:px-4"
+              aria-label="Sign out"
+            >
+              <span className="hidden sm:inline">Sign out</span>
+              <svg
+                className="sm:hidden w-4 h-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+              </svg>
             </Button>
           </div>
         </div>

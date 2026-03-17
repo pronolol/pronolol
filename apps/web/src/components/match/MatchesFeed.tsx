@@ -131,7 +131,7 @@ export const MatchesFeed = () => {
 
   return (
     <div className="flex flex-col gap-0">
-      <div className="sticky top-14 z-10 bg-background-secondary -mx-4 px-4 pt-2">
+      <div className="sticky top-11 sm:top-14 z-10 bg-background-secondary -mx-4 px-4 pt-2 border-b border-border shadow-sm">
         <MatchFeedFilters
           leagues={leagues}
           selectedLeagueIds={selectedLeagueIds}
