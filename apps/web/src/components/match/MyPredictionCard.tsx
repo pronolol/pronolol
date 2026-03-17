@@ -7,10 +7,10 @@ type MyPredictionCardProps = {
   isMatchCompleted: boolean
 }
 
-function getResult(
+const getResult = (
   prediction: Prediction,
   isMatchCompleted: boolean
-): "exact" | "correct" | "wrong" | null {
+): "exact" | "correct" | "wrong" | null => {
   if (!isMatchCompleted) return null
   if (prediction.isExact) return "exact"
   if (prediction.isCorrect) return "correct"
@@ -38,10 +38,10 @@ const resultStyles = {
   },
 }
 
-export function MyPredictionCard({
+export const MyPredictionCard = ({
   prediction,
   isMatchCompleted,
-}: MyPredictionCardProps) {
+}: MyPredictionCardProps) => {
   const result = getResult(prediction, isMatchCompleted)
   const style = result ? resultStyles[result] : null
 

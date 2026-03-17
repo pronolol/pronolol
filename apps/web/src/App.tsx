@@ -8,7 +8,7 @@ import { SignInPage } from "@/pages/SignInPage"
 import { SignUpPage } from "@/pages/SignUpPage"
 import { OAuthCallbackPage } from "@/pages/OAuthCallbackPage"
 
-export default function App() {
+const App = () => {
   return (
     <Routes>
       <Route element={<ProtectedRoute />}>
@@ -24,3 +24,5 @@ export default function App() {
     </Routes>
   )
 }
+
+export default App

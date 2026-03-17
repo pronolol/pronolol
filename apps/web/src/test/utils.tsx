@@ -3,7 +3,7 @@ import { render, type RenderOptions } from "@testing-library/react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { MemoryRouter } from "react-router-dom"
 
-function createTestQueryClient() {
+const createTestQueryClient = () => {
   return new QueryClient({
     defaultOptions: {
       queries: { retry: false, gcTime: 0 },
@@ -16,7 +16,7 @@ interface WrapperProps {
   children: React.ReactNode
 }
 
-function Providers({ children }: WrapperProps) {
+const Providers = ({ children }: WrapperProps) => {
   const queryClient = createTestQueryClient()
   return (
     <QueryClientProvider client={queryClient}>
@@ -25,10 +25,10 @@ function Providers({ children }: WrapperProps) {
   )
 }
 
-function renderWithProviders(
+const renderWithProviders = (
   ui: React.ReactElement,
   options?: Omit<RenderOptions, "wrapper">
-) {
+) => {
   return render(ui, { wrapper: Providers, ...options })
 }
 

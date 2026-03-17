@@ -35,10 +35,14 @@ AXIOS_INSTANCE.interceptors.response.use(
 
 export const customInstance = <T>(config: AxiosRequestConfig): Promise<T> => {
   const source = axios.CancelToken.source()
-  const promise = AXIOS_INSTANCE({
-    ...config,
-    cancelToken: source.token,
-  }).then(({ data }) => data)
+  const execute = async (): Promise<T> => {
+    const { data } = await AXIOS_INSTANCE<T>({
+      ...config,
+      cancelToken: source.token,
+    })
+    return data
+  }
+  const promise = execute()
 
   // @ts-expect-error – cancel is not in the Promise type but used by react-query
   promise.cancel = () => {

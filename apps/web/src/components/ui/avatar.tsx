@@ -7,7 +7,7 @@ interface AvatarProps {
   className?: string
 }
 
-function getInitials(name: string): string {
+const getInitials = (name: string): string => {
   return name
     .split(" ")
     .map((n) => n[0])
@@ -22,7 +22,7 @@ const sizeClasses = {
   lg: "h-11 w-11 text-base",
 }
 
-export function Avatar({ src, name, size = "md", className }: AvatarProps) {
+export const Avatar = ({ src, name, size = "md", className }: AvatarProps) => {
   const sizeClass = sizeClasses[size]
   const initials = name ? getInitials(name) : "?"
 

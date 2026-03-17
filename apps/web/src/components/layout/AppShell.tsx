@@ -3,7 +3,7 @@ import { useAuth } from "@/lib/auth-context"
 import { signOut } from "@/lib/auth-client"
 import { Button } from "@/components/ui/button"
 
-export function AppShell() {
+export const AppShell = () => {
   const { user } = useAuth()
   const navigate = useNavigate()
   const displayName =

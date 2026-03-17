@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useSession } from "@/lib/auth-client"
 
-export function OAuthCallbackPage() {
+export const OAuthCallbackPage = () => {
   const navigate = useNavigate()
   const { refetch } = useSession()
 

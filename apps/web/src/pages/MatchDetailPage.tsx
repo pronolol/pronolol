@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button"
 
 type ScoreOption = { teamA: number; teamB: number }
 
-export function MatchDetailPage() {
+export const MatchDetailPage = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
 

@@ -1,5 +1,5 @@
 import { MatchesFeed } from "@/components/match/MatchesFeed"
 
-export function HomePage() {
+export const HomePage = () => {
   return <MatchesFeed />
 }

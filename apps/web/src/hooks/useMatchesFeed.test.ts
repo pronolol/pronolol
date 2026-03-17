@@ -9,19 +9,14 @@ import { useMatchesFeed } from "./useMatchesFeed"
 const API_URL = "http://localhost:3000"
 const PAGE_SIZE = 20
 
-function createWrapper() {
+const createWrapper = () => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: { retry: false, gcTime: 0 },
     },
   })
-  return function Wrapper({ children }: { children: React.ReactNode }) {
-    return React.createElement(
-      QueryClientProvider,
-      { client: queryClient },
-      children
-    )
-  }
+  return ({ children }: { children: React.ReactNode }) =>
+    React.createElement(QueryClientProvider, { client: queryClient }, children)
 }
 
 const makeMatch = (id: string, matchDate: string) => ({

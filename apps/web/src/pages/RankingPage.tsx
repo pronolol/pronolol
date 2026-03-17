@@ -14,7 +14,7 @@ interface FilterOption {
   value: string | null
 }
 
-function extractLeagues(matches: Match[]): FilterOption[] {
+const extractLeagues = (matches: Match[]): FilterOption[] => {
   const map = new Map<string, string>()
   for (const match of matches) {
     const league = match.tournament?.league
@@ -25,10 +25,10 @@ function extractLeagues(matches: Match[]): FilterOption[] {
   return result
 }
 
-function extractTournaments(
+const extractTournaments = (
   matches: Match[],
   leagueId?: string | null
-): FilterOption[] {
+): FilterOption[] => {
   const map = new Map<string, string>()
   for (const match of matches) {
     const t = match.tournament
@@ -41,7 +41,7 @@ function extractTournaments(
   return result
 }
 
-export function RankingPage() {
+export const RankingPage = () => {
   const { user } = useAuth()
   const [selectedLeague, setSelectedLeague] = useState<string | null>(null)
   const [selectedTournament, setSelectedTournament] = useState<string | null>(

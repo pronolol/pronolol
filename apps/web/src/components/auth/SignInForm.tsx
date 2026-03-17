@@ -4,24 +4,24 @@ import { signIn } from "@/lib/auth-client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
-export function SignInForm() {
+export const SignInForm = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
 
-  const handleDiscordSignIn = () => {
+  const handleDiscordSignIn = async () => {
     setIsLoading(true)
-    signIn
-      .social({
+    try {
+      await signIn.social({
         provider: "discord",
         callbackURL: `${window.location.origin}/callback`,
       })
-      .catch((err) => {
-        setError(err instanceof Error ? err.message : "Discord sign in failed")
-        setIsLoading(false)
-      })
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Discord sign in failed")
+      setIsLoading(false)
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {

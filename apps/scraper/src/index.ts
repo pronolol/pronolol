@@ -23,7 +23,7 @@ const leaguesToScrape = leaguesArg
   ? leaguesArg.split("=")[1].split(",")
   : config.defaultLeagues
 
-function printHelp() {
+const printHelp = () => {
   console.log(`
 LoL Esports Scraper CLI
 
@@ -52,7 +52,7 @@ Database Environment Variables:
   `)
 }
 
-async function main() {
+const main = async () => {
   const fetcher = new FetcherService()
   const parser = new ParserService()
   const dbService = new DatabaseService()

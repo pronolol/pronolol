@@ -22,7 +22,7 @@ type ScoreSelectionCardProps = {
   error?: string | null
 }
 
-export function ScoreSelectionCard({
+export const ScoreSelectionCard = ({
   selectedTeam,
   possibleScores,
   selectedScore,
@@ -30,7 +30,7 @@ export function ScoreSelectionCard({
   onSubmit,
   isSubmitting,
   error,
-}: ScoreSelectionCardProps) {
+}: ScoreSelectionCardProps) => {
   return (
     <Card>
       <CardContent>
@@ -122,11 +122,11 @@ type PromptCardProps = {
   variant?: "default" | "warning"
 }
 
-export function PromptCard({
+export const PromptCard = ({
   title,
   message,
   variant = "default",
-}: PromptCardProps) {
+}: PromptCardProps) => {
   const isWarning = variant === "warning"
   return (
     <Card
