@@ -9,6 +9,7 @@ import cors from "cors"
 import { matchRouter } from "./routes/match.routes"
 import { rankingRouter } from "./routes/ranking.routes"
 import { usersRouter } from "./routes/users.routes"
+import { leaguesRouter } from "./routes/leagues.routes"
 
 const app = express()
 const port = Number(process.env.API_PORT) || 3000
@@ -53,6 +54,7 @@ app.get("/health", async (_req: Request, res: Response) => {
 app.use("/matches", matchRouter)
 app.use("/ranking", rankingRouter)
 app.use("/users", usersRouter)
+app.use("/leagues", leaguesRouter)
 
 app.listen(port, host, () => {
   const baseUrl = process.env.BETTER_AUTH_URL || `http://${host}:${port}`

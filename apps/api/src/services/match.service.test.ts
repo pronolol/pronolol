@@ -213,7 +213,10 @@ describe("getMatches", () => {
       const matches = makeMatches(3)
       mockFindMany.mockResolvedValue(matches)
 
-      const result = await getMatches({ direction: "after", cursor: new Date().toISOString() })
+      const result = await getMatches({
+        direction: "after",
+        cursor: new Date().toISOString(),
+      })
 
       expect(mockPredictionFindMany).not.toHaveBeenCalled()
       result.forEach((m) => expect(m.myPrediction).toBeNull())
@@ -230,7 +233,10 @@ describe("getMatches", () => {
       )
 
       expect(result[0].myPrediction).toBeNull()
-      expect(result[1].myPrediction).toMatchObject({ matchId: matches[1].id, teamId: "team-a" })
+      expect(result[1].myPrediction).toMatchObject({
+        matchId: matches[1].id,
+        teamId: "team-a",
+      })
       expect(result[2].myPrediction).toBeNull()
     })
 
@@ -239,7 +245,10 @@ describe("getMatches", () => {
       mockFindMany.mockResolvedValue(matches)
       mockPredictionFindMany.mockResolvedValue([])
 
-      await getMatches({ direction: "after", cursor: new Date().toISOString() }, "user-42")
+      await getMatches(
+        { direction: "after", cursor: new Date().toISOString() },
+        "user-42"
+      )
 
       expect(mockPredictionFindMany).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -258,12 +267,18 @@ describe("getMatches", () => {
       mockPredictionFindMany.mockResolvedValue([makePrediction("f1")])
 
       const result = await getMatches(
-        { direction: "around", cursor: new Date("2025-06-01").toISOString(), limit: 4 },
+        {
+          direction: "around",
+          cursor: new Date("2025-06-01").toISOString(),
+          limit: 4,
+        },
         "user-1"
       )
 
       expect(result.find((m) => m.id === "p1")?.myPrediction).toBeNull()
-      expect(result.find((m) => m.id === "f1")?.myPrediction).toMatchObject({ matchId: "f1" })
+      expect(result.find((m) => m.id === "f1")?.myPrediction).toMatchObject({
+        matchId: "f1",
+      })
     })
   })
 })

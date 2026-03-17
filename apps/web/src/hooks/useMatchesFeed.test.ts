@@ -145,6 +145,48 @@ describe("useMatchesFeed", () => {
     })
   })
 
+  describe("tournamentId filter", () => {
+    it("sends tournamentId as a query parameter when provided", async () => {
+      let capturedTournamentId: string | null = null
+
+      server.use(
+        http.get(`${API_URL}/matches`, ({ request }) => {
+          capturedTournamentId = new URL(request.url).searchParams.get(
+            "tournamentId"
+          )
+          return HttpResponse.json(makeMatches(1))
+        })
+      )
+
+      const { result } = renderHook(() => useMatchesFeed("tournament-42"), {
+        wrapper: createWrapper(),
+      })
+
+      await waitFor(() => expect(result.current.isLoading).toBe(false))
+      expect(capturedTournamentId).toBe("tournament-42")
+    })
+
+    it("does not send tournamentId when it is null", async () => {
+      let capturedTournamentId: string | null = "sentinel"
+
+      server.use(
+        http.get(`${API_URL}/matches`, ({ request }) => {
+          capturedTournamentId = new URL(request.url).searchParams.get(
+            "tournamentId"
+          )
+          return HttpResponse.json(makeMatches(1))
+        })
+      )
+
+      const { result } = renderHook(() => useMatchesFeed(null), {
+        wrapper: createWrapper(),
+      })
+
+      await waitFor(() => expect(result.current.isLoading).toBe(false))
+      expect(capturedTournamentId).toBeNull()
+    })
+  })
+
   describe("cursor values", () => {
     it("sends the last match date as cursor when fetching the next page", async () => {
       const lastDate = new Date(Date.now() + 999 * 60_000).toISOString()

@@ -84,7 +84,7 @@ model Match {
 }
 
 model User {
-  id              String       @id
+  id              String           @id
   name            String
   email           String
   emailVerified   Boolean
@@ -96,9 +96,22 @@ model User {
   sessions        Session[]
   accounts        Account[]
   predictions     Prediction[]
+  preferences     UserPreferences?
 
   @@unique([email])
   @@map("user")
+}
+
+model UserPreferences {
+  id           String   @id @default(cuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  leagueId     String?
+  tournamentId String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("user_preferences")
 }
 
 model Session {
