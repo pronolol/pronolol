@@ -124,18 +124,12 @@ export const handlers = [
   }),
 
   http.get(`${API_URL}/users/me/preferences`, () => {
-    return HttpResponse.json({ leagueId: null, tournamentId: null })
+    return HttpResponse.json({ leagueIds: [] })
   }),
 
   http.put(`${API_URL}/users/me/preferences`, async ({ request }) => {
-    const body = (await request.json()) as {
-      leagueId?: string | null
-      tournamentId?: string | null
-    }
-    return HttpResponse.json({
-      leagueId: body.leagueId ?? null,
-      tournamentId: body.tournamentId ?? null,
-    })
+    const body = (await request.json()) as { leagueIds?: string[] }
+    return HttpResponse.json({ leagueIds: body.leagueIds ?? [] })
   }),
 
   http.get(`${API_URL}/ranking`, () => {

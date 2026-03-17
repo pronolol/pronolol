@@ -56,10 +56,13 @@ export type MatchDTO = z.infer<typeof MatchSchema>
 
 export const GetMatchesQuerySchema = z
   .object({
-    tournamentId: z.string().optional().openapi({
-      description: "Filter matches by tournament ID",
-      example: "abc123",
-    }),
+    leagueId: z
+      .union([z.string().transform((v) => [v]), z.array(z.string())])
+      .optional()
+      .openapi({
+        description: "Filter matches by league ID (repeatable)",
+        example: "abc123",
+      }),
     state: z.enum(["upcoming", "completed", "inProgress"]).optional().openapi({
       description: "Filter matches by state",
       example: "upcoming",

@@ -21,31 +21,24 @@ describe("getUserPreferences", () => {
     mockFindUnique.mockReset()
   })
 
-  it("returns null for both fields when no preferences row exists", async () => {
+  it("returns empty leagueIds when no preferences row exists", async () => {
     mockFindUnique.mockResolvedValueOnce(null)
     const result = await getUserPreferences("user-1")
-    expect(result).toEqual({ leagueId: null, tournamentId: null })
+    expect(result).toEqual({ leagueIds: [] })
   })
 
-  it("returns the stored leagueId and tournamentId", async () => {
+  it("returns the stored leagueIds", async () => {
     mockFindUnique.mockResolvedValueOnce({
-      leagueId: "league-abc",
-      tournamentId: "tournament-xyz",
+      leagueIds: ["league-abc", "league-xyz"],
     })
     const result = await getUserPreferences("user-1")
-    expect(result).toEqual({
-      leagueId: "league-abc",
-      tournamentId: "tournament-xyz",
-    })
+    expect(result).toEqual({ leagueIds: ["league-abc", "league-xyz"] })
   })
 
-  it("returns null for a field that is stored as null", async () => {
-    mockFindUnique.mockResolvedValueOnce({
-      leagueId: "league-abc",
-      tournamentId: null,
-    })
+  it("returns empty array when leagueIds is stored as empty", async () => {
+    mockFindUnique.mockResolvedValueOnce({ leagueIds: [] })
     const result = await getUserPreferences("user-1")
-    expect(result).toEqual({ leagueId: "league-abc", tournamentId: null })
+    expect(result).toEqual({ leagueIds: [] })
   })
 })
 
@@ -55,64 +48,44 @@ describe("upsertUserPreferences", () => {
   })
 
   it("creates new preferences when none exist", async () => {
-    mockUpsert.mockResolvedValueOnce({
-      leagueId: "league-1",
-      tournamentId: "tournament-1",
-    })
+    mockUpsert.mockResolvedValueOnce({ leagueIds: ["league-1", "league-2"] })
     const result = await upsertUserPreferences("user-1", {
-      leagueId: "league-1",
-      tournamentId: "tournament-1",
+      leagueIds: ["league-1", "league-2"],
     })
-    expect(result).toEqual({
-      leagueId: "league-1",
-      tournamentId: "tournament-1",
-    })
+    expect(result).toEqual({ leagueIds: ["league-1", "league-2"] })
     expect(mockUpsert).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { userId: "user-1" },
         create: expect.objectContaining({
           userId: "user-1",
-          leagueId: "league-1",
-          tournamentId: "tournament-1",
+          leagueIds: ["league-1", "league-2"],
         }),
       })
     )
   })
 
-  it("only updates leagueId when tournamentId is not provided", async () => {
-    mockUpsert.mockResolvedValueOnce({
-      leagueId: "league-2",
-      tournamentId: null,
-    })
-    await upsertUserPreferences("user-1", { leagueId: "league-2" })
+  it("updates leagueIds when provided", async () => {
+    mockUpsert.mockResolvedValueOnce({ leagueIds: ["league-2"] })
+    await upsertUserPreferences("user-1", { leagueIds: ["league-2"] })
     expect(mockUpsert).toHaveBeenCalledWith(
       expect.objectContaining({
-        update: expect.objectContaining({ leagueId: "league-2" }),
+        update: expect.objectContaining({ leagueIds: ["league-2"] }),
       })
     )
-    const updateArg = mockUpsert.mock.calls[0][0].update
-    expect(updateArg).not.toHaveProperty("tournamentId")
   })
 
-  it("only updates tournamentId when leagueId is not provided", async () => {
-    mockUpsert.mockResolvedValueOnce({
-      leagueId: null,
-      tournamentId: "tournament-3",
-    })
-    await upsertUserPreferences("user-1", { tournamentId: "tournament-3" })
+  it("does not update leagueIds when not provided", async () => {
+    mockUpsert.mockResolvedValueOnce({ leagueIds: [] })
+    await upsertUserPreferences("user-1", {})
     const updateArg = mockUpsert.mock.calls[0][0].update
-    expect(updateArg).toHaveProperty("tournamentId", "tournament-3")
-    expect(updateArg).not.toHaveProperty("leagueId")
+    expect(updateArg).not.toHaveProperty("leagueIds")
   })
 
-  it("stores null values when explicitly set to null", async () => {
-    mockUpsert.mockResolvedValueOnce({ leagueId: null, tournamentId: null })
-    const result = await upsertUserPreferences("user-1", {
-      leagueId: null,
-      tournamentId: null,
-    })
-    expect(result).toEqual({ leagueId: null, tournamentId: null })
+  it("stores empty array when leagueIds is set to []", async () => {
+    mockUpsert.mockResolvedValueOnce({ leagueIds: [] })
+    const result = await upsertUserPreferences("user-1", { leagueIds: [] })
+    expect(result).toEqual({ leagueIds: [] })
     const updateArg = mockUpsert.mock.calls[0][0].update
-    expect(updateArg).toMatchObject({ leagueId: null, tournamentId: null })
+    expect(updateArg).toMatchObject({ leagueIds: [] })
   })
 })

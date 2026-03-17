@@ -58,14 +58,8 @@ const findTodayIndex = (items: ListItem[]): number => {
 
 export const MatchesFeed = () => {
   const navigate = useNavigate()
-  const {
-    leagues,
-    tournaments,
-    selectedLeagueId,
-    selectedTournamentId,
-    setLeague,
-    setTournament,
-  } = useMatchFilters()
+  const { leagues, selectedLeagueIds, toggleLeague, clearLeagues } =
+    useMatchFilters()
 
   const {
     data,
@@ -79,7 +73,7 @@ export const MatchesFeed = () => {
     isFetchingPreviousPage,
     refetch,
     isRefetching,
-  } = useMatchesFeed(selectedTournamentId)
+  } = useMatchesFeed(selectedLeagueIds)
 
   const allMatches = useMemo((): Match[] => {
     if (!data?.pages) return []
@@ -112,14 +106,15 @@ export const MatchesFeed = () => {
     }
   }, [isLoading, listData])
 
-  // Reset scroll position when filter changes
-  const prevTournamentId = useRef(selectedTournamentId)
+  // Reset scroll position when league filter changes
+  const prevLeagueKey = useRef(selectedLeagueIds.join(","))
   useEffect(() => {
-    if (prevTournamentId.current !== selectedTournamentId) {
-      prevTournamentId.current = selectedTournamentId
+    const key = selectedLeagueIds.join(",")
+    if (prevLeagueKey.current !== key) {
+      prevLeagueKey.current = key
       hasScrolled.current = false
     }
-  }, [selectedTournamentId])
+  }, [selectedLeagueIds])
 
   const onTopReached = useCallback(() => {
     if (hasPreviousPage && !isFetchingPreviousPage) fetchPreviousPage()
@@ -136,14 +131,14 @@ export const MatchesFeed = () => {
 
   return (
     <div className="flex flex-col gap-0">
-      <MatchFeedFilters
-        leagues={leagues}
-        tournaments={tournaments}
-        selectedLeagueId={selectedLeagueId}
-        selectedTournamentId={selectedTournamentId}
-        onLeagueChange={setLeague}
-        onTournamentChange={setTournament}
-      />
+      <div className="sticky top-14 z-10 bg-background-secondary -mx-4 px-4 pt-2">
+        <MatchFeedFilters
+          leagues={leagues}
+          selectedLeagueIds={selectedLeagueIds}
+          onLeagueToggle={toggleLeague}
+          onClearLeagues={clearLeagues}
+        />
+      </div>
 
       {isLoading ? (
         <div className="flex flex-col gap-3">

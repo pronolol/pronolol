@@ -1,44 +1,42 @@
-import type { LeagueOption, TournamentOption } from "@/hooks/useMatchFilters"
+import type { LeagueOption } from "@/hooks/useMatchFilters"
 
 interface MatchFeedFiltersProps {
   leagues: LeagueOption[]
-  tournaments: TournamentOption[]
-  selectedLeagueId: string | null
-  selectedTournamentId: string | null
-  onLeagueChange: (leagueId: string | null) => void
-  onTournamentChange: (tournamentId: string | null) => void
+  selectedLeagueIds: string[]
+  onLeagueToggle: (leagueId: string) => void
+  onClearLeagues: () => void
 }
 
 export const MatchFeedFilters = ({
   leagues,
-  tournaments,
-  selectedLeagueId,
-  selectedTournamentId,
-  onLeagueChange,
-  onTournamentChange,
+  selectedLeagueIds,
+  onLeagueToggle,
+  onClearLeagues,
 }: MatchFeedFiltersProps) => {
   if (leagues.length === 0) return null
 
+  const allSelected = selectedLeagueIds.length === 0
+
   return (
-    <div className="flex flex-col gap-2 pb-3">
-      {/* League pills */}
-      <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
-        <button
-          onClick={() => onLeagueChange(null)}
-          className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-            selectedLeagueId === null
-              ? "bg-primary text-white"
-              : "bg-surface text-text-secondary border border-border hover:border-primary hover:text-primary"
-          }`}
-        >
-          All leagues
-        </button>
-        {leagues.map((league) => (
+    <div className="flex gap-2 overflow-x-auto pb-3 scrollbar-none">
+      <button
+        onClick={onClearLeagues}
+        className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+          allSelected
+            ? "bg-primary text-white"
+            : "bg-surface text-text-secondary border border-border hover:border-primary hover:text-primary"
+        }`}
+      >
+        All leagues
+      </button>
+      {leagues.map((league) => {
+        const isActive = selectedLeagueIds.includes(league.id)
+        return (
           <button
             key={league.id}
-            onClick={() => onLeagueChange(league.id)}
+            onClick={() => onLeagueToggle(league.id)}
             className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-              selectedLeagueId === league.id
+              isActive
                 ? "bg-primary text-white"
                 : "bg-surface text-text-secondary border border-border hover:border-primary hover:text-primary"
             }`}
@@ -52,24 +50,8 @@ export const MatchFeedFilters = ({
             )}
             {league.name}
           </button>
-        ))}
-      </div>
-
-      {/* Tournament selector — only shown when a league is selected */}
-      {selectedLeagueId !== null && tournaments.length > 0 && (
-        <select
-          value={selectedTournamentId ?? ""}
-          onChange={(e) => onTournamentChange(e.target.value || null)}
-          className="h-9 rounded-lg border border-border bg-surface px-3 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/30 w-full"
-        >
-          <option value="">All tournaments</option>
-          {tournaments.map((t) => (
-            <option key={t.id} value={t.id}>
-              {t.name}
-            </option>
-          ))}
-        </select>
-      )}
+        )
+      })}
     </div>
   )
 }

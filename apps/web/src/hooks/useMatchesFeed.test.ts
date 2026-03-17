@@ -52,7 +52,7 @@ describe("useMatchesFeed", () => {
       // The default MSW handler returns 1 match, well below PAGE_SIZE=20.
       // Before the fix, getNextPageParam would see 1 < 20 and return undefined.
       // After the fix, direction===null skips the size guard → hasNextPage stays true.
-      const { result } = renderHook(() => useMatchesFeed(), {
+      const { result } = renderHook(() => useMatchesFeed([]), {
         wrapper: createWrapper(),
       })
 
@@ -74,7 +74,7 @@ describe("useMatchesFeed", () => {
         })
       )
 
-      const { result } = renderHook(() => useMatchesFeed(), {
+      const { result } = renderHook(() => useMatchesFeed([]), {
         wrapper: createWrapper(),
       })
 
@@ -94,7 +94,7 @@ describe("useMatchesFeed", () => {
         )
       )
 
-      const { result } = renderHook(() => useMatchesFeed(), {
+      const { result } = renderHook(() => useMatchesFeed([]), {
         wrapper: createWrapper(),
       })
 
@@ -110,7 +110,7 @@ describe("useMatchesFeed", () => {
     it("is true when the initial page has fewer than PAGE_SIZE items", async () => {
       // Same reasoning as hasNextPage: the initial around page may be short
       // without implying there are no past matches to load.
-      const { result } = renderHook(() => useMatchesFeed(), {
+      const { result } = renderHook(() => useMatchesFeed([]), {
         wrapper: createWrapper(),
       })
 
@@ -129,7 +129,7 @@ describe("useMatchesFeed", () => {
         })
       )
 
-      const { result } = renderHook(() => useMatchesFeed(), {
+      const { result } = renderHook(() => useMatchesFeed([]), {
         wrapper: createWrapper(),
       })
 
@@ -145,45 +145,45 @@ describe("useMatchesFeed", () => {
     })
   })
 
-  describe("tournamentId filter", () => {
-    it("sends tournamentId as a query parameter when provided", async () => {
-      let capturedTournamentId: string | null = null
+  describe("leagueId filter", () => {
+    it("sends each leagueId as a repeated query parameter when provided", async () => {
+      let capturedLeagueIds: string[] = []
 
       server.use(
         http.get(`${API_URL}/matches`, ({ request }) => {
-          capturedTournamentId = new URL(request.url).searchParams.get(
-            "tournamentId"
+          capturedLeagueIds = new URL(request.url).searchParams.getAll(
+            "leagueId"
           )
           return HttpResponse.json(makeMatches(1))
         })
       )
 
-      const { result } = renderHook(() => useMatchesFeed("tournament-42"), {
+      const { result } = renderHook(() => useMatchesFeed(["lec", "lck"]), {
         wrapper: createWrapper(),
       })
 
       await waitFor(() => expect(result.current.isLoading).toBe(false))
-      expect(capturedTournamentId).toBe("tournament-42")
+      expect(capturedLeagueIds).toEqual(["lec", "lck"])
     })
 
-    it("does not send tournamentId when it is null", async () => {
-      let capturedTournamentId: string | null = "sentinel"
+    it("does not send leagueId when the array is empty", async () => {
+      let capturedLeagueIds: string[] = ["sentinel"]
 
       server.use(
         http.get(`${API_URL}/matches`, ({ request }) => {
-          capturedTournamentId = new URL(request.url).searchParams.get(
-            "tournamentId"
+          capturedLeagueIds = new URL(request.url).searchParams.getAll(
+            "leagueId"
           )
           return HttpResponse.json(makeMatches(1))
         })
       )
 
-      const { result } = renderHook(() => useMatchesFeed(null), {
+      const { result } = renderHook(() => useMatchesFeed([]), {
         wrapper: createWrapper(),
       })
 
       await waitFor(() => expect(result.current.isLoading).toBe(false))
-      expect(capturedTournamentId).toBeNull()
+      expect(capturedLeagueIds).toEqual([])
     })
   })
 
@@ -208,7 +208,7 @@ describe("useMatchesFeed", () => {
         })
       )
 
-      const { result } = renderHook(() => useMatchesFeed(), {
+      const { result } = renderHook(() => useMatchesFeed([]), {
         wrapper: createWrapper(),
       })
 

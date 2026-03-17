@@ -6,14 +6,10 @@ import {
 import { useGetLeagues } from "@/api/generated/leagues/leagues"
 import type { LeagueWithTournaments } from "@/api/generated/models"
 
-export type TournamentOption = { id: string; name: string }
 export type LeagueOption = LeagueWithTournaments
 
 export const useMatchFilters = () => {
-  const [selectedLeagueId, setSelectedLeagueId] = useState<string | null>(null)
-  const [selectedTournamentId, setSelectedTournamentId] = useState<
-    string | null
-  >(null)
+  const [selectedLeagueIds, setSelectedLeagueIds] = useState<string[]>([])
   const preferencesLoaded = useRef(false)
 
   const { data: preferences } = useGetUsersMePreferences()
@@ -24,35 +20,27 @@ export const useMatchFilters = () => {
   useEffect(() => {
     if (preferences && !preferencesLoaded.current) {
       preferencesLoaded.current = true
-      setSelectedLeagueId(preferences.leagueId)
-      setSelectedTournamentId(preferences.tournamentId)
+      setSelectedLeagueIds(preferences.leagueIds)
     }
   }, [preferences])
 
-  const selectedLeague = leagues.find((l) => l.id === selectedLeagueId) ?? null
-  const tournaments: TournamentOption[] = selectedLeague
-    ? selectedLeague.tournaments
-    : []
-
-  const setLeague = (leagueId: string | null) => {
-    setSelectedLeagueId(leagueId)
-    setSelectedTournamentId(null)
-    savePreferences({ data: { leagueId, tournamentId: null } })
+  const toggleLeague = (leagueId: string) => {
+    const next = selectedLeagueIds.includes(leagueId)
+      ? selectedLeagueIds.filter((id) => id !== leagueId)
+      : [...selectedLeagueIds, leagueId]
+    setSelectedLeagueIds(next)
+    savePreferences({ data: { leagueIds: next } })
   }
 
-  const setTournament = (tournamentId: string | null) => {
-    setSelectedTournamentId(tournamentId)
-    savePreferences({
-      data: { leagueId: selectedLeagueId, tournamentId },
-    })
+  const clearLeagues = () => {
+    setSelectedLeagueIds([])
+    savePreferences({ data: { leagueIds: [] } })
   }
 
   return {
     leagues,
-    tournaments,
-    selectedLeagueId,
-    selectedTournamentId,
-    setLeague,
-    setTournament,
+    selectedLeagueIds,
+    toggleLeague,
+    clearLeagues,
   }
 }

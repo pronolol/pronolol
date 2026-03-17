@@ -6,7 +6,7 @@ type PageParam = { direction: string | null; cursor: string }
 
 const PAGE_SIZE = 20
 
-export const useMatchesFeed = (tournamentId?: string | null) => {
+export const useMatchesFeed = (leagueIds: string[]) => {
   return useInfiniteQuery<
     Match[],
     Error,
@@ -14,13 +14,13 @@ export const useMatchesFeed = (tournamentId?: string | null) => {
     [string, string],
     PageParam
   >({
-    queryKey: ["matchesFeed", tournamentId ?? "all"],
+    queryKey: ["matchesFeed", leagueIds.join(",")],
     queryFn: async ({ pageParam }) => {
       const params = new URLSearchParams()
       params.set("limit", String(PAGE_SIZE))
 
-      if (tournamentId) {
-        params.set("tournamentId", tournamentId)
+      for (const id of leagueIds) {
+        params.append("leagueId", id)
       }
 
       if (pageParam.direction) {
