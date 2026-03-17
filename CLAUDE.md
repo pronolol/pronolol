@@ -25,3 +25,19 @@ fetchSomething().then(data => ...).catch(err => ...);
 ```
 
 This applies everywhere in the codebase — frontend, API, scraper, etc.
+
+### Function Style
+
+Always use `const` arrow functions. Never use the `function` keyword.
+
+```ts
+// Good
+const myFunction = () => { ... };
+const MyComponent = () => <div />;
+
+// Bad
+function myFunction() { ... }
+function MyComponent() { return <div />; }
+```
+
+This applies everywhere in the codebase — components, utilities, handlers, etc.
