@@ -64,3 +64,12 @@ expect(screen.getByText("Hello")).toBeInTheDocument()
 ```
 
 Factory helpers (`makeMatch()`, `makeProps()`, etc.) are preferred over inline object literals to keep tests readable and DRY.
+
+### Linting & Formatting
+
+Always run `npm run lint:fix` before committing to auto-fix Prettier formatting and ESLint issues. The project enforces zero warnings — `npm run lint` must pass clean.
+
+```sh
+npm run lint:fix   # auto-fix formatting + fixable lint errors
+npm run lint       # verify clean (0 warnings, 0 errors)
+```

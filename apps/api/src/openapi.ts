@@ -203,7 +203,8 @@ registry.registerPath({
 registry.registerPath({
   method: "get",
   path: "/users/me/preferences",
-  description: "Retrieve the authenticated user's saved match feed filter preferences",
+  description:
+    "Retrieve the authenticated user's saved match feed filter preferences",
   summary: "Get my preferences",
   tags: ["Users"],
   responses: {
