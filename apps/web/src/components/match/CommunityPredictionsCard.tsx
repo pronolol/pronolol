@@ -108,7 +108,7 @@ export const CommunityPredictionsCard = ({
               </div>
 
               <div className="flex items-center gap-2">
-                <div className="w-6 h-6 bg-text-primary rounded p-0.5 flex items-center justify-center">
+                <div className="w-6 h-6 bg-logo-bg rounded p-0.5 flex items-center justify-center">
                   <img
                     src={prediction.team.logoUrl}
                     alt={prediction.team.tag}

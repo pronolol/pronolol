@@ -61,7 +61,7 @@ const TeamCard = ({ team, isSelected, disabled, onPress }: TeamCardProps) => {
           : "border-border bg-surface"
       } ${disabled ? "cursor-default opacity-80" : "hover:border-primary/50 hover:bg-primary-light/30 cursor-pointer"}`}
     >
-      <div className="w-14 h-14 bg-text-primary rounded-xl p-2 flex items-center justify-center">
+      <div className="w-14 h-14 bg-logo-bg rounded-xl p-2 flex items-center justify-center">
         <img
           src={team.logoUrl}
           alt={team.name}

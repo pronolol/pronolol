@@ -32,7 +32,7 @@ type MatchCardProps = {
 const TeamDisplay = ({ team }: { team: Team }) => {
   return (
     <div className="flex flex-col items-center gap-2 flex-1">
-      <div className="w-14 h-14 bg-text-primary rounded-xl p-2 flex items-center justify-center">
+      <div className="w-14 h-14 bg-logo-bg rounded-xl p-2 flex items-center justify-center">
         <img
           src={team.logoUrl}
           alt={team.name}
@@ -80,7 +80,7 @@ export const MatchCard = ({
                       : "bg-surface text-text-secondary border border-border"
               }`}
             >
-              <div className="w-6 h-6 bg-text-primary rounded-md p-1 flex items-center justify-center">
+              <div className="w-6 h-6 bg-logo-bg rounded-md p-1 flex items-center justify-center">
                 <img
                   src={prediction.teamLogoUrl}
                   alt={prediction.teamTag}

@@ -68,7 +68,7 @@ export const MyPredictionCard = ({
 
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 flex-1">
-            <div className="w-11 h-11 bg-text-primary rounded-xl p-1.5 flex items-center justify-center">
+            <div className="w-11 h-11 bg-logo-bg rounded-xl p-1.5 flex items-center justify-center">
               <img
                 src={prediction.team.logoUrl}
                 alt={prediction.team.tag}

@@ -44,6 +44,9 @@
 
   /* Social */
   --color-discord: #5865f2;
+
+  /* Logo background — stays dark in both themes for contrast */
+  --color-logo-bg: #1a1a2e;
 }
 
 .dark {
