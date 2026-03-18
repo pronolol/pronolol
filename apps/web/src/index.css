@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   /* Primary */
   --color-primary: #6366f1;
@@ -44,6 +46,21 @@
   --color-discord: #5865f2;
 }
 
+.dark {
+  --color-background: #0f0f1a;
+  --color-background-secondary: #1a1a2e;
+  --color-surface: #1e1e2e;
+  --color-surface-secondary: #252535;
+  --color-text-primary: #e8e8f0;
+  --color-text-secondary: #a0a0b8;
+  --color-text-muted: #6060a0;
+  --color-text-inverse: #0f0f1a;
+  --color-border: #2e2e4e;
+  --color-border-light: #252540;
+  --color-border-dark: #3a3a5e;
+  --color-primary-light: #1e1e3e;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -51,12 +68,7 @@
 body {
   margin: 0;
   font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    Helvetica,
-    Arial,
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
     sans-serif;
   background-color: var(--color-background);
   color: var(--color-text-primary);
