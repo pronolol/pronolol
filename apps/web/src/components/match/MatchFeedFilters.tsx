@@ -42,7 +42,7 @@ export const MatchFeedFilters = ({
             }`}
           >
             {league.imageUrl && (
-              <div className="w-3.5 h-3.5 bg-text-primary rounded-sm p-px flex items-center justify-center shrink-0">
+              <div className="w-3.5 h-3.5 bg-logo-bg rounded-sm p-px flex items-center justify-center shrink-0">
                 <img
                   src={league.imageUrl}
                   alt={league.name}
