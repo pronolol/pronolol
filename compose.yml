@@ -101,6 +101,7 @@ services:
       dockerfile: apps/scraper/Dockerfile
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-user}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-pronolol}?sslmode=disable
+      UPTIME_KUMA_PUSH_URL: ${UPTIME_KUMA_PUSH_URL:-}
     depends_on:
       migrator:
         condition: service_completed_successfully
