@@ -59,6 +59,13 @@
   --color-border-light: #252540;
   --color-border-dark: #3a3a5e;
   --color-primary-light: #1e1e3e;
+  --color-secondary-light: #0d1e2d;
+  --color-success-light: #0d2318;
+  --color-success-dark: #4ade80;
+  --color-warning-light: #271d08;
+  --color-warning-dark: #fbbf24;
+  --color-error-light: #2d1515;
+  --color-error-dark: #f87171;
 }
 
 * {
