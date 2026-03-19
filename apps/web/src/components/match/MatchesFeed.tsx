@@ -3,9 +3,15 @@ import { useNavigate } from "react-router-dom"
 import { useMatchesFeed } from "@/hooks/useMatchesFeed"
 import { useMatchFilters } from "@/hooks/useMatchFilters"
 import { useInfiniteScrollSentinels } from "@/hooks/useInfiniteScrollSentinels"
+import {
+  usePredictionWizard,
+  isPredictionLocked,
+} from "@/hooks/usePredictionWizard"
 import { MatchCard } from "@/components/match/MatchCard"
 import { MatchFeedFilters } from "@/components/match/MatchFeedFilters"
 import { DayHeader } from "@/components/match/DayHeader"
+import { PredictAllBanner } from "@/components/match/PredictAllBanner"
+import { PredictionWizardModal } from "@/components/match/PredictionWizardModal"
 import { Skeleton } from "@/components/ui/skeleton"
 import type { Match } from "@/api/generated/models"
 
@@ -88,6 +94,20 @@ export const MatchesFeed = () => {
 
   const listData = useMemo(() => createListData(allMatches), [allMatches])
 
+  const unpredictedCount = useMemo(
+    () =>
+      allMatches.filter(
+        (m) =>
+          m.matchDate &&
+          m.state !== "completed" &&
+          !isPredictionLocked(m.matchDate) &&
+          !m.myPrediction
+      ).length,
+    [allMatches]
+  )
+
+  const wizard = usePredictionWizard(allMatches)
+
   // Scroll to today on initial load
   const todayRef = useRef<HTMLDivElement | null>(null)
   const hasScrolled = useRef(false)
@@ -131,6 +151,20 @@ export const MatchesFeed = () => {
 
   return (
     <div className="flex flex-col gap-0">
+      {wizard.isOpen && (
+        <PredictionWizardModal
+          isOpen={wizard.isOpen}
+          currentMatch={wizard.currentMatch}
+          progress={wizard.progress}
+          phase={wizard.phase}
+          skippedCount={wizard.skippedCount}
+          onSkip={wizard.skip}
+          onAdvance={wizard.advance}
+          onStartReview={wizard.startReview}
+          onClose={wizard.close}
+        />
+      )}
+
       <div className="sticky top-11 sm:top-14 z-10 bg-background-secondary -mx-4 border-b border-border shadow-sm">
         <MatchFeedFilters
           leagues={leagues}
@@ -162,6 +196,7 @@ export const MatchesFeed = () => {
         </div>
       ) : (
         <>
+          <PredictAllBanner count={unpredictedCount} onStart={wizard.open} />
           <div ref={topRef} />
           {isFetchingPreviousPage && (
             <div className="flex justify-center py-4">
