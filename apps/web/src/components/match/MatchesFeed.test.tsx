@@ -6,7 +6,6 @@ import { renderWithProviders } from "@/test/utils"
 import { MatchesFeed } from "./MatchesFeed"
 
 const API_URL = "http://localhost:3000"
-const PAGE_SIZE = 20
 
 const makeMatch = (id: string, matchDate: string) => ({
   id,
