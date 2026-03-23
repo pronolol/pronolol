@@ -45,7 +45,7 @@ describe("MatchFeedFilters", () => {
 
     it("renders an All leagues pill", () => {
       renderWithProviders(<MatchFeedFilters {...makeProps()} />)
-      expect(screen.getByText("All leagues")).toBeInTheDocument()
+      expect(screen.getByText("All")).toBeInTheDocument()
     })
 
     it("renders a pill for each league", () => {
@@ -65,14 +65,14 @@ describe("MatchFeedFilters", () => {
   describe("active state", () => {
     it("applies primary style to All leagues pill when no league is selected", () => {
       renderWithProviders(<MatchFeedFilters {...makeProps()} />)
-      expect(screen.getByText("All leagues")).toHaveClass("bg-primary")
+      expect(screen.getByText("All")).toHaveClass("bg-primary")
     })
 
     it("does not apply primary style to All leagues when a league is selected", () => {
       renderWithProviders(
         <MatchFeedFilters {...makeProps({ selectedLeagueIds: ["lec"] })} />
       )
-      expect(screen.getByText("All leagues")).not.toHaveClass("bg-primary")
+      expect(screen.getByText("All")).not.toHaveClass("bg-primary")
     })
 
     it("applies primary style to each selected league pill", () => {
@@ -101,7 +101,7 @@ describe("MatchFeedFilters", () => {
       renderWithProviders(
         <MatchFeedFilters {...makeProps({ onClearLeagues })} />
       )
-      await user.click(screen.getByText("All leagues"))
+      await user.click(screen.getByText("All"))
       expect(onClearLeagues).toHaveBeenCalledOnce()
     })
 

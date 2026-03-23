@@ -24,7 +24,7 @@ describe("PredictAllBanner", () => {
   it("calls onStart when button is clicked", () => {
     const onStart = vi.fn()
     render(<PredictAllBanner count={3} onStart={onStart} />)
-    fireEvent.click(screen.getByText("Start Predicting →"))
+    fireEvent.click(screen.getByText("Start →"))
     expect(onStart).toHaveBeenCalledOnce()
   })
 })

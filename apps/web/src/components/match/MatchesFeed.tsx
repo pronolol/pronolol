@@ -151,7 +151,7 @@ export const MatchesFeed = () => {
         />
       )}
 
-      <div className="sticky top-11 sm:top-14 z-10 bg-background-secondary -mx-4 border-b border-border shadow-sm">
+      <div className="sticky top-11 sm:top-14 z-10 -mx-4 bg-background-secondary/95 backdrop-blur-sm border-b border-border/60 pt-1">
         <MatchFeedFilters
           leagues={leagues}
           selectedLeagueIds={selectedLeagueIds}
