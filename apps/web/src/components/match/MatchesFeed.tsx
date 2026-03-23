@@ -1,8 +1,7 @@
-import { useMemo, useEffect, useRef, useCallback } from "react"
+import { useMemo, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import { useMatchesFeed } from "@/hooks/useMatchesFeed"
 import { useMatchFilters } from "@/hooks/useMatchFilters"
-import { useInfiniteScrollSentinels } from "@/hooks/useInfiniteScrollSentinels"
 import {
   usePredictionWizard,
   isPredictionLocked,
@@ -136,19 +135,6 @@ export const MatchesFeed = () => {
     }
   }, [selectedLeagueIds])
 
-  const onTopReached = useCallback(() => {
-    if (hasPreviousPage && !isFetchingPreviousPage) fetchPreviousPage()
-  }, [hasPreviousPage, isFetchingPreviousPage, fetchPreviousPage])
-
-  const onBottomReached = useCallback(() => {
-    if (hasNextPage && !isFetchingNextPage) fetchNextPage()
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage])
-
-  const { topRef, bottomRef } = useInfiniteScrollSentinels({
-    onTopReached,
-    onBottomReached,
-  })
-
   return (
     <div className="flex flex-col gap-0">
       {wizard.isOpen && (
@@ -172,6 +158,7 @@ export const MatchesFeed = () => {
           onLeagueToggle={toggleLeague}
           onClearLeagues={clearLeagues}
         />
+        <PredictAllBanner count={unpredictedCount} onStart={wizard.open} />
       </div>
 
       {isLoading ? (
@@ -196,8 +183,15 @@ export const MatchesFeed = () => {
         </div>
       ) : (
         <>
-          <PredictAllBanner count={unpredictedCount} onStart={wizard.open} />
-          <div ref={topRef} />
+          {hasPreviousPage && (
+            <button
+              onClick={() => fetchPreviousPage()}
+              disabled={isFetchingPreviousPage}
+              className="w-full py-3 text-sm font-medium text-primary hover:underline disabled:opacity-50"
+            >
+              {isFetchingPreviousPage ? "Loading..." : "Load earlier matches"}
+            </button>
+          )}
           {isFetchingPreviousPage && (
             <div className="flex justify-center py-4">
               <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
@@ -274,7 +268,15 @@ export const MatchesFeed = () => {
               <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
             </div>
           )}
-          <div ref={bottomRef} />
+          {hasNextPage && (
+            <button
+              onClick={() => fetchNextPage()}
+              disabled={isFetchingNextPage}
+              className="w-full py-3 text-sm font-medium text-primary hover:underline disabled:opacity-50"
+            >
+              {isFetchingNextPage ? "Loading..." : "Load more matches"}
+            </button>
+          )}
         </>
       )}
     </div>

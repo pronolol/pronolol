@@ -69,7 +69,15 @@ Factory helpers (`makeMatch()`, `makeProps()`, etc.) are preferred over inline o
 
 Always run `npm run lint:fix` before committing to auto-fix Prettier formatting and ESLint issues. The project enforces zero warnings — `npm run lint` must pass clean.
 
+**Important:** The root ESLint config ignores `apps/web/**`. Each package must be linted from its own directory.
+
 ```sh
+# From apps/web/ — frontend
+cd apps/web
 npm run lint:fix   # auto-fix formatting + fixable lint errors
 npm run lint       # verify clean (0 warnings, 0 errors)
+
+# From repo root — everything except apps/web (api, scraper, packages)
+npm run lint:fix
+npm run lint
 ```
