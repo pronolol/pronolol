@@ -81,3 +81,24 @@ npm run lint       # verify clean (0 warnings, 0 errors)
 npm run lint:fix
 npm run lint
 ```
+
+### Pre-commit Checklist
+
+Before every commit, run the following for any package you've touched:
+
+```sh
+# Frontend (apps/web/)
+cd apps/web
+npm run lint:fix   # format + fix lint
+npm run lint       # verify 0 warnings
+npm test           # all Vitest unit tests must pass
+
+# Backend / scraper / packages (from repo root)
+npm run lint:fix
+npm run lint
+npm test           # all Vitest tests must pass
+```
+
+**Never commit with failing tests or lint errors.**
+
+The `e2e/` visual tests (`npm run test:e2e` in `apps/web/`) run only in CI via the `visual-diff` workflow — do not run them locally as part of the pre-commit checklist (they require a built app and Playwright browsers).
