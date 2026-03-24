@@ -6,11 +6,11 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type GetMatchesDirection = typeof GetMatchesDirection[keyof typeof GetMatchesDirection];
-
+export type GetMatchesDirection =
+  (typeof GetMatchesDirection)[keyof typeof GetMatchesDirection]
 
 export const GetMatchesDirection = {
-  before: 'before',
-  after: 'after',
-  around: 'around',
-} as const;
+  before: "before",
+  after: "after",
+  around: "around",
+} as const

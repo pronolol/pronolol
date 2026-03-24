@@ -7,7 +7,7 @@
  */
 
 export type MyPredictionTeam = {
-  id: string;
-  tag: string;
-  logoUrl: string;
-};
+  id: string
+  tag: string
+  logoUrl: string
+}

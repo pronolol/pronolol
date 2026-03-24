@@ -10,5 +10,5 @@
  * Body for updating user feed filter preferences
  */
 export interface UpdateUserPreferences {
-  leagueIds?: string[];
+  leagueIds?: string[]
 }

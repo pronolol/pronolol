@@ -7,6 +7,6 @@
  */
 
 export type RankingResponseFilters = {
-  leagueId: string | null;
-  tournamentId: string | null;
-};
+  leagueId: string | null
+  tournamentId: string | null
+}

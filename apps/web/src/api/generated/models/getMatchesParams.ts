@@ -5,32 +5,32 @@
  * API for managing esports match predictions and rankings
  * OpenAPI spec version: 1.0.0
  */
-import type { GetMatchesDirection } from './getMatchesDirection';
-import type { GetMatchesState } from './getMatchesState';
+import type { GetMatchesDirection } from "./getMatchesDirection"
+import type { GetMatchesState } from "./getMatchesState"
 
 export type GetMatchesParams = {
-/**
- * Filter matches by league ID (repeatable)
- */
-leagueId?: string | string[];
-/**
- * Filter matches by state
- */
-state?: GetMatchesState;
-/**
- * ISO date string to use as cursor for pagination. If not provided, current time is used.
- */
-cursor?: string;
-/**
- * Direction to fetch matches relative to cursor. 'around' returns matches both before and after.
- */
-direction?: GetMatchesDirection;
-/**
- * Maximum number of results to return
- */
-limit?: string;
-/**
- * Number of results to skip for pagination
- */
-offset?: string;
-};
+  /**
+   * Filter matches by league ID (repeatable)
+   */
+  leagueId?: string | string[]
+  /**
+   * Filter matches by state
+   */
+  state?: GetMatchesState
+  /**
+   * ISO date string to use as cursor for pagination. If not provided, current time is used.
+   */
+  cursor?: string
+  /**
+   * Direction to fetch matches relative to cursor. 'around' returns matches both before and after.
+   */
+  direction?: GetMatchesDirection
+  /**
+   * Maximum number of results to return
+   */
+  limit?: string
+  /**
+   * Number of results to skip for pagination
+   */
+  offset?: string
+}

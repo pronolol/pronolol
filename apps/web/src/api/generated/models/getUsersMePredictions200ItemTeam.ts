@@ -7,7 +7,7 @@
  */
 
 export type GetUsersMePredictions200ItemTeam = {
-  id: string;
-  tag: string;
-  logoUrl: string;
-};
+  id: string
+  tag: string
+  logoUrl: string
+}

@@ -10,6 +10,6 @@
  * Tournament basic info
  */
 export interface TournamentSummary {
-  id: string;
-  name: string;
+  id: string
+  name: string
 }

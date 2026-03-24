@@ -14,18 +14,18 @@ export interface RankingEntry {
    * @minimum 0
    * @exclusiveMinimum true
    */
-  rank: number;
-  userId: string;
-  displayName: string;
-  username: string | null;
-  image: string | null;
-  totalPoints: number;
-  totalPredictions: number;
-  correctPredictions: number;
-  exactPredictions: number;
+  rank: number
+  userId: string
+  displayName: string
+  username: string | null
+  image: string | null
+  totalPoints: number
+  totalPredictions: number
+  correctPredictions: number
+  exactPredictions: number
   /**
    * @minimum 0
    * @maximum 100
    */
-  correctnessPercentage: number;
+  correctnessPercentage: number
 }

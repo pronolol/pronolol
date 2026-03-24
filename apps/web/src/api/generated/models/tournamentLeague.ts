@@ -10,7 +10,7 @@
  * League information
  */
 export type TournamentLeague = {
-  id: string;
-  name: string;
-  imageUrl: string;
-};
+  id: string
+  name: string
+  imageUrl: string
+}

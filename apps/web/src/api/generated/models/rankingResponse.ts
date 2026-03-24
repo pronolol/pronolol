@@ -5,13 +5,13 @@
  * API for managing esports match predictions and rankings
  * OpenAPI spec version: 1.0.0
  */
-import type { RankingEntry } from './rankingEntry';
-import type { RankingResponseFilters } from './rankingResponseFilters';
+import type { RankingEntry } from "./rankingEntry"
+import type { RankingResponseFilters } from "./rankingResponseFilters"
 
 /**
  * Ranking response with user statistics
  */
 export interface RankingResponse {
-  rankings: RankingEntry[];
-  filters: RankingResponseFilters;
+  rankings: RankingEntry[]
+  filters: RankingResponseFilters
 }

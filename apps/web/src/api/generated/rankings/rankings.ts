@@ -5,9 +5,7 @@
  * API for managing esports match predictions and rankings
  * OpenAPI spec version: 1.0.0
  */
-import {
-  useQuery
-} from '@tanstack/react-query';
+import { useQuery } from "@tanstack/react-query"
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -17,109 +15,147 @@ import type {
   QueryKey,
   UndefinedInitialDataOptions,
   UseQueryOptions,
-  UseQueryResult
-} from '@tanstack/react-query';
+  UseQueryResult,
+} from "@tanstack/react-query"
 
 import type {
   ErrorResponse,
   GetRankingParams,
-  RankingResponse
-} from '../models';
+  RankingResponse,
+} from "../models"
 
-import { customInstance } from '../../client';
-
-
-
+import { customInstance } from "../../client"
 
 /**
  * Retrieve user rankings based on prediction performance. Can be filtered by league or tournament. Rankings are sorted by total points (descending), then by correctness percentage.
  * @summary Get user rankings
  */
-export const getRanking = (
-    params?: GetRankingParams,
- signal?: AbortSignal
-) => {
-      
-      
-      return customInstance<RankingResponse>(
-      {url: `/ranking`, method: 'GET',
-        params, signal
-    },
-      );
-    }
-  
-
-
-
-export const getGetRankingQueryKey = (params?: GetRankingParams,) => {
-    return [
-    `/ranking`, ...(params ? [params] : [])
-    ] as const;
-    }
-
-    
-export const getGetRankingQueryOptions = <TData = Awaited<ReturnType<typeof getRanking>>, TError = ErrorResponse>(params?: GetRankingParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRanking>>, TError, TData>>, }
-) => {
-
-const {query: queryOptions} = options ?? {};
-
-  const queryKey =  queryOptions?.queryKey ?? getGetRankingQueryKey(params);
-
-  
-
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRanking>>> = ({ signal }) => getRanking(params, signal);
-
-      
-
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRanking>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+export const getRanking = (params?: GetRankingParams, signal?: AbortSignal) => {
+  return customInstance<RankingResponse>({
+    url: `/ranking`,
+    method: "GET",
+    params,
+    signal,
+  })
 }
 
-export type GetRankingQueryResult = NonNullable<Awaited<ReturnType<typeof getRanking>>>
+export const getGetRankingQueryKey = (params?: GetRankingParams) => {
+  return [`/ranking`, ...(params ? [params] : [])] as const
+}
+
+export const getGetRankingQueryOptions = <
+  TData = Awaited<ReturnType<typeof getRanking>>,
+  TError = ErrorResponse,
+>(
+  params?: GetRankingParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getRanking>>, TError, TData>
+    >
+  }
+) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetRankingQueryKey(params)
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getRanking>>> = ({
+    signal,
+  }) => getRanking(params, signal)
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getRanking>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetRankingQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getRanking>>
+>
 export type GetRankingQueryError = ErrorResponse
 
-
-export function useGetRanking<TData = Awaited<ReturnType<typeof getRanking>>, TError = ErrorResponse>(
- params: undefined |  GetRankingParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRanking>>, TError, TData>> & Pick<
+export function useGetRanking<
+  TData = Awaited<ReturnType<typeof getRanking>>,
+  TError = ErrorResponse,
+>(
+  params: undefined | GetRankingParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getRanking>>, TError, TData>
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getRanking>>,
           TError,
           Awaited<ReturnType<typeof getRanking>>
-        > , 'initialData'
-      >, }
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetRanking<TData = Awaited<ReturnType<typeof getRanking>>, TError = ErrorResponse>(
- params?: GetRankingParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRanking>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >
+  },
+  queryClient?: QueryClient
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>
+}
+export function useGetRanking<
+  TData = Awaited<ReturnType<typeof getRanking>>,
+  TError = ErrorResponse,
+>(
+  params?: GetRankingParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getRanking>>, TError, TData>
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getRanking>>,
           TError,
           Awaited<ReturnType<typeof getRanking>>
-        > , 'initialData'
-      >, }
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetRanking<TData = Awaited<ReturnType<typeof getRanking>>, TError = ErrorResponse>(
- params?: GetRankingParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRanking>>, TError, TData>>, }
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        "initialData"
+      >
+  },
+  queryClient?: QueryClient
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>
+}
+export function useGetRanking<
+  TData = Awaited<ReturnType<typeof getRanking>>,
+  TError = ErrorResponse,
+>(
+  params?: GetRankingParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getRanking>>, TError, TData>
+    >
+  },
+  queryClient?: QueryClient
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>
+}
 /**
  * @summary Get user rankings
  */
 
-export function useGetRanking<TData = Awaited<ReturnType<typeof getRanking>>, TError = ErrorResponse>(
- params?: GetRankingParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRanking>>, TError, TData>>, }
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useGetRanking<
+  TData = Awaited<ReturnType<typeof getRanking>>,
+  TError = ErrorResponse,
+>(
+  params?: GetRankingParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getRanking>>, TError, TData>
+    >
+  },
+  queryClient?: QueryClient
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>
+} {
+  const queryOptions = getGetRankingQueryOptions(params, options)
 
-  const queryOptions = getGetRankingQueryOptions(params,options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> }
 
-  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  return { ...query, queryKey: queryOptions.queryKey };
+  return { ...query, queryKey: queryOptions.queryKey }
 }
-
-
-
-
