@@ -5,6 +5,10 @@ on:
     branches: [main]
     paths:
       - "apps/web/**"
+  push:
+    branches: [main]
+    paths:
+      - "apps/web/**"
 
 jobs:
   visual-diff:
