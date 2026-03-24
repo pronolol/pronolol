@@ -96,20 +96,26 @@ export const AppShell = () => {
                 </svg>
               )}
             </button>
-            {avatarUrl ? (
-              <img
-                src={avatarUrl}
-                alt={displayName}
-                className="w-7 h-7 rounded-full object-cover border border-border"
-              />
-            ) : (
-              <div className="w-7 h-7 rounded-full bg-primary-light flex items-center justify-center text-primary text-xs font-semibold border border-border">
-                {displayName.charAt(0).toUpperCase()}
-              </div>
-            )}
-            <span className="text-sm text-text-secondary hidden sm:block max-w-[120px] truncate">
-              {displayName}
-            </span>
+            <Link
+              to="/profile"
+              aria-label="Open profile"
+              className="flex items-center gap-2 rounded-lg px-1.5 py-1 hover:bg-primary-light transition-colors"
+            >
+              {avatarUrl ? (
+                <img
+                  src={avatarUrl}
+                  alt={displayName}
+                  className="w-7 h-7 rounded-full object-cover border border-border"
+                />
+              ) : (
+                <div className="w-7 h-7 rounded-full bg-primary-light flex items-center justify-center text-primary text-xs font-semibold border border-border">
+                  {displayName.charAt(0).toUpperCase()}
+                </div>
+              )}
+              <span className="text-sm text-text-secondary hidden sm:block max-w-[120px] truncate">
+                {displayName}
+              </span>
+            </Link>
             <Button
               variant="outline"
               size="sm"
