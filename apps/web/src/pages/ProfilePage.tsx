@@ -170,11 +170,13 @@ export const ProfilePage = () => {
                           : "border-border bg-background-secondary hover:border-primary/40"
                       }`}
                     >
-                      <img
-                        src={league.imageUrl}
-                        alt={league.name}
-                        className="w-6 h-6 rounded-full object-contain"
-                      />
+                      <div className="w-6 h-6 bg-logo-bg rounded-full p-0.5 flex items-center justify-center shrink-0">
+                        <img
+                          src={league.imageUrl}
+                          alt={league.name}
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
                       <span className="text-sm font-medium text-text-primary flex-1">
                         {league.name}
                       </span>
