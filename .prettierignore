@@ -5,4 +5,5 @@ build
 *.lock
 package-lock.json
 generated
+**/openapi.json
 *.config.js
