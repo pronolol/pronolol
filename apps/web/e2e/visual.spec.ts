@@ -130,3 +130,11 @@ test("ranking page", async ({ page }) => {
   await page.waitForSelector("text=Alice", { timeout: 10000 })
   await argosScreenshot(page, "ranking")
 })
+
+test("profile page", async ({ page }) => {
+  await setupApiMocks(page)
+  await page.goto("/profile")
+  // Wait for the stats section to confirm ranking data loaded
+  await page.waitForSelector("text=Stats", { timeout: 10000 })
+  await argosScreenshot(page, "profile")
+})

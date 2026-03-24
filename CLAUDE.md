@@ -111,4 +111,7 @@ The `e2e/` visual tests (`npm run test:e2e` in `apps/web/`) run only in CI via t
 
 ### Visual Checks for New Frontend Screens
 
-Whenever a new frontend screen or page is added, always perform a visual check via **ArgoCD** after the branch is deployed. Confirm the new screen renders correctly in the deployed environment before marking the task complete. Include a note in the PR description indicating the screen was visually verified in Argo.
+Whenever a new frontend screen or page is added:
+
+1. **Add an e2e test** in `apps/web/e2e/visual.spec.ts` — mock all required API routes via `setupApiMocks` (or extend it), navigate to the new route, wait for a stable selector, and call `argosScreenshot(page, "<screen-name>")`.
+2. **Verify visually in ArgoCD** once the branch is deployed — confirm the screen renders correctly before marking the task complete. Include a note in the PR description indicating the screen was visually verified in Argo.
