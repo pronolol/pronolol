@@ -43,7 +43,7 @@ export const ProfilePage = () => {
     if (preferencesData?.leagueIds) {
       setPendingLeagueIds(preferencesData.leagueIds)
     }
-  }, [preferencesData?.leagueIds])
+  }, [preferencesData])
 
   const displayName =
     user?.displayUsername || user?.username || user?.name || "User"
@@ -66,7 +66,9 @@ export const ProfilePage = () => {
   const handleSave = async () => {
     setSaveError(null)
     try {
-      await updatePreferences.mutateAsync({ data: { leagueIds: pendingLeagueIds } })
+      await updatePreferences.mutateAsync({
+        data: { leagueIds: pendingLeagueIds },
+      })
       queryClient.invalidateQueries({
         queryKey: getGetUsersMePreferencesQueryKey(),
       })
@@ -100,13 +102,19 @@ export const ProfilePage = () => {
         <CardContent>
           {rankingLoading ? (
             <div className="grid grid-cols-2 gap-3">
-              {Array.from({ length: 4 }).map((_, i) => (
-                <Skeleton key={i} className="h-16 rounded-xl" />
+              {Array.from({ length: 4 }, (_, i) => (
+                <Skeleton
+                  key={`stat-skeleton-${i}`}
+                  className="h-16 rounded-xl"
+                />
               ))}
             </div>
           ) : (
             <div className="grid grid-cols-2 gap-3">
-              <StatTile label="Rank" value={myStats ? `#${myStats.rank}` : "—"} />
+              <StatTile
+                label="Rank"
+                value={myStats ? `#${myStats.rank}` : "—"}
+              />
               <StatTile
                 label="Points"
                 value={myStats ? myStats.totalPoints : "—"}
@@ -133,7 +141,7 @@ export const ProfilePage = () => {
             variant="outline"
             disabled={!isDirty || updatePreferences.isPending}
             loading={updatePreferences.isPending}
-            onClick={handleSave}
+            onClick={() => void handleSave()}
           >
             Save
           </Button>
@@ -141,8 +149,11 @@ export const ProfilePage = () => {
         <CardContent>
           {leaguesLoading || prefsLoading ? (
             <div className="flex flex-col gap-2">
-              {Array.from({ length: 3 }).map((_, i) => (
-                <Skeleton key={i} className="h-12 rounded-xl" />
+              {Array.from({ length: 3 }, (_, i) => (
+                <Skeleton
+                  key={`league-skeleton-${i}`}
+                  className="h-12 rounded-xl"
+                />
               ))}
             </div>
           ) : (
