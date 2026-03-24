@@ -76,8 +76,12 @@ const setupApiMocks = async (page: Page) => {
     (route) => route.fulfill({ json: mockMatches })
   )
   await page.route(
-    (url) => url.pathname.startsWith("/matches/"),
+    (url) => /^\/matches\/[^/]+$/.test(url.pathname),
     (route) => route.fulfill({ json: { ...mockMatches[0], id: "match-1" } })
+  )
+  await page.route(
+    (url) => url.pathname.endsWith("/predictions"),
+    (route) => route.fulfill({ json: { myPrediction: null, predictions: [] } })
   )
   await page.route(
     (url) => url.pathname === "/ranking",
@@ -109,6 +113,14 @@ test("home page", async ({ page }) => {
   // Wait for at least one match card to be visible before screenshotting
   await page.waitForSelector("text=TLA", { timeout: 10000 })
   await argosScreenshot(page, "home")
+})
+
+test("match detail page", async ({ page }) => {
+  await setupApiMocks(page)
+  await page.goto("/matches/match-1")
+  // Wait for league name to confirm match data loaded
+  await page.waitForSelector("text=LEC", { timeout: 10000 })
+  await argosScreenshot(page, "match-detail")
 })
 
 test("ranking page", async ({ page }) => {
