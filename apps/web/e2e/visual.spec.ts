@@ -66,23 +66,34 @@ const mockRanking = {
 }
 
 const setupApiMocks = async (page: Page) => {
-  await page.route(`${API_URL}/auth/get-session`, (route) =>
-    route.fulfill({ json: mockSession })
+  // Use URL function predicates so query params don't break matching
+  await page.route(
+    (url) => url.href.startsWith(`${API_URL}/auth/get-session`),
+    (route) => route.fulfill({ json: mockSession })
   )
-  await page.route(`${API_URL}/matches`, (route) =>
-    route.fulfill({ json: mockMatches })
+  await page.route(
+    (url) => url.origin === API_URL && url.pathname === "/matches",
+    (route) => route.fulfill({ json: mockMatches })
   )
-  await page.route(`${API_URL}/matches/**`, (route) =>
-    route.fulfill({
-      json: { ...mockMatches[0], id: "match-1" },
-    })
+  await page.route(
+    (url) => url.origin === API_URL && /^\/matches\/[^/]+$/.test(url.pathname),
+    (route) => route.fulfill({ json: { ...mockMatches[0], id: "match-1" } })
   )
-  await page.route(`${API_URL}/ranking`, (route) =>
-    route.fulfill({ json: mockRanking })
+  await page.route(
+    (url) => url.origin === API_URL && url.pathname.endsWith("/predictions"),
+    (route) => route.fulfill({ json: { myPrediction: null, predictions: [] } })
   )
-  await page.route(`${API_URL}/leagues`, (route) => route.fulfill({ json: [] }))
-  await page.route(`${API_URL}/users/me/preferences`, (route) =>
-    route.fulfill({ json: { leagueIds: [] } })
+  await page.route(
+    (url) => url.origin === API_URL && url.pathname === "/ranking",
+    (route) => route.fulfill({ json: mockRanking })
+  )
+  await page.route(
+    (url) => url.origin === API_URL && url.pathname === "/leagues",
+    (route) => route.fulfill({ json: [] })
+  )
+  await page.route(
+    (url) => url.origin === API_URL && url.pathname === "/users/me/preferences",
+    (route) => route.fulfill({ json: { leagueIds: [] } })
   )
 }
 
@@ -99,13 +110,23 @@ test("sign-up page", async ({ page }) => {
 test("home page", async ({ page }) => {
   await setupApiMocks(page)
   await page.goto("/")
-  await page.waitForLoadState("networkidle")
+  // Wait for at least one match card to be visible before screenshotting
+  await page.waitForSelector("text=TLA", { timeout: 10000 })
   await argosScreenshot(page, "home")
+})
+
+test("match detail page", async ({ page }) => {
+  await setupApiMocks(page)
+  await page.goto("/matches/match-1")
+  // Wait for league name to confirm match data loaded
+  await page.waitForSelector("text=LEC", { timeout: 10000 })
+  await argosScreenshot(page, "match-detail")
 })
 
 test("ranking page", async ({ page }) => {
   await setupApiMocks(page)
   await page.goto("/ranking")
-  await page.waitForLoadState("networkidle")
+  // Wait for ranking table content to be visible
+  await page.waitForSelector("text=Alice", { timeout: 10000 })
   await argosScreenshot(page, "ranking")
 })
