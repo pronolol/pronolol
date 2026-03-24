@@ -72,27 +72,28 @@ const setupApiMocks = async (page: Page) => {
     (route) => route.fulfill({ json: mockSession })
   )
   await page.route(
-    (url) => url.pathname === "/matches",
+    (url) => url.origin === API_URL && url.pathname === "/matches",
     (route) => route.fulfill({ json: mockMatches })
   )
   await page.route(
-    (url) => /^\/matches\/[^/]+$/.test(url.pathname),
+    (url) =>
+      url.origin === API_URL && /^\/matches\/[^/]+$/.test(url.pathname),
     (route) => route.fulfill({ json: { ...mockMatches[0], id: "match-1" } })
   )
   await page.route(
-    (url) => url.pathname.endsWith("/predictions"),
+    (url) => url.origin === API_URL && url.pathname.endsWith("/predictions"),
     (route) => route.fulfill({ json: { myPrediction: null, predictions: [] } })
   )
   await page.route(
-    (url) => url.pathname === "/ranking",
+    (url) => url.origin === API_URL && url.pathname === "/ranking",
     (route) => route.fulfill({ json: mockRanking })
   )
   await page.route(
-    (url) => url.pathname === "/leagues",
+    (url) => url.origin === API_URL && url.pathname === "/leagues",
     (route) => route.fulfill({ json: [] })
   )
   await page.route(
-    (url) => url.pathname === "/users/me/preferences",
+    (url) => url.origin === API_URL && url.pathname === "/users/me/preferences",
     (route) => route.fulfill({ json: { leagueIds: [] } })
   )
 }
