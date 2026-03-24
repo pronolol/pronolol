@@ -108,3 +108,7 @@ npm test           # all Vitest tests must pass
 **Never commit with failing tests or lint errors.**
 
 The `e2e/` visual tests (`npm run test:e2e` in `apps/web/`) run only in CI via the `visual-diff` workflow — do not run them locally as part of the pre-commit checklist (they require a built app and Playwright browsers).
+
+### Visual Checks for New Frontend Screens
+
+Whenever a new frontend screen or page is added, always perform a visual check via **ArgoCD** after the branch is deployed. Confirm the new screen renders correctly in the deployed environment before marking the task complete. Include a note in the PR description indicating the screen was visually verified in Argo.
