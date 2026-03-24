@@ -5,28 +5,28 @@
  * API for managing esports match predictions and rankings
  * OpenAPI spec version: 1.0.0
  */
-import type { MyPrediction } from './myPrediction';
-import type { Team } from './team';
-import type { Tournament } from './tournament';
+import type { MyPrediction } from "./myPrediction"
+import type { Team } from "./team"
+import type { Tournament } from "./tournament"
 
 /**
  * Match details with teams and tournament information
  */
 export interface Match {
-  id: string;
-  matchDate: string | null;
-  state: string;
+  id: string
+  matchDate: string | null
+  state: string
   /**
    * @minimum 0
    * @exclusiveMinimum true
    */
-  bestOf: number;
-  stage: string | null;
-  teamA: Team;
-  teamB: Team;
-  winner: Team & (unknown | null);
-  teamAScore: number | null;
-  teamBScore: number | null;
-  tournament: Tournament;
-  myPrediction: MyPrediction & (unknown | null);
+  bestOf: number
+  stage: string | null
+  teamA: Team
+  teamB: Team
+  winner: Team & (unknown | null)
+  teamAScore: number | null
+  teamBScore: number | null
+  tournament: Tournament
+  myPrediction: MyPrediction & (unknown | null)
 }

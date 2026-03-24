@@ -10,5 +10,5 @@
  * User's saved filter preferences for the match feed
  */
 export interface UserPreferences {
-  leagueIds: string[];
+  leagueIds: string[]
 }

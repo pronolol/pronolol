@@ -5,15 +5,15 @@
  * API for managing esports match predictions and rankings
  * OpenAPI spec version: 1.0.0
  */
-import type { GetUsersMePredictions200ItemTeam } from './getUsersMePredictions200ItemTeam';
+import type { GetUsersMePredictions200ItemTeam } from "./getUsersMePredictions200ItemTeam"
 
 export type GetUsersMePredictions200Item = {
-  matchId: string;
-  teamId: string;
-  predictedTeamAScore: number;
-  predictedTeamBScore: number;
-  isCorrect: boolean | null;
-  isExact: boolean | null;
-  points: number | null;
-  team: GetUsersMePredictions200ItemTeam;
-};
+  matchId: string
+  teamId: string
+  predictedTeamAScore: number
+  predictedTeamBScore: number
+  isCorrect: boolean | null
+  isExact: boolean | null
+  points: number | null
+  team: GetUsersMePredictions200ItemTeam
+}

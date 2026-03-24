@@ -7,6 +7,6 @@
  */
 
 export type GetRankingParams = {
-leagueId?: string;
-tournamentId?: string;
-};
+  leagueId?: string
+  tournamentId?: string
+}

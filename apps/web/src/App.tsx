@@ -3,6 +3,7 @@ import { ProtectedRoute } from "@/components/layout/ProtectedRoute"
 import { AppShell } from "@/components/layout/AppShell"
 import { HomePage } from "@/pages/HomePage"
 import { MatchDetailPage } from "@/pages/MatchDetailPage"
+import { ProfilePage } from "@/pages/ProfilePage"
 import { RankingPage } from "@/pages/RankingPage"
 import { SignInPage } from "@/pages/SignInPage"
 import { SignUpPage } from "@/pages/SignUpPage"
@@ -16,6 +17,7 @@ const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/matches/:id" element={<MatchDetailPage />} />
           <Route path="/ranking" element={<RankingPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Route>
       </Route>
       <Route path="/sign-in" element={<SignInPage />} />

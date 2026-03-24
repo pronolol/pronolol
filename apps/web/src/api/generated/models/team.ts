@@ -10,8 +10,8 @@
  * Team information
  */
 export interface Team {
-  id: string;
-  name: string;
-  tag: string;
-  logoUrl: string;
+  id: string
+  name: string
+  tag: string
+  logoUrl: string
 }

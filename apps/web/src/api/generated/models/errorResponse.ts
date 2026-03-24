@@ -10,6 +10,6 @@
  * Error response
  */
 export interface ErrorResponse {
-  error: string;
-  details?: unknown | null;
+  error: string
+  details?: unknown | null
 }

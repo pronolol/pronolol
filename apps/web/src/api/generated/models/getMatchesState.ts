@@ -6,11 +6,11 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type GetMatchesState = typeof GetMatchesState[keyof typeof GetMatchesState];
-
+export type GetMatchesState =
+  (typeof GetMatchesState)[keyof typeof GetMatchesState]
 
 export const GetMatchesState = {
-  upcoming: 'upcoming',
-  completed: 'completed',
-  inProgress: 'inProgress',
-} as const;
+  upcoming: "upcoming",
+  completed: "completed",
+  inProgress: "inProgress",
+} as const

@@ -5,14 +5,14 @@
  * API for managing esports match predictions and rankings
  * OpenAPI spec version: 1.0.0
  */
-import type { TournamentSummary } from './tournamentSummary';
+import type { TournamentSummary } from "./tournamentSummary"
 
 /**
  * League with its tournaments
  */
 export interface LeagueWithTournaments {
-  id: string;
-  name: string;
-  imageUrl: string;
-  tournaments: TournamentSummary[];
+  id: string
+  name: string
+  imageUrl: string
+  tournaments: TournamentSummary[]
 }

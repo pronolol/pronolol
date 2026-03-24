@@ -71,10 +71,14 @@ Always run `npm run lint:fix` before committing to auto-fix Prettier formatting 
 
 **Important:** The root ESLint config ignores `apps/web/**`. Each package must be linted from its own directory.
 
+**Important:** ESLint packages (`@eslint/js`, `eslint`, etc.) are declared in the **root** `package.json`, not in `apps/web/package.json`. They are resolved from the root `node_modules/`. If linting fails with `Cannot find package '@eslint/js'`, run `npm install --ignore-scripts` from the repo root first.
+
 ```sh
 # From apps/web/ — frontend
+# (run `npm install --ignore-scripts` at repo root first if @eslint/js is missing)
 cd apps/web
 npm run lint:fix   # auto-fix formatting + fixable lint errors
+git add -u         # restage any files reformatted by lint:fix
 npm run lint       # verify clean (0 warnings, 0 errors)
 
 # From repo root — everything except apps/web (api, scraper, packages)
@@ -88,8 +92,10 @@ Before every commit, run the following for any package you've touched:
 
 ```sh
 # Frontend (apps/web/)
+# Run `npm install --ignore-scripts` at repo root first if node_modules/@eslint is missing
 cd apps/web
 npm run lint:fix   # format + fix lint
+git add -u         # restage files reformatted by lint:fix so the commit includes fixed versions
 npm run lint       # verify 0 warnings
 npm test           # all Vitest unit tests must pass
 
@@ -102,3 +108,10 @@ npm test           # all Vitest tests must pass
 **Never commit with failing tests or lint errors.**
 
 The `e2e/` visual tests (`npm run test:e2e` in `apps/web/`) run only in CI via the `visual-diff` workflow — do not run them locally as part of the pre-commit checklist (they require a built app and Playwright browsers).
+
+### Visual Checks for New Frontend Screens
+
+Whenever a new frontend screen or page is added:
+
+1. **Add an e2e test** in `apps/web/e2e/visual.spec.ts` — mock all required API routes via `setupApiMocks` (or extend it), navigate to the new route, wait for a stable selector, and call `argosScreenshot(page, "<screen-name>")`.
+2. **Verify visually in ArgoCD** once the branch is deployed — confirm the screen renders correctly before marking the task complete. Include a note in the PR description indicating the screen was visually verified in Argo.
