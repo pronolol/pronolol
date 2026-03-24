@@ -4,5 +4,5 @@ build
 .expo
 *.lock
 package-lock.json
-generated
+**/generated/**
 *.config.js
