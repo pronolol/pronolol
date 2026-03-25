@@ -47,7 +47,12 @@
             "type": "string"
           }
         },
-        "required": ["id", "name", "tag", "logoUrl"],
+        "required": [
+          "id",
+          "name",
+          "tag",
+          "logoUrl"
+        ],
         "description": "Team information"
       },
       "MyPrediction": {
@@ -90,7 +95,11 @@
                 "type": "string"
               }
             },
-            "required": ["id", "tag", "logoUrl"]
+            "required": [
+              "id",
+              "tag",
+              "logoUrl"
+            ]
           }
         },
         "required": [
@@ -204,11 +213,19 @@
                 "type": "string"
               }
             },
-            "required": ["id", "name", "imageUrl"],
+            "required": [
+              "id",
+              "name",
+              "imageUrl"
+            ],
             "description": "League information"
           }
         },
-        "required": ["id", "name", "league"],
+        "required": [
+          "id",
+          "name",
+          "league"
+        ],
         "description": "Tournament information"
       },
       "ErrorResponse": {
@@ -221,7 +238,9 @@
             "nullable": true
           }
         },
-        "required": ["error"],
+        "required": [
+          "error"
+        ],
         "description": "Error response"
       },
       "UserPreferences": {
@@ -232,9 +251,15 @@
             "items": {
               "type": "string"
             }
+          },
+          "discordNotificationsEnabled": {
+            "type": "boolean"
           }
         },
-        "required": ["leagueIds"],
+        "required": [
+          "leagueIds",
+          "discordNotificationsEnabled"
+        ],
         "description": "User's saved filter preferences for the match feed"
       },
       "UpdateUserPreferences": {
@@ -245,6 +270,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "discordNotificationsEnabled": {
+            "type": "boolean"
           }
         },
         "description": "Body for updating user feed filter preferences"
@@ -268,7 +296,12 @@
             }
           }
         },
-        "required": ["id", "name", "imageUrl", "tournaments"],
+        "required": [
+          "id",
+          "name",
+          "imageUrl",
+          "tournaments"
+        ],
         "description": "League with its tournaments"
       },
       "TournamentSummary": {
@@ -281,7 +314,10 @@
             "type": "string"
           }
         },
-        "required": ["id", "name"],
+        "required": [
+          "id",
+          "name"
+        ],
         "description": "Tournament basic info"
       },
       "RankingResponse": {
@@ -305,10 +341,16 @@
                 "nullable": true
               }
             },
-            "required": ["leagueId", "tournamentId"]
+            "required": [
+              "leagueId",
+              "tournamentId"
+            ]
           }
         },
-        "required": ["rankings", "filters"],
+        "required": [
+          "rankings",
+          "filters"
+        ],
         "description": "Ranking response with user statistics"
       },
       "RankingEntry": {
@@ -385,7 +427,9 @@
                       "type": "string"
                     }
                   },
-                  "required": ["message"]
+                  "required": [
+                    "message"
+                  ]
                 }
               }
             }
@@ -397,7 +441,9 @@
       "get": {
         "description": "Retrieve a list of matches with optional filtering by tournament, state, and pagination",
         "summary": "Get all matches",
-        "tags": ["Matches"],
+        "tags": [
+          "Matches"
+        ],
         "parameters": [
           {
             "schema": {
@@ -423,7 +469,11 @@
           {
             "schema": {
               "type": "string",
-              "enum": ["upcoming", "completed", "inProgress"],
+              "enum": [
+                "upcoming",
+                "completed",
+                "inProgress"
+              ],
               "description": "Filter matches by state",
               "example": "upcoming"
             },
@@ -446,7 +496,11 @@
           {
             "schema": {
               "type": "string",
-              "enum": ["before", "after", "around"],
+              "enum": [
+                "before",
+                "after",
+                "around"
+              ],
               "description": "Direction to fetch matches relative to cursor. 'around' returns matches both before and after.",
               "example": "around"
             },
@@ -519,7 +573,9 @@
       "get": {
         "description": "Retrieve detailed information about a specific match including predictions",
         "summary": "Get match by ID",
-        "tags": ["Matches"],
+        "tags": [
+          "Matches"
+        ],
         "parameters": [
           {
             "schema": {
@@ -571,7 +627,9 @@
       "get": {
         "description": "Retrieve user rankings based on prediction performance. Can be filtered by league or tournament. Rankings are sorted by total points (descending), then by correctness percentage.",
         "summary": "Get user rankings",
-        "tags": ["Rankings"],
+        "tags": [
+          "Rankings"
+        ],
         "parameters": [
           {
             "schema": {
@@ -628,7 +686,9 @@
       "get": {
         "description": "Retrieve all predictions made by the authenticated user",
         "summary": "Get my predictions",
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "responses": {
           "200": {
             "description": "List of the current user's predictions",
@@ -670,7 +730,9 @@
       "get": {
         "description": "Retrieve the authenticated user's saved match feed filter preferences",
         "summary": "Get my preferences",
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "responses": {
           "200": {
             "description": "User's filter preferences",
@@ -707,7 +769,9 @@
       "put": {
         "description": "Save the authenticated user's match feed filter preferences",
         "summary": "Update my preferences",
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -765,7 +829,9 @@
       "get": {
         "description": "Retrieve all leagues with their tournaments",
         "summary": "Get all leagues",
-        "tags": ["Leagues"],
+        "tags": [
+          "Leagues"
+        ],
         "responses": {
           "200": {
             "description": "List of leagues with tournaments",

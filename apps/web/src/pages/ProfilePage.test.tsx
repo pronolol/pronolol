@@ -100,7 +100,7 @@ describe("ProfilePage", () => {
     await user.click(screen.getByText("LEC"))
     await user.click(screen.getByRole("button", { name: /save/i }))
     await waitFor(() => {
-      expect(capturedBody).toEqual({ leagueIds: ["league-1"] })
+      expect(capturedBody).toMatchObject({ leagueIds: ["league-1"] })
     })
   })
 

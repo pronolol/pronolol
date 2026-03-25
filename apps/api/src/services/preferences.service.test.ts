@@ -21,24 +21,34 @@ describe("getUserPreferences", () => {
     mockFindUnique.mockReset()
   })
 
-  it("returns empty leagueIds when no preferences row exists", async () => {
+  it("returns defaults when no preferences row exists", async () => {
     mockFindUnique.mockResolvedValueOnce(null)
     const result = await getUserPreferences("user-1")
-    expect(result).toEqual({ leagueIds: [] })
+    expect(result).toEqual({
+      leagueIds: [],
+      discordNotificationsEnabled: true,
+    })
   })
 
-  it("returns the stored leagueIds", async () => {
+  it("returns stored leagueIds and discordNotificationsEnabled", async () => {
     mockFindUnique.mockResolvedValueOnce({
-      leagueIds: ["league-abc", "league-xyz"],
+      leagueIds: ["league-abc"],
+      discordNotificationsEnabled: false,
     })
     const result = await getUserPreferences("user-1")
-    expect(result).toEqual({ leagueIds: ["league-abc", "league-xyz"] })
+    expect(result).toEqual({
+      leagueIds: ["league-abc"],
+      discordNotificationsEnabled: false,
+    })
   })
 
-  it("returns empty array when leagueIds is stored as empty", async () => {
-    mockFindUnique.mockResolvedValueOnce({ leagueIds: [] })
+  it("returns empty leagueIds when stored as empty", async () => {
+    mockFindUnique.mockResolvedValueOnce({
+      leagueIds: [],
+      discordNotificationsEnabled: true,
+    })
     const result = await getUserPreferences("user-1")
-    expect(result).toEqual({ leagueIds: [] })
+    expect(result).toEqual({ leagueIds: [], discordNotificationsEnabled: true })
   })
 })
 
@@ -47,12 +57,18 @@ describe("upsertUserPreferences", () => {
     mockUpsert.mockReset()
   })
 
-  it("creates new preferences when none exist", async () => {
-    mockUpsert.mockResolvedValueOnce({ leagueIds: ["league-1", "league-2"] })
+  it("creates new preferences with provided leagueIds", async () => {
+    mockUpsert.mockResolvedValueOnce({
+      leagueIds: ["league-1", "league-2"],
+      discordNotificationsEnabled: true,
+    })
     const result = await upsertUserPreferences("user-1", {
       leagueIds: ["league-1", "league-2"],
     })
-    expect(result).toEqual({ leagueIds: ["league-1", "league-2"] })
+    expect(result).toEqual({
+      leagueIds: ["league-1", "league-2"],
+      discordNotificationsEnabled: true,
+    })
     expect(mockUpsert).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { userId: "user-1" },
@@ -65,7 +81,10 @@ describe("upsertUserPreferences", () => {
   })
 
   it("updates leagueIds when provided", async () => {
-    mockUpsert.mockResolvedValueOnce({ leagueIds: ["league-2"] })
+    mockUpsert.mockResolvedValueOnce({
+      leagueIds: ["league-2"],
+      discordNotificationsEnabled: true,
+    })
     await upsertUserPreferences("user-1", { leagueIds: ["league-2"] })
     expect(mockUpsert).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -75,17 +94,51 @@ describe("upsertUserPreferences", () => {
   })
 
   it("does not update leagueIds when not provided", async () => {
-    mockUpsert.mockResolvedValueOnce({ leagueIds: [] })
+    mockUpsert.mockResolvedValueOnce({
+      leagueIds: [],
+      discordNotificationsEnabled: true,
+    })
     await upsertUserPreferences("user-1", {})
     const updateArg = mockUpsert.mock.calls[0][0].update
     expect(updateArg).not.toHaveProperty("leagueIds")
   })
 
   it("stores empty array when leagueIds is set to []", async () => {
-    mockUpsert.mockResolvedValueOnce({ leagueIds: [] })
+    mockUpsert.mockResolvedValueOnce({
+      leagueIds: [],
+      discordNotificationsEnabled: true,
+    })
     const result = await upsertUserPreferences("user-1", { leagueIds: [] })
-    expect(result).toEqual({ leagueIds: [] })
+    expect(result).toEqual({ leagueIds: [], discordNotificationsEnabled: true })
     const updateArg = mockUpsert.mock.calls[0][0].update
     expect(updateArg).toMatchObject({ leagueIds: [] })
+  })
+
+  it("updates discordNotificationsEnabled when provided", async () => {
+    mockUpsert.mockResolvedValueOnce({
+      leagueIds: [],
+      discordNotificationsEnabled: false,
+    })
+    const result = await upsertUserPreferences("user-1", {
+      discordNotificationsEnabled: false,
+    })
+    expect(result.discordNotificationsEnabled).toBe(false)
+    expect(mockUpsert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        update: expect.objectContaining({
+          discordNotificationsEnabled: false,
+        }),
+      })
+    )
+  })
+
+  it("does not update discordNotificationsEnabled when not provided", async () => {
+    mockUpsert.mockResolvedValueOnce({
+      leagueIds: [],
+      discordNotificationsEnabled: true,
+    })
+    await upsertUserPreferences("user-1", {})
+    const updateArg = mockUpsert.mock.calls[0][0].update
+    expect(updateArg).not.toHaveProperty("discordNotificationsEnabled")
   })
 })

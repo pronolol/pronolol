@@ -37,11 +37,16 @@ export const ProfilePage = () => {
   const updatePreferences = usePutUsersMePreferences()
 
   const [pendingLeagueIds, setPendingLeagueIds] = useState<string[]>([])
+  const [pendingDiscordNotifications, setPendingDiscordNotifications] =
+    useState(true)
   const [saveError, setSaveError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (preferencesData?.leagueIds) {
+    if (preferencesData) {
       setPendingLeagueIds(preferencesData.leagueIds)
+      setPendingDiscordNotifications(
+        preferencesData.discordNotificationsEnabled
+      )
     }
   }, [preferencesData])
 
@@ -53,7 +58,9 @@ export const ProfilePage = () => {
 
   const isDirty =
     JSON.stringify([...pendingLeagueIds].sort()) !==
-    JSON.stringify([...(preferencesData?.leagueIds ?? [])].sort())
+      JSON.stringify([...(preferencesData?.leagueIds ?? [])].sort()) ||
+    pendingDiscordNotifications !==
+      (preferencesData?.discordNotificationsEnabled ?? true)
 
   const handleLeagueToggle = (leagueId: string) => {
     setPendingLeagueIds((prev) =>
@@ -67,7 +74,10 @@ export const ProfilePage = () => {
     setSaveError(null)
     try {
       await updatePreferences.mutateAsync({
-        data: { leagueIds: pendingLeagueIds },
+        data: {
+          leagueIds: pendingLeagueIds,
+          discordNotificationsEnabled: pendingDiscordNotifications,
+        },
       })
       queryClient.invalidateQueries({
         queryKey: getGetUsersMePreferencesQueryKey(),
@@ -128,6 +138,44 @@ export const ProfilePage = () => {
                 value={myStats ? myStats.exactPredictions : "—"}
               />
             </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Notifications */}
+      <Card>
+        <CardHeader className="flex-row items-center justify-between">
+          <CardTitle>Notifications</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {prefsLoading ? (
+            <Skeleton className="h-12 rounded-xl" />
+          ) : (
+            <button
+              onClick={() => setPendingDiscordNotifications((prev) => !prev)}
+              className={`flex items-center justify-between w-full rounded-xl px-3 py-2.5 border transition-colors text-left ${
+                pendingDiscordNotifications
+                  ? "border-primary bg-primary-light"
+                  : "border-border bg-background-secondary hover:border-primary/40"
+              }`}
+            >
+              <span className="text-sm font-medium text-text-primary">
+                Discord match reminders
+              </span>
+              <div
+                className={`w-10 h-6 rounded-full transition-colors relative ${
+                  pendingDiscordNotifications ? "bg-primary" : "bg-border"
+                }`}
+              >
+                <div
+                  className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-transform ${
+                    pendingDiscordNotifications
+                      ? "translate-x-5"
+                      : "translate-x-1"
+                  }`}
+                />
+              </div>
+            </button>
           )}
         </CardContent>
       </Card>

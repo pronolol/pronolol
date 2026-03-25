@@ -1,8 +1,5 @@
 import { useState, useEffect, useRef } from "react"
-import {
-  useGetUsersMePreferences,
-  usePutUsersMePreferences,
-} from "@/api/generated/users/users"
+import { useGetUsersMePreferences } from "@/api/generated/users/users"
 import { useGetLeagues } from "@/api/generated/leagues/leagues"
 import type { LeagueWithTournaments } from "@/api/generated/models"
 
@@ -13,7 +10,6 @@ export const useMatchFilters = () => {
   const preferencesLoaded = useRef(false)
 
   const { data: preferences } = useGetUsersMePreferences()
-  const { mutate: savePreferences } = usePutUsersMePreferences()
   const { data: leagues = [] } = useGetLeagues()
 
   // Restore preferences from server on first load
@@ -25,16 +21,15 @@ export const useMatchFilters = () => {
   }, [preferences])
 
   const toggleLeague = (leagueId: string) => {
-    const next = selectedLeagueIds.includes(leagueId)
-      ? selectedLeagueIds.filter((id) => id !== leagueId)
-      : [...selectedLeagueIds, leagueId]
-    setSelectedLeagueIds(next)
-    savePreferences({ data: { leagueIds: next } })
+    setSelectedLeagueIds((prev) =>
+      prev.includes(leagueId)
+        ? prev.filter((id) => id !== leagueId)
+        : [...prev, leagueId]
+    )
   }
 
   const clearLeagues = () => {
     setSelectedLeagueIds([])
-    savePreferences({ data: { leagueIds: [] } })
   }
 
   return {

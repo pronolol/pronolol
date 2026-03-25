@@ -124,12 +124,21 @@ export const handlers = [
   }),
 
   http.get(`${API_URL}/users/me/preferences`, () => {
-    return HttpResponse.json({ leagueIds: [] })
+    return HttpResponse.json({
+      leagueIds: [],
+      discordNotificationsEnabled: true,
+    })
   }),
 
   http.put(`${API_URL}/users/me/preferences`, async ({ request }) => {
-    const body = (await request.json()) as { leagueIds?: string[] }
-    return HttpResponse.json({ leagueIds: body.leagueIds ?? [] })
+    const body = (await request.json()) as {
+      leagueIds?: string[]
+      discordNotificationsEnabled?: boolean
+    }
+    return HttpResponse.json({
+      leagueIds: body.leagueIds ?? [],
+      discordNotificationsEnabled: body.discordNotificationsEnabled ?? true,
+    })
   }),
 
   http.get(`${API_URL}/ranking`, () => {

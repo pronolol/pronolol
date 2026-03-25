@@ -11,4 +11,5 @@
  */
 export interface UserPreferences {
   leagueIds: string[]
+  discordNotificationsEnabled: boolean
 }

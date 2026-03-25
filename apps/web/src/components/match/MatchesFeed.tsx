@@ -1,5 +1,5 @@
 import { useMemo, useEffect, useRef } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import { useMatchesFeed } from "@/hooks/useMatchesFeed"
 import { useMatchFilters } from "@/hooks/useMatchFilters"
 import {
@@ -63,6 +63,10 @@ const findTodayIndex = (items: ListItem[]): number => {
 
 export const MatchesFeed = () => {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const shouldOpenWizard = searchParams.get("wizard") === "true"
+  const wizardAutoOpened = useRef(false)
+
   const { leagues, selectedLeagueIds, toggleLeague, clearLeagues } =
     useMatchFilters()
 
@@ -106,6 +110,19 @@ export const MatchesFeed = () => {
   )
 
   const wizard = usePredictionWizard(allMatches)
+
+  // Auto-open wizard when ?wizard=true is in the URL
+  useEffect(() => {
+    if (
+      shouldOpenWizard &&
+      !isLoading &&
+      allMatches.length > 0 &&
+      !wizardAutoOpened.current
+    ) {
+      wizardAutoOpened.current = true
+      wizard.open()
+    }
+  }, [shouldOpenWizard, isLoading, allMatches, wizard])
 
   // Scroll to today on initial load
   const todayRef = useRef<HTMLDivElement | null>(null)
