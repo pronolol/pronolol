@@ -13,6 +13,7 @@
 #   - migrator: Runs Prisma migrations (one-shot)
 #   - api:      Express API server
 #   - scraper:  Playwright web scraper
+#   - notifier: Discord match reminder bot (cron)
 
 services:
   # ===============================
@@ -109,6 +110,27 @@ services:
       - pronolol-network
     # Scraper runs once and exits
     restart: "no"
+
+  # ===============================
+  # Discord Match Reminder Bot
+  # ===============================
+  notifier:
+    image: ${REGISTRY}/pronolol-notifier:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: apps/notifier/Dockerfile
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-user}:${POSTGRES_PASSWORD:-password}@db:5432/${POSTGRES_DB:-pronolol}?sslmode=disable
+      DISCORD_BOT_TOKEN: ${DISCORD_BOT_TOKEN}
+      APP_URL: ${APP_URL:-https://pronolol.fr}
+      NOTIFICATION_HOUR: ${NOTIFICATION_HOUR:-9}
+      UPTIME_KUMA_PUSH_URL: ${NOTIFIER_UPTIME_KUMA_PUSH_URL:-}
+    depends_on:
+      migrator:
+        condition: service_completed_successfully
+    networks:
+      - pronolol-network
 
   # ===============================
   # Uptime Kuma (Self-hosted monitoring)

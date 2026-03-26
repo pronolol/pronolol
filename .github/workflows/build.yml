@@ -6,6 +6,7 @@ on:
     paths:
       - "apps/api/**"
       - "apps/scraper/**"
+      - "apps/notifier/**"
       - "packages/**"
       - "compose.yml"
       - "compose.prod.yml"
@@ -33,9 +34,9 @@ jobs:
 
       - name: Build and push images
         run: |
-          docker compose -f compose.yml -f compose.prod.yml build api scraper
+          docker compose -f compose.yml -f compose.prod.yml build api scraper notifier
           docker compose build migrator
-          docker compose push api scraper migrator
+          docker compose push api scraper notifier migrator
         env:
           REGISTRY: ${{ env.REGISTRY }}
           NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}

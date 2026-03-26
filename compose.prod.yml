@@ -22,3 +22,8 @@ services:
     build:
       secrets:
         - npm_token
+
+  notifier:
+    build:
+      secrets:
+        - npm_token

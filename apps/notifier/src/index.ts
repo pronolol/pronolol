@@ -17,6 +17,13 @@ const main = async () => {
     try {
       await runNotifications(client)
       console.log("Notification job complete")
+      if (config.uptimeKumaPushUrl) {
+        try {
+          await fetch(config.uptimeKumaPushUrl)
+        } catch {
+          console.error("⚠️ Failed to ping Uptime Kuma")
+        }
+      }
     } catch (err) {
       console.error("Notification job failed:", err)
     }

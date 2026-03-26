@@ -10,4 +10,5 @@ export const config = {
   discordBotToken: required("DISCORD_BOT_TOKEN"),
   appUrl: process.env["APP_URL"] ?? "https://pronolol.fr",
   notificationHour: Number(process.env["NOTIFICATION_HOUR"] ?? "9"),
+  uptimeKumaPushUrl: process.env["UPTIME_KUMA_PUSH_URL"] ?? null,
 }
