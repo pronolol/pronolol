@@ -5,6 +5,8 @@ import { ParserService } from "./services/parser"
 import { DatabaseService } from "./services/database"
 import { config } from "./config/scraper"
 import { prisma } from "@pronolol/database"
+import cron from "node-cron"
+
 const args = process.argv.slice(2)
 const flags = {
   all: args.includes("--all"),
@@ -49,20 +51,20 @@ Examples:
 
 Database Environment Variables:
   PG_HOST, PG_USER, PG_DATABASE, PG_PASSWORD, PG_PORT
+
+Scheduling Environment Variables:
+  SCRAPER_MODE=once        Run once and exit (default)
+  SCRAPER_MODE=schedule    Run on a schedule
+  SCRAPER_SCHEDULE="0 * * * *"  Cron expression for scheduling (e.g., every hour)
   `)
 }
 
-const main = async () => {
-  const fetcher = new FetcherService()
-  const parser = new ParserService()
-  const dbService = new DatabaseService()
-
+const executeScrape = async (
+  fetcher: FetcherService,
+  parser: ParserService,
+  dbService: DatabaseService
+) => {
   try {
-    if (flags.help) {
-      printHelp()
-      process.exit(0)
-    }
-
     const rawData = await fetcher.fetchData(leaguesToScrape)
     const processedData = parser.parse(rawData)
     console.error("✅ Data parsing complete.")
@@ -102,7 +104,7 @@ const main = async () => {
       result = processedData
     }
 
-    // 5. Print result to stdout
+    // Print result to stdout
     const output = flags.pretty
       ? JSON.stringify(result, null, 2)
       : JSON.stringify(result)
@@ -123,10 +125,65 @@ const main = async () => {
     if (error instanceof Error) {
       console.error("Stack:", error.stack)
     }
-    process.exit(1)
+  }
+}
+
+const main = async () => {
+  const fetcher = new FetcherService()
+  const parser = new ParserService()
+  const dbService = new DatabaseService()
+
+  try {
+    if (flags.help) {
+      printHelp()
+      process.exit(0)
+    }
+
+    const mode = process.env.SCRAPER_MODE || "once"
+    const schedule = process.env.SCRAPER_SCHEDULE
+
+    if (mode === "schedule") {
+      if (!schedule) {
+        console.error(
+          "❌ SCRAPER_SCHEDULE environment variable is required when SCRAPER_MODE=schedule"
+        )
+        console.error('   Example: SCRAPER_SCHEDULE="0 * * * *" (every hour)')
+        process.exit(1)
+      }
+
+      // Validate the cron expression first
+      if (!cron.validate(schedule)) {
+        console.error(`❌ Invalid cron expression: ${schedule}`)
+        process.exit(1)
+      }
+
+      console.error(`🕐 Scheduler started with cron expression: ${schedule}`)
+
+      // Run immediately on start
+      console.error("🚀 Running initial scrape...")
+      await executeScrape(fetcher, parser, dbService)
+
+      // Schedule recurring jobs
+      cron.schedule(schedule, async () => {
+        console.error(
+          `⏰ Scheduled scrape triggered at ${new Date().toISOString()}`
+        )
+        await executeScrape(fetcher, parser, dbService)
+      })
+
+      console.error("✅ Scheduler is running. Press Ctrl+C to stop.")
+
+      // Keep the process alive
+      // The cron jobs will run in the background
+      await new Promise(() => {})
+    } else {
+      // Default: run once
+      await executeScrape(fetcher, parser, dbService)
+    }
   } finally {
     await fetcher.close()
     await prisma.$disconnect()
+    process.exit(0)
   }
 }
 
