@@ -1,6 +1,7 @@
 import "dotenv/config"
 import { prisma } from "@pronolol/database"
 import {
+  TARGET_DISCORD_LEAGUE_IDS,
   TARGET_DISCORD_LEAGUE_NAMES,
   TARGET_DISCORD_LEAGUE_SLUGS,
 } from "../constants/discord.constants"
@@ -62,6 +63,7 @@ export const runDailyDiscordNotification = async (): Promise<{
       tournament: {
         league: {
           OR: [
+            { id: { in: TARGET_DISCORD_LEAGUE_IDS } },
             { id: { in: TARGET_DISCORD_LEAGUE_SLUGS, mode: "insensitive" } },
             { name: { in: TARGET_DISCORD_LEAGUE_NAMES, mode: "insensitive" } },
           ],
