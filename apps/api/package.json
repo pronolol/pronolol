@@ -7,7 +7,7 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsup",
     "start": "node dist/index.js",
-    "notify:discord": "tsx src/scripts/send-discord-notification.ts",
+    "notify:discord": "node dist/scripts/send-discord-notification.js || tsx src/scripts/send-discord-notification.ts",
     "test": "vitest run",
     "generate:openapi": "tsx src/generate-openapi.ts"
   },
