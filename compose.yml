@@ -79,6 +79,8 @@ services:
       BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:-change-me-in-production}
       DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID:-}
       DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET:-}
+      DISCORD_WEBHOOK_URL: ${DISCORD_WEBHOOK_URL:-}
+      FRONTEND_URL: ${FRONTEND_URL:-https://pronolol.fr}
     depends_on:
       migrator:
         condition: service_completed_successfully
