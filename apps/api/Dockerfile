@@ -37,14 +37,8 @@ RUN apt-get update -y && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
 ENV NODE_ENV=production
 
-COPY apps/api/package.json ./
-
-RUN --mount=type=secret,id=npm_token \
-    --mount=type=cache,target=/root/.npm \
-    printf "@pronolol:registry=https://npm.pkg.github.com\n//npm.pkg.github.com/:_authToken=%s\n" "$(cat /run/secrets/npm_token)" > .npmrc \
-    && npm install --omit=dev \
-    && rm .npmrc
-
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/packages/database ./packages/database
 COPY --from=builder /app/apps/api/dist ./dist
 
 EXPOSE 3000
