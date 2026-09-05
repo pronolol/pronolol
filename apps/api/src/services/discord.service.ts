@@ -28,10 +28,11 @@ export interface DiscordEmbed {
 }
 
 export interface DiscordComponent {
-  type: number // 1 for Action Row, 2 for Button
+  type: 1 | 2
   style?: number // 5 for Link button
   label?: string
   url?: string
+  components?: DiscordComponent[]
 }
 
 export interface DiscordWebhookPayload {
@@ -41,18 +42,12 @@ export interface DiscordWebhookPayload {
 }
 
 const formatMatchTime = (date: Date): string => {
-  const formattedTime = date.toLocaleTimeString("fr-FR", {
-    timeZone: "Europe/Paris",
-    hour: "2-digit",
-    minute: "2-digit",
-  })
   const unixTimestamp = Math.floor(date.getTime() / 1000)
-  return `${formattedTime} (Paris) / <t:${unixTimestamp}:t>`
+  return `<t:${unixTimestamp}:t>`
 }
 
 export const buildDiscordMatchPayload = (
-  matches: MatchForDiscordNotification[],
-  predictionUrl: string
+  matches: MatchForDiscordNotification[]
 ): DiscordWebhookPayload => {
   const dateStr = new Date().toLocaleDateString("fr-FR", {
     timeZone: "Europe/Paris",
@@ -64,32 +59,31 @@ export const buildDiscordMatchPayload = (
 
   const capitalizedDate = dateStr.charAt(0).toUpperCase() + dateStr.slice(1)
 
-  const embeds: DiscordEmbed[] = matches.map((match) => {
-    const timeText = formatMatchTime(match.matchDate)
-    const vsTitle = `${match.teamA.name} (${match.teamA.tag}) vs ${match.teamB.name} (${match.teamB.tag})`
+  const matchesByTournament = matches.reduce((groups, match) => {
+    const key = `${match.tournament.league.name}\u0000${match.tournament.name}`
+    const tournamentMatches = groups.get(key) ?? []
+    tournamentMatches.push(match)
+    groups.set(key, tournamentMatches)
+    return groups
+  }, new Map<string, MatchForDiscordNotification[]>())
 
-    return {
-      title: vsTitle,
-      color: 0x5865f2, // Discord Blurple
-      fields: [
-        {
-          name: "League / Tournament",
-          value: `${match.tournament.league.name} - ${match.tournament.name}`,
-          inline: true,
-        },
-        {
-          name: "Format",
-          value: `BO${match.bestOf}`,
-          inline: true,
-        },
-        {
-          name: "Horaire",
-          value: timeText,
-          inline: false,
-        },
-      ],
+  const embeds: DiscordEmbed[] = Array.from(
+    matchesByTournament.values(),
+    (tournamentMatches) => {
+      const { league, name } = tournamentMatches[0]!.tournament
+
+      return {
+        title: `${league.name} — ${name}`,
+        description: tournamentMatches
+          .map(
+            (match) =>
+              `${formatMatchTime(match.matchDate)} · ${match.teamA.name} (${match.teamA.tag}) vs ${match.teamB.name} (${match.teamB.tag}) · BO${match.bestOf}`
+          )
+          .join("\n"),
+        color: 0x5865f2,
+      }
     }
-  })
+  )
 
   const components: DiscordComponent[] = [
     {
@@ -98,15 +92,15 @@ export const buildDiscordMatchPayload = (
         {
           type: 2, // Button
           style: 5, // Link style button
-          label: "Faire mes pronostics 🎯",
-          url: predictionUrl,
+          label: "Faire mes pronostics",
+          url: "https://pronolol.fr",
         },
       ],
-    } as unknown as DiscordComponent,
+    },
   ]
 
   return {
-    content: `⚔️ **Matchs du jour — ${capitalizedDate}**\nVoici les matchs programmés aujourd'hui ! N'oubliez pas d'enregistrer vos pronostics avant le début des rencontres.`,
+    content: `**Matchs du jour — ${capitalizedDate}**\nVoici les matchs programmés aujourd'hui. N'oubliez pas d'enregistrer vos pronostics avant le début des rencontres.`,
     embeds,
     components,
   }
@@ -114,21 +108,18 @@ export const buildDiscordMatchPayload = (
 
 export const sendDailyMatchesWebhook = async (
   matches: MatchForDiscordNotification[],
-  webhookUrl: string,
-  frontendUrl: string
+  webhookUrl: string
 ): Promise<void> => {
   if (!matches || matches.length === 0) {
     return
   }
 
-  const predictionUrl = frontendUrl.endsWith("/")
-    ? `${frontendUrl}matches`
-    : `${frontendUrl}/matches`
-
-  const payload = buildDiscordMatchPayload(matches, predictionUrl)
+  const payload = buildDiscordMatchPayload(matches)
+  const webhookEndpoint = new globalThis.URL(webhookUrl)
+  webhookEndpoint.searchParams.set("with_components", "true")
 
   try {
-    const response = await fetch(webhookUrl, {
+    const response = await fetch(webhookEndpoint.toString(), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

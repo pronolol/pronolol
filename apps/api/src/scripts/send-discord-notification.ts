@@ -34,8 +34,6 @@ export const runDailyDiscordNotification = async (): Promise<{
   sent: boolean
 }> => {
   const webhookUrl = process.env.DISCORD_WEBHOOK_URL
-  const frontendUrl = process.env.FRONTEND_URL || "https://pronolol.fr"
-
   if (!webhookUrl) {
     console.error("DISCORD_WEBHOOK_URL is not set in environment. Skipping.")
     return { matchCount: 0, sent: false }
@@ -93,7 +91,7 @@ export const runDailyDiscordNotification = async (): Promise<{
     return { matchCount: 0, sent: false }
   }
 
-  await sendDailyMatchesWebhook(matches, webhookUrl, frontendUrl)
+  await sendDailyMatchesWebhook(matches, webhookUrl)
   console.log(
     `Successfully sent Discord match notification for ${matches.length} matches!`
   )

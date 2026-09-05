@@ -67,8 +67,7 @@ describe("send-discord-notification script", () => {
     expect(prisma.match.findMany).toHaveBeenCalledTimes(1)
     expect(sendDailyMatchesWebhook).toHaveBeenCalledWith(
       mockMatches,
-      "https://discord.com/api/webhooks/test",
-      "https://pronolol.fr"
+      "https://discord.com/api/webhooks/test"
     )
   })
 
