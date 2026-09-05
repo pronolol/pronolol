@@ -23,20 +23,20 @@ describe("discord.service", () => {
 
   describe("buildDiscordMatchPayload", () => {
     it("formats match details into a Discord webhook payload with embed and button link", () => {
-      const payload = buildDiscordMatchPayload(
-        mockMatches,
-        "https://pronolol.app/matches"
-      )
+      const payload = buildDiscordMatchPayload(mockMatches)
 
       expect(payload.content).toContain("Matchs du jour")
       expect(payload.embeds).toHaveLength(1)
-      expect(payload.embeds?.[0].title).toBe("Fnatic (FNC) vs G2 Esports (G2)")
-      expect(payload.embeds?.[0].fields).toContainEqual({
-        name: "Format",
-        value: "BO3",
-        inline: true,
-      })
+      const embed = payload.embeds![0]!
+      expect(embed.title).toBe("LEC — LEC Summer 2026")
+      expect(embed.description).toBe(
+        "<t:1788019200:t> · Fnatic (FNC) vs G2 Esports (G2) · BO3"
+      )
       expect(payload.components).toHaveLength(1)
+      expect(payload.components![0]!.components![0]!).toMatchObject({
+        label: "Faire mes pronostics",
+        url: "https://pronolol.fr",
+      })
     })
   })
 
@@ -52,8 +52,7 @@ describe("discord.service", () => {
     it("does nothing if matches array is empty", async () => {
       await sendDailyMatchesWebhook(
         [],
-        "https://discord.com/api/webhooks/123/abc",
-        "https://pronolol.app"
+        "https://discord.com/api/webhooks/123/abc"
       )
       expect(fetch).not.toHaveBeenCalled()
     })
@@ -66,12 +65,11 @@ describe("discord.service", () => {
 
       await sendDailyMatchesWebhook(
         mockMatches,
-        "https://discord.com/api/webhooks/123/abc",
-        "https://pronolol.app"
+        "https://discord.com/api/webhooks/123/abc"
       )
 
       expect(mockFetch).toHaveBeenCalledWith(
-        "https://discord.com/api/webhooks/123/abc",
+        "https://discord.com/api/webhooks/123/abc?with_components=true",
         expect.objectContaining({
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -91,8 +89,7 @@ describe("discord.service", () => {
       await expect(
         sendDailyMatchesWebhook(
           mockMatches,
-          "https://discord.com/api/webhooks/123/abc",
-          "https://pronolol.app"
+          "https://discord.com/api/webhooks/123/abc"
         )
       ).rejects.toThrow("Failed to send Discord webhook: 400 Bad Request")
     })
