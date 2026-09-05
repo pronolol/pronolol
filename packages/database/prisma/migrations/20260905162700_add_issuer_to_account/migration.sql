@@ -1,0 +1,1 @@
+-- AlterTable\nALTER TABLE "account" ADD COLUMN "issuer" TEXT;
