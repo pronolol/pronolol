@@ -14,7 +14,10 @@ vi.mock("../services/discord.service", () => ({
 
 import { prisma } from "@pronolol/database"
 import { sendDailyMatchesWebhook } from "../services/discord.service"
-import { runDailyDiscordNotification } from "./send-discord-notification"
+import {
+  getRolling24HourBounds,
+  runDailyDiscordNotification,
+} from "./send-discord-notification"
 
 describe("send-discord-notification script", () => {
   const originalEnv = process.env
@@ -29,6 +32,17 @@ describe("send-discord-notification script", () => {
 
   afterEach(() => {
     process.env = originalEnv
+  })
+
+  describe("getRolling24HourBounds", () => {
+    it("returns start date and an end date exactly 24 hours later", () => {
+      const fixedDate = new Date("2026-10-15T04:00:00.000Z")
+      const { start, end } = getRolling24HourBounds(fixedDate)
+
+      expect(start.toISOString()).toBe("2026-10-15T04:00:00.000Z")
+      expect(end.toISOString()).toBe("2026-10-16T04:00:00.000Z")
+      expect(end.getTime() - start.getTime()).toBe(24 * 60 * 60 * 1000)
+    })
   })
 
   it("returns early without sending when DISCORD_WEBHOOK_URL is not set", async () => {
@@ -64,7 +78,17 @@ describe("send-discord-notification script", () => {
     const result = await runDailyDiscordNotification()
 
     expect(result).toEqual({ matchCount: 1, sent: true })
-    expect(prisma.match.findMany).toHaveBeenCalledTimes(1)
+    expect(prisma.match.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          matchDate: {
+            gte: expect.any(Date),
+            lte: expect.any(Date),
+          },
+          state: { not: "completed" },
+        }),
+      })
+    )
     expect(sendDailyMatchesWebhook).toHaveBeenCalledWith(
       mockMatches,
       "https://discord.com/api/webhooks/test"

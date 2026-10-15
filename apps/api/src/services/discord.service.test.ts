@@ -30,7 +30,7 @@ describe("discord.service", () => {
       const embed = payload.embeds![0]!
       expect(embed.title).toBe("LEC — LEC Summer 2026")
       expect(embed.description).toBe(
-        "<t:1788019200:t> · Fnatic (FNC) vs G2 Esports (G2) · BO3"
+        "<t:1788019200:t> (<t:1788019200:R>) · Fnatic (FNC) vs G2 Esports (G2) · BO3"
       )
       expect(payload.components).toHaveLength(1)
       expect(payload.components![0]!.components![0]!).toMatchObject({

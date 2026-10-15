@@ -43,7 +43,7 @@ export interface DiscordWebhookPayload {
 
 const formatMatchTime = (date: Date): string => {
   const unixTimestamp = Math.floor(date.getTime() / 1000)
-  return `<t:${unixTimestamp}:t>`
+  return `<t:${unixTimestamp}:t> (<t:${unixTimestamp}:R>)`
 }
 
 export const buildDiscordMatchPayload = (
@@ -100,7 +100,7 @@ export const buildDiscordMatchPayload = (
   ]
 
   return {
-    content: `**Matchs du jour — ${capitalizedDate}**\nVoici les matchs programmés aujourd'hui. N'oubliez pas d'enregistrer vos pronostics avant le début des rencontres.`,
+    content: `**Matchs du jour — ${capitalizedDate}**\nVoici les matchs programmés pour les prochaines 24h. N'oubliez pas d'enregistrer vos pronostics avant le début des rencontres.`,
     embeds,
     components,
   }

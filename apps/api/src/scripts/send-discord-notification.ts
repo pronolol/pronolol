@@ -7,26 +7,10 @@ import {
 } from "../constants/discord.constants"
 import { sendDailyMatchesWebhook } from "../services/discord.service"
 
-export const getParisDayBounds = (date: Date = new Date()) => {
-  // Format date in Paris timezone YYYY-MM-DD
-  const formatter = new Intl.DateTimeFormat("en-CA", {
-    timeZone: "Europe/Paris",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  })
-  const parts = formatter.formatToParts(date)
-  const year = parts.find((p) => p.type === "year")?.value
-  const month = parts.find((p) => p.type === "month")?.value
-  const day = parts.find((p) => p.type === "day")?.value
-
-  // We construct boundary ISO string representation for start and end of Paris calendar day
-  // Paris winter is UTC+1, summer is UTC+2.
-  // Using Date parsing with timezone offset offset calculation:
-  const startOfDay = new Date(`${year}-${month}-${day}T00:00:00.000+02:00`)
-  const endOfDay = new Date(`${year}-${month}-${day}T23:59:59.999+02:00`)
-
-  return { startOfDay, endOfDay }
+export const getRolling24HourBounds = (now: Date = new Date()) => {
+  const start = new Date(now.getTime())
+  const end = new Date(now.getTime() + 24 * 60 * 60 * 1000)
+  return { start, end }
 }
 
 export const runDailyDiscordNotification = async (): Promise<{
@@ -39,25 +23,20 @@ export const runDailyDiscordNotification = async (): Promise<{
     return { matchCount: 0, sent: false }
   }
 
-  // Calculate Paris day start and end bounds
   const now = new Date()
-  // Generate date range covering today in Paris time
-  const parisTodayStr = now.toLocaleDateString("en-CA", {
-    timeZone: "Europe/Paris",
-  })
-  const startOfDay = new Date(`${parisTodayStr}T00:00:00+02:00`)
-  const endOfDay = new Date(`${parisTodayStr}T23:59:59+02:00`)
+  const { start: startOfWindow, end: endOfWindow } = getRolling24HourBounds(now)
 
   console.log(
-    `Querying matches between ${startOfDay.toISOString()} and ${endOfDay.toISOString()} (Paris date: ${parisTodayStr})...`
+    `Querying matches between ${startOfWindow.toISOString()} and ${endOfWindow.toISOString()}...`
   )
 
   const matches = await prisma.match.findMany({
     where: {
       matchDate: {
-        gte: startOfDay,
-        lte: endOfDay,
+        gte: startOfWindow,
+        lte: endOfWindow,
       },
+      state: { not: "completed" },
       tournament: {
         league: {
           OR: [
@@ -103,10 +82,11 @@ const isDirectExecution =
   process.argv[1]?.endsWith("send-discord-notification.js")
 
 if (isDirectExecution) {
-  runDailyDiscordNotification()
-    .then(() => process.exit(0))
-    .catch((err) => {
-      console.error("Fatal error in daily Discord notification script:", err)
-      process.exit(1)
-    })
+  try {
+    await runDailyDiscordNotification()
+    process.exit(0)
+  } catch (err) {
+    console.error("Fatal error in daily Discord notification script:", err)
+    process.exit(1)
+  }
 }
