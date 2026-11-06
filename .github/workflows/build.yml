@@ -8,7 +8,7 @@ on:
       - "apps/scraper/**"
       - "packages/**"
       - "compose.yml"
-      - "compose.prod.yml"
+      - "package-lock.json"
 
 permissions:
   contents: read
@@ -33,9 +33,7 @@ jobs:
 
       - name: Build and push images
         run: |
-          docker compose -f compose.yml -f compose.prod.yml build api scraper
-          docker compose build migrator
+          docker compose build api scraper migrator
           docker compose push api scraper migrator
         env:
           REGISTRY: ${{ env.REGISTRY }}
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
