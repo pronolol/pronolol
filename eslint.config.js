@@ -40,6 +40,8 @@ export default [
         require: "readonly",
         exports: "readonly",
         fetch: "readonly",
+        URL: "readonly",
+        Response: "readonly",
       },
     },
     plugins: {
