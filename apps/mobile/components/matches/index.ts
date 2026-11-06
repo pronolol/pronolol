@@ -1,5 +1,0 @@
-export { MatchHeader } from "./MatchHeader"
-export { MatchDetailCard } from "./MatchDetailCard"
-export { ScoreSelectionCard, PromptCard } from "./PredictionForm"
-export { MyPredictionCard } from "./MyPredictionCard"
-export { CommunityPredictionsCard } from "./CommunityPredictionsCard"

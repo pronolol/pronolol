@@ -69,11 +69,6 @@ app.listen(port, host, () => {
   console.log(`\n📚 Documentation:`)
   console.log(`   API Docs: ${baseUrl}/api-docs`)
   console.log(`   OpenAPI Spec: ${baseUrl}/openapi.json`)
-
-  if (!isBaseUrlConfigured) {
-    console.log(`\n💡 Tip: Configure BETTER_AUTH_URL in .env for mobile access`)
-    console.log(`   Example: BETTER_AUTH_URL=http://YOUR_LOCAL_IP:${port}`)
-  }
 })
 
 process.on("SIGINT", async () => {

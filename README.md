@@ -8,7 +8,6 @@ A monorepo for the Pronolol esports prediction platform.
 ├── apps/
 │   ├── api/        # Express.js REST API
 │   ├── web/        # Vite + React SPA
-│   ├── mobile/     # Expo React Native app
 │   └── scraper/    # Playwright web scraper
 ├── packages/
 │   └── database/   # Prisma schema & client
@@ -53,8 +52,6 @@ npm run dev:api
 # Terminal 3 — web — http://localhost:5173
 npm run dev:web
 
-# Terminal 4 — mobile
-cd apps/mobile && npx expo start
 ```
 
 ### Stopping
@@ -162,7 +159,3 @@ docker build -f packages/database/Dockerfile -t pronolol-migrator .
 ## Publishing
 
 The publish workflow requires an `NPM_TOKEN` secret configured in GitHub repository settings (Settings > Secrets > Actions). This token must have write access to the GitHub Packages registry.
-
-## Mobile App
-
-Configure `EXPO_PUBLIC_API_URL` in `.env` to point to your API (use your machine's local network IP for device testing, e.g. `http://192.168.1.x:3000`).
