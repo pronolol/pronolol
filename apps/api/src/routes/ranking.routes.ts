@@ -3,10 +3,21 @@ import { ZodError } from "zod"
 import { GetRankingQuerySchema } from "../dto/ranking.dto"
 import {
   computeRankings,
+  fetchRankingFilters,
   fetchRankingPredictions,
 } from "../services/ranking.service"
 
 export const rankingRouter = Router()
+
+rankingRouter.get("/filters", async (_req: Request, res: Response) => {
+  try {
+    const filters = await fetchRankingFilters()
+    res.json(filters)
+  } catch (error) {
+    console.error("Error fetching ranking filters:", error)
+    res.status(500).json({ error: "Failed to fetch ranking filters" })
+  }
+})
 
 rankingRouter.get("/", async (req: Request, res: Response) => {
   try {

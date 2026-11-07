@@ -1,5 +1,6 @@
 import { z } from "zod"
 import { extendZodWithOpenApi } from "@asteasolutions/zod-to-openapi"
+import { TournamentSummarySchema } from "./league.dto"
 
 extendZodWithOpenApi(z)
 
@@ -42,3 +43,24 @@ export const RankingResponseSchema = z
   })
 
 export type RankingResponseDTO = z.infer<typeof RankingResponseSchema>
+
+export const RankingFilterLeagueSchema = z
+  .object({
+    id: z.string(),
+    name: z.string(),
+    tournaments: z.array(TournamentSummarySchema),
+  })
+  .openapi("RankingFilterLeague", {
+    description:
+      "League with the tournaments that have at least one scored prediction",
+  })
+
+export const RankingFiltersResponseSchema = z
+  .array(RankingFilterLeagueSchema)
+  .openapi("RankingFiltersResponse", {
+    description: "Leagues and tournaments available as ranking filters",
+  })
+
+export type RankingFiltersResponseDTO = z.infer<
+  typeof RankingFiltersResponseSchema
+>

@@ -1,7 +1,18 @@
-import { vi, describe, it, expect } from "vitest"
-import { computeRankings } from "./ranking.service"
+import { vi, describe, it, expect, beforeEach } from "vitest"
+import { prisma } from "@pronolol/database"
+import {
+  computeRankings,
+  fetchRankingFilters,
+  fetchRankingPredictions,
+} from "./ranking.service"
 
-vi.mock("@pronolol/database", () => ({ prisma: {}, Prisma: {} }))
+vi.mock("@pronolol/database", () => ({
+  prisma: {
+    league: { findMany: vi.fn() },
+    prediction: { findMany: vi.fn() },
+  },
+  Prisma: {},
+}))
 
 const makeUser = (
   id: string,
@@ -125,5 +136,93 @@ describe("computeRankings", () => {
     expect(computeRankings([pred(user, 5, true, false)])[0].displayName).toBe(
       "Full Name"
     )
+  })
+})
+
+const scoredOnly = {
+  matches: { some: { predictions: { some: { points: { not: null } } } } },
+}
+
+const makeFilterLeague = (
+  id: string,
+  tournaments: { id: string; name: string }[] = []
+) => ({ id, name: id.toUpperCase(), tournaments })
+
+describe("fetchRankingFilters", () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it("only selects leagues and tournaments that have scored predictions", async () => {
+    vi.mocked(prisma.league.findMany).mockResolvedValue([])
+
+    await fetchRankingFilters()
+
+    expect(prisma.league.findMany).toHaveBeenCalledWith({
+      where: { tournaments: { some: scoredOnly } },
+      select: {
+        id: true,
+        name: true,
+        tournaments: {
+          where: scoredOnly,
+          select: { id: true, name: true },
+          orderBy: { startDate: "desc" },
+        },
+      },
+      orderBy: { name: "asc" },
+    })
+  })
+
+  it("returns the leagues as provided by the database", async () => {
+    const leagues = [
+      makeFilterLeague("lec", [{ id: "t-1", name: "Spring" }]),
+      makeFilterLeague("lck", [{ id: "t-2", name: "Summer" }]),
+    ]
+    vi.mocked(prisma.league.findMany).mockResolvedValue(leagues as never)
+
+    expect(await fetchRankingFilters()).toEqual(leagues)
+  })
+
+  it("returns an empty array when nothing has been scored yet", async () => {
+    vi.mocked(prisma.league.findMany).mockResolvedValue([])
+
+    expect(await fetchRankingFilters()).toEqual([])
+  })
+})
+
+describe("fetchRankingPredictions", () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    vi.mocked(prisma.prediction.findMany).mockResolvedValue([])
+  })
+
+  const lastWhere = () =>
+    vi.mocked(prisma.prediction.findMany).mock.lastCall?.[0]?.where
+
+  it("only fetches scored predictions when no filter is given", async () => {
+    await fetchRankingPredictions({})
+    expect(lastWhere()).toEqual({ points: { not: null } })
+  })
+
+  it("filters by league", async () => {
+    await fetchRankingPredictions({ leagueId: "lec" })
+    expect(lastWhere()).toEqual({
+      points: { not: null },
+      match: { tournament: { leagueId: "lec" } },
+    })
+  })
+
+  it("filters by tournament", async () => {
+    await fetchRankingPredictions({ tournamentId: "t-1" })
+    expect(lastWhere()).toEqual({
+      points: { not: null },
+      match: { tournamentId: "t-1" },
+    })
+  })
+
+  it("does not include unused match relations", async () => {
+    await fetchRankingPredictions({})
+    const args = vi.mocked(prisma.prediction.findMany).mock.lastCall?.[0]
+    expect(args?.include).not.toHaveProperty("match")
   })
 })
