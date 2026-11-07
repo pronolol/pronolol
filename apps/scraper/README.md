@@ -61,6 +61,16 @@ You can schedule this scraper to run periodically using cron.
 0 3 * * * cd /path/to/pronolol_backend/scraper && npm run scrape
 ```
 
+### Monitoring with Uptime Kuma
+
+Set `UPTIME_KUMA_PUSH_URL` to the URL of a Kuma **Push** monitor. Each run sends
+`status=up` once the data is saved, or `status=down` (with the error message)
+if fetching, parsing or saving fails.
+
+Because the scraper is a one-shot job, set the monitor's **Heartbeat Interval**
+to the cron period plus a margin (e.g. `4000` seconds for an hourly cron).
+With Kuma's default of 60 seconds, the monitor goes DOWN between every run.
+
 ## Output
 
 Data is persisted to the database by default. If you use the `--no-save` flag, the scraped data will be printed to `stdout` in JSON format.

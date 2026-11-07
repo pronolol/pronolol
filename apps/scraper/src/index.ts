@@ -4,6 +4,7 @@ import { FetcherService } from "./services/fetcher"
 import { ParserService } from "./services/parser"
 import { DatabaseService } from "./services/database"
 import { config } from "./config/scraper"
+import { runScrape } from "./run"
 import { prisma } from "@pronolol/database"
 const args = process.argv.slice(2)
 const flags = {
@@ -63,25 +64,13 @@ const main = async () => {
       process.exit(0)
     }
 
-    const rawData = await fetcher.fetchData(leaguesToScrape)
-    const processedData = parser.parse(rawData)
-    console.error("✅ Data parsing complete.")
-    console.error(
-      `📊 Summary: scraped from ${processedData.metadata.dateRange.start} to ${processedData.metadata.dateRange.end}`
-    )
-
-    if (!flags.noSave) {
-      try {
-        await dbService.saveScrapedData(processedData)
-      } catch (dbError) {
-        console.error("❌ Database error:", dbError)
-        console.error(
-          "   Please ensure your database is running and the connection environment variables are set correctly."
-        )
-      }
-    } else {
-      console.error("📋 --no-save flag present, skipping database persistence.")
-    }
+    const processedData = await runScrape({
+      fetcher,
+      parser,
+      dbService,
+      leagues: leaguesToScrape,
+      save: !flags.noSave,
+    })
 
     let result: unknown
     if (flags.leagues) {
@@ -109,17 +98,12 @@ const main = async () => {
 
     console.log(output)
 
-    if (process.env.UPTIME_KUMA_PUSH_URL) {
-      try {
-        await fetch(process.env.UPTIME_KUMA_PUSH_URL)
-      } catch {
-        console.error("⚠️ Failed to ping Uptime Kuma")
-      }
-    }
-
     console.error("✨ Done!")
   } catch (error) {
-    console.error("❌ An unexpected error occurred during scraping:", error)
+    console.error("❌ Scrape failed:", error)
+    console.error(
+      "   If this is a database error, ensure the database is running and DATABASE_URL is set correctly."
+    )
     if (error instanceof Error) {
       console.error("Stack:", error.stack)
     }

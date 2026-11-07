@@ -13,7 +13,6 @@
   },
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "^8.4.0",
-    "@better-auth/expo": "^1.4.17",
     "@pronolol/database": "*",
     "@types/swagger-ui-express": "^4.1.8",
     "better-auth": "^1.4.15",

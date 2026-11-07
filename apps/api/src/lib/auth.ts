@@ -1,7 +1,6 @@
 import { betterAuth } from "better-auth"
 import { prismaAdapter } from "better-auth/adapters/prisma"
 import { username } from "better-auth/plugins"
-import { expo } from "@better-auth/expo"
 
 import { prisma } from "@pronolol/database"
 
@@ -20,15 +19,9 @@ export const auth = betterAuth({
     },
   },
   trustedOrigins: [
-    "pronolol://",
     "https://pronolol.fr",
     ...(process.env.NODE_ENV === "development"
-      ? [
-          "exp://",
-          "exp://**",
-          "exp://192.168.*.*:*/**",
-          "http://localhost:5173",
-        ]
+      ? ["http://localhost:5173"]
       : []),
   ],
   advanced: {
@@ -42,5 +35,5 @@ export const auth = betterAuth({
       secure: process.env.NODE_ENV === "production",
     },
   },
-  plugins: [expo(), username()],
+  plugins: [username()],
 })

@@ -3,7 +3,6 @@ import tseslint from "@typescript-eslint/eslint-plugin";
 import tsparser from "@typescript-eslint/parser";
 import prettier from "eslint-plugin-prettier";
 import prettierConfig from "eslint-config-prettier";
-import globals from "globals";
 
 export default [
   {
@@ -13,12 +12,8 @@ export default [
       "**/*.config.js",
       "**/*.config.ts",
       "**/generated/**",
-      "**/.expo/**",
       "**/build/**",
-      "**/android/**",
-      "**/ios/**",
       "apps/web/**",
-      "apps/mobile/**",
     ],
   },
   js.configs.recommended,
@@ -40,6 +35,8 @@ export default [
         require: "readonly",
         exports: "readonly",
         fetch: "readonly",
+        URL: "readonly",
+        Response: "readonly",
       },
     },
     plugins: {
@@ -56,20 +53,6 @@ export default [
       ],
       "@typescript-eslint/no-explicit-any": "warn",
       "no-console": "off",
-    },
-  },
-  {
-    files: ["apps/mobile/**/*.ts", "apps/mobile/**/*.tsx"],
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-        __DEV__: "readonly",
-      },
-    },
-    rules: {
-      // TypeScript's compiler already catches undefined references more
-      // accurately than no-undef (e.g. DOM types like RequestInit).
-      "no-undef": "off",
     },
   },
 ];

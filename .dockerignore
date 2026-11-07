@@ -47,9 +47,6 @@ __tests__
 !README.md
 docs
 
-# Mobile app (not needed in backend containers)
-apps/mobile
-
 # Docker files (avoid recursive copying)
 docker-compose*.yml
 compose*.yml
