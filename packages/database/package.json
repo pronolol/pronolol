@@ -1,6 +1,7 @@
 {
   "name": "@pronolol/database",
   "version": "1.0.4",
+  "private": true,
   "description": "",
   "type": "module",
   "main": "dist/index.js",
@@ -18,7 +19,6 @@
     "generate": "prisma generate",
     "migrate": "prisma migrate deploy",
     "prepare": "prisma generate && tsup",
-    "prepublishOnly": "prisma generate && tsup",
     "test": "vitest run --passWithNoTests"
   },
   "keywords": [],
@@ -40,8 +40,5 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pronolol/pronolol.git"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
   }
 }

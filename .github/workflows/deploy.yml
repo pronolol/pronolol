@@ -141,7 +141,6 @@ jobs:
             cd /home/debian/pronolol
             REGISTRY=$REGISTRY docker compose pull api migrator
             REGISTRY=$REGISTRY docker compose run --rm migrator
-            docker compose stop api
             REGISTRY=$REGISTRY docker compose up -d --no-deps api
         env:
           REGISTRY: ${{ env.REGISTRY }}

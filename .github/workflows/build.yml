@@ -8,7 +8,11 @@ on:
       - "apps/scraper/**"
       - "packages/**"
       - "compose.yml"
+      - "package.json"
       - "package-lock.json"
+      - "tsconfig.base.json"
+      - ".dockerignore"
+      - ".github/workflows/build.yml"
 
 permissions:
   contents: read
