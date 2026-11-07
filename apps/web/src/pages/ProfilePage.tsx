@@ -51,9 +51,10 @@ export const ProfilePage = () => {
   const myStats =
     rankingData?.rankings.find((r) => r.userId === user?.id) ?? null
 
+  const byId = (a: string, b: string) => a.localeCompare(b)
   const isDirty =
-    JSON.stringify([...pendingLeagueIds].sort()) !==
-    JSON.stringify([...(preferencesData?.leagueIds ?? [])].sort())
+    JSON.stringify([...pendingLeagueIds].sort(byId)) !==
+    JSON.stringify([...(preferencesData?.leagueIds ?? [])].sort(byId))
 
   const handleLeagueToggle = (leagueId: string) => {
     setPendingLeagueIds((prev) =>

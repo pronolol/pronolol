@@ -112,7 +112,7 @@ const hasScoredPredictions: Prisma.TournamentWhereInput = {
  * Leagues and tournaments that have at least one scored prediction — i.e. the
  * exact set of filters for which the ranking endpoint can return data.
  */
-export const fetchRankingFilters = async () =>
+export const fetchRankingFilters = () =>
   prisma.league.findMany({
     where: { tournaments: { some: hasScoredPredictions } },
     select: {
