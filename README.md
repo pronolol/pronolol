@@ -155,7 +155,3 @@ docker build -f apps/scraper/Dockerfile -t pronolol-scraper .
 # Migrator
 docker build -f packages/database/Dockerfile -t pronolol-migrator .
 ```
-
-## Publishing
-
-The publish workflow requires an `NPM_TOKEN` secret configured in GitHub repository settings (Settings > Secrets > Actions). This token must have write access to the GitHub Packages registry.
