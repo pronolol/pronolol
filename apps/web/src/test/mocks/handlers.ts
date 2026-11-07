@@ -132,6 +132,24 @@ export const handlers = [
     return HttpResponse.json({ leagueIds: body.leagueIds ?? [] })
   }),
 
+  http.get(`${API_URL}/ranking/filters`, () => {
+    return HttpResponse.json([
+      {
+        id: "league-2",
+        name: "LCK",
+        tournaments: [{ id: "tournament-3", name: "Spring Split" }],
+      },
+      {
+        id: "league-1",
+        name: "LEC",
+        tournaments: [
+          { id: "tournament-2", name: "Summer Split" },
+          { id: "tournament-1", name: "Spring Split" },
+        ],
+      },
+    ])
+  }),
+
   http.get(`${API_URL}/ranking`, () => {
     return HttpResponse.json({
       rankings: [

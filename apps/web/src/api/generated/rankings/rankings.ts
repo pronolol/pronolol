@@ -21,6 +21,7 @@ import type {
 import type {
   ErrorResponse,
   GetRankingParams,
+  RankingFiltersResponse,
   RankingResponse,
 } from "../models"
 
@@ -151,6 +152,152 @@ export function useGetRanking<
   queryKey: DataTag<QueryKey, TData, TError>
 } {
   const queryOptions = getGetRankingQueryOptions(params, options)
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> }
+
+  return { ...query, queryKey: queryOptions.queryKey }
+}
+
+/**
+ * Retrieve the leagues and tournaments that have at least one scored prediction, for use as ranking filters.
+ * @summary Get ranking filters
+ */
+export const getRankingFilters = (signal?: AbortSignal) => {
+  return customInstance<RankingFiltersResponse>({
+    url: `/ranking/filters`,
+    method: "GET",
+    signal,
+  })
+}
+
+export const getGetRankingFiltersQueryKey = () => {
+  return [`/ranking/filters`] as const
+}
+
+export const getGetRankingFiltersQueryOptions = <
+  TData = Awaited<ReturnType<typeof getRankingFilters>>,
+  TError = ErrorResponse,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof getRankingFilters>>,
+      TError,
+      TData
+    >
+  >
+}) => {
+  const { query: queryOptions } = options ?? {}
+
+  const queryKey = queryOptions?.queryKey ?? getGetRankingFiltersQueryKey()
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getRankingFilters>>
+  > = ({ signal }) => getRankingFilters(signal)
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getRankingFilters>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetRankingFiltersQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getRankingFilters>>
+>
+export type GetRankingFiltersQueryError = ErrorResponse
+
+export function useGetRankingFilters<
+  TData = Awaited<ReturnType<typeof getRankingFilters>>,
+  TError = ErrorResponse,
+>(
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getRankingFilters>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRankingFilters>>,
+          TError,
+          Awaited<ReturnType<typeof getRankingFilters>>
+        >,
+        "initialData"
+      >
+  },
+  queryClient?: QueryClient
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>
+}
+export function useGetRankingFilters<
+  TData = Awaited<ReturnType<typeof getRankingFilters>>,
+  TError = ErrorResponse,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getRankingFilters>>,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRankingFilters>>,
+          TError,
+          Awaited<ReturnType<typeof getRankingFilters>>
+        >,
+        "initialData"
+      >
+  },
+  queryClient?: QueryClient
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>
+}
+export function useGetRankingFilters<
+  TData = Awaited<ReturnType<typeof getRankingFilters>>,
+  TError = ErrorResponse,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getRankingFilters>>,
+        TError,
+        TData
+      >
+    >
+  },
+  queryClient?: QueryClient
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>
+}
+/**
+ * @summary Get ranking filters
+ */
+
+export function useGetRankingFilters<
+  TData = Awaited<ReturnType<typeof getRankingFilters>>,
+  TError = ErrorResponse,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof getRankingFilters>>,
+        TError,
+        TData
+      >
+    >
+  },
+  queryClient?: QueryClient
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>
+} {
+  const queryOptions = getGetRankingFiltersQueryOptions(options)
 
   const query = useQuery(queryOptions, queryClient) as UseQueryResult<
     TData,

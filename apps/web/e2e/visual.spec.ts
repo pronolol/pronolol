@@ -88,6 +88,10 @@ const setupApiMocks = async (page: Page) => {
     (route) => route.fulfill({ json: mockRanking })
   )
   await page.route(
+    (url) => url.origin === API_URL && url.pathname === "/ranking/filters",
+    (route) => route.fulfill({ json: [] })
+  )
+  await page.route(
     (url) => url.origin === API_URL && url.pathname === "/leagues",
     (route) => route.fulfill({ json: [] })
   )

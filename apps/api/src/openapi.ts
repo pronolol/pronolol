@@ -7,7 +7,11 @@ import {
   GetMatchesQuerySchema,
   ErrorResponseSchema,
 } from "./dto/match.dto"
-import { GetRankingQuerySchema, RankingResponseSchema } from "./dto/ranking.dto"
+import {
+  GetRankingQuerySchema,
+  RankingResponseSchema,
+  RankingFiltersResponseSchema,
+} from "./dto/ranking.dto"
 import { MyPredictionSchema } from "./dto/prediction.dto"
 import {
   UserPreferencesSchema,
@@ -152,6 +156,33 @@ registry.registerPath({
       content: {
         "application/json": {
           schema: ErrorResponseSchema,
+        },
+      },
+    },
+    500: {
+      description: "Internal server error",
+      content: {
+        "application/json": {
+          schema: ErrorResponseSchema,
+        },
+      },
+    },
+  },
+})
+
+registry.registerPath({
+  method: "get",
+  path: "/ranking/filters",
+  description:
+    "Retrieve the leagues and tournaments that have at least one scored prediction, for use as ranking filters.",
+  summary: "Get ranking filters",
+  tags: ["Rankings"],
+  responses: {
+    200: {
+      description: "Leagues with their rankable tournaments",
+      content: {
+        "application/json": {
+          schema: RankingFiltersResponseSchema,
         },
       },
     },
