@@ -8,7 +8,7 @@ import {
 import { sendDailyMatchesWebhook } from "../services/discord.service"
 
 export const getRolling24HourBounds = (now: Date = new Date()) => {
-  const start = new Date(now.getTime())
+  const start = new Date(now)
   const end = new Date(now.getTime() + 24 * 60 * 60 * 1000)
   return { start, end }
 }
